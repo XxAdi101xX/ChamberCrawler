@@ -14,6 +14,12 @@ void Character::applyPotion(Potion& potion) {}
 void Character::postAttackRoutine(Character& defender) {}
 
 
+void Character::addHP(int amount) {}
+
+
+void Character::addGold(int amount) {}
+
+
 int Character::getAttack() {}
 
 

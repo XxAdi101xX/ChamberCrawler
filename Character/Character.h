@@ -33,6 +33,10 @@ private:
 	// and runs deathRoutine for defender if necessary
 	virtual void postAttackRoutine(Character& defender);
 
+	// helper mutators:
+	void addHP(int amount); // adds HP but does not exceed HPMax
+	void addGold(int amount); // adds gold and thus score as well
+
 	// helper accessors:
 	virtual int getAttack(); // returns total attack value
 	virtual int getDefence(); // returns total defence value
