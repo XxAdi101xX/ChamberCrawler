@@ -1,8 +1,6 @@
 #include <string>
 #include <Subject.h>
 #include <Race.h>
-using namespace std;
-
 enum class Direction;
 class Generator;
 class Potion;
@@ -29,11 +27,11 @@ private:
 	// used by move when walking over potion applies
 	// the potion on the currentCell to the
 	// character, if character is player
-	virtual void applyPotion(Potion potion);
+	virtual void applyPotion(Potion& potion);
 
 	// used by attack method, checks for death
 	// and runs deathRoutine for defender if necessary
-	virtual void postAttackRoutine(Character defender);
+	virtual void postAttackRoutine(Character& defender);
 
 	// helper accessors:
 	virtual int getAttack(); // returns total attack value
@@ -46,16 +44,16 @@ public:
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
 	// may decide hit or miss in future expansion using rng
-	virtual void attack(Character defender, Generator rng);
+	virtual void attack(Character& defender, Generator& rng);
 
 	// defends from incoming damage, evasion is
         // decided here by rng
-        bool defend(int incomingDamage, Generator rng);
+        virtual bool defend(int incomingDamage, Generator& rng);
 
 	// run upon character death (HP == 0)
         // called by postAttackRoutine
         // gives killer gold
-        virtual void deathRoutine(Character killer);
+        virtual void deathRoutine(Character& killer);
 
 	// normally does nothing, but overrides implements specific
 	// racial traits

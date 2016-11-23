@@ -1,5 +1,4 @@
 #include <Character.h>
-using namespace std;
 
 
 class Shade final: public Character {

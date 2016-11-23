@@ -1,12 +1,11 @@
 #include <Character.h>
-using namespace std;
 
 
-class Character: public Subject {
+class Troll final: public Character {
 public:
-	// override adds 5 health at turn end
-	virtual void endTurnRoutine() override;	
-	virtual void setStats() override; // sets Troll stats
+	// overrides to add health
+	virtual void endTurnRoutine() override;
+	virtual void setStats() override; // set Troll stats
 
 };
 

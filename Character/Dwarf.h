@@ -1,5 +1,4 @@
 #include <Character.h>
-using namespace std;
 
 
 class Dwarf final: public Character {
