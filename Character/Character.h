@@ -39,11 +39,6 @@ private:
 	// and runs deathRoutine for defender if necessary
 	virtual void postAttackRoutine(Character defender);
 
-	// run upon character death (HP == 0)
-	// called by postAttackRoutine
-	// gives killer gold
-	virtual void deathRoutine(Character killer);
-
 	// helper accessors:
 	virtual int getAttack(); // returns total attack value
 	virtual int getDefence(); // returns total defence value
@@ -57,6 +52,11 @@ public:
 	// may decide hit or miss in future expansion using rng
 	virtual void attack(Character defender, Generator rng);
 
+	// run upon character death (HP == 0)
+        // called by postAttackRoutine
+        // gives killer gold
+        virtual void deathRoutine(Character killer);
+
 	// normally does nothing, but overrides implements specific
 	// racial traits
 	virtual void endTurnRoutine();
@@ -65,7 +65,7 @@ public:
 
 	void setPlayer(); // sets isPlayer to true
 	
-	// uses template method pattern
+	// uses template method patterni
 	// to set stats of all different races
 	virtual void setStats() = 0;
 	void clearBuffs(); // sets buffs to 0, used when entering new floor
