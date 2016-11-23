@@ -11,3 +11,5 @@ public:
 	virtual void setStats() override; // sets Vampire stats
 
 };
+
+

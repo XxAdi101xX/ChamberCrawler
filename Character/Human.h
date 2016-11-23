@@ -10,3 +10,5 @@ public:
 	virtual void setStats() override; // sets Human stats
 
 };
+
+

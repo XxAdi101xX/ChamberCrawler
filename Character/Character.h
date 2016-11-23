@@ -81,3 +81,5 @@ public:
 	string getLastAction(); // returns the lastAction done
 
 };
+
+
