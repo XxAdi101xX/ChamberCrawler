@@ -6,12 +6,14 @@ class Potion;
 class Drow final: public Character {
 private:
 	// overrides the normal apply potion
-	// to amplify effects by 50%
-	virtual void applyPotion(Potion potion);
+	// to amplify effects by 50% rounded up
+	// but only for health potions
+	// to avoid rounding errors
+	virtual void applyPotion(Potion potion) override;
+	virtual int getAttack() override; // amplfies potion effects by 50%
+	virtual int getDefence() override; // amplifies potion effects by 50%
 
 public:
-	// uses template method pattern
-	// to set stats of all different races
-	virtual void setStats() = 0;
+	virtual void setStats() override; // set stats for a Drow
 
 };
