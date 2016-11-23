@@ -7,6 +7,7 @@ enum class Direction;
 class Generator;
 class Potion;
 
+
 class Character: public Subject {
 private:
 	int HPMax;
@@ -42,6 +43,10 @@ private:
 	// called by postAttackRoutine
 	// gives killer gold
 	virtual void deathRoutine(Character killer);
+
+	// helper accessors:
+	virtual int getAttack(); // returns total attack value
+	virtual int getDefence(); // returns total defence value
 
 public:
 	// ctor
