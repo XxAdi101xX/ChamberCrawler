@@ -20,7 +20,7 @@ private:
 	Cell& currentCell;
 	int wallet; // gold that the character owns
 	int score; // cumulative gold earnings
-	string lastAction; // recorded by various methods
+	std::string lastAction; // recorded by various methods
 
 	// helpers:
 
@@ -39,7 +39,7 @@ private:
 
 public:
 	// ctor
-	Character(Race race);
+	Character(Race race, int wallet);
 
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
@@ -72,11 +72,14 @@ public:
 	// items if moved over
 	void move(Direction direction);
 
+	// used during initialization to set the character's location
+	void setCell(Cell& cell);
+
 	// accessors:
 
 	virtual int getScore() const; // returns score
 	int getHP() const; // returns the current HP
-	string getLastAction(); // returns the lastAction done
+	std::string getLastAction(); // returns the lastAction done
 
 };
 

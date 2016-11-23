@@ -13,6 +13,11 @@ int Drow::getAttack() {}
 int Drow::getDefence() {}
 
 
-void Drow::setStats() {}
+void Drow::setStats() {
+	this->HPMax = 150;
+        this->HP = 150;
+        this->attack = 25;
+        this->defence = 15;
+}
 
 
