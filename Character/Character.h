@@ -7,6 +7,7 @@ enum class Direction;
 class Generator;
 class Potion;
 
+
 class Character: public Subject {
 private:
 	int HPMax;
