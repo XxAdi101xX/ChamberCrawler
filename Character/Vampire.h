@@ -1,8 +1,6 @@
 #include <Character.h>
 using namespace std;
 
-enum class Direction;
-
 
 class Vampire final: public Character {
 private:
