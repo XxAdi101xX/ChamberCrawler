@@ -26,10 +26,6 @@ private:
 
 	// helpers:
 
-	// defends from incoming damage, evasion is
-	// decided here by rng
-	bool defend(int incomingDamage, Generator rng);
-
 	// used by move when walking over potion applies
 	// the potion on the currentCell to the
 	// character, if character is player
@@ -52,6 +48,10 @@ public:
 	// may decide hit or miss in future expansion using rng
 	virtual void attack(Character defender, Generator rng);
 
+	// defends from incoming damage, evasion is
+        // decided here by rng
+        bool defend(int incomingDamage, Generator rng);
+
 	// run upon character death (HP == 0)
         // called by postAttackRoutine
         // gives killer gold
@@ -65,7 +65,7 @@ public:
 
 	void setPlayer(); // sets isPlayer to true
 	
-	// uses template method patterni
+	// uses template method pattern
 	// to set stats of all different races
 	virtual void setStats() = 0;
 	void clearBuffs(); // sets buffs to 0, used when entering new floor
