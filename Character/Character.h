@@ -17,10 +17,11 @@ private:
 	bool isHostile;
 	bool isPlayer;
 	Race race;
-	Cell& currentCell;
+	Cell* currentCell;
 	int wallet; // gold that the character owns
 	int score; // cumulative gold earnings
 	std::string lastAction; // recorded by various methods
+	std::string name;
 
 	// helpers:
 
@@ -43,7 +44,7 @@ private:
 
 public:
 	// ctor
-	Character(Race race, int wallet);
+	Character(Race race, Cell currentCell, int wallet);
 
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
@@ -83,7 +84,10 @@ public:
 
 	virtual int getScore() const; // returns score
 	int getHP() const; // returns the current HP
+	bool getPlayerState() const; // returns isPlayer
+	Cell* getCurrentCell; // returns the currentCell
 	std::string getLastAction(); // returns the lastAction done
+	std::getName(); // returns the name of the character
 
 };
 
