@@ -4,8 +4,6 @@
 #include <string>
 #include <memory>
 
-class Race;
-class Direction;
 
 class Item;
 class Potion;
@@ -21,9 +19,8 @@ std::string makeMsg(std::string subject,
 std::string raceToText(Race race);
 
 
-
 // converts Direction enumeration to text
-std::string directionToText(Direction direction)
+std::string directionToText(Direction direction);
 
 
 // converts Item to text, along with addition info
@@ -36,7 +33,7 @@ std::string goldPileToText(const GoldPile goldPile);
 
 
 // converts Potion to text, name revealed if potion had been used
-potionToText(const Potion potion);
+std::string potionToText(const Potion potion);
 
 
 #endif

@@ -2,20 +2,23 @@
 #define _CHARACTER_H_
 
 #include <string>
-#include <Subject.h>
-#include <Race.h>
+#include <memory>
+//#include <Subject.h>
+#include "Race.h"
+
 enum class Direction;
+class Item;
 class Generator;
 class Potion;
+class Cell;
 
-
-class Character: public Subject {
+class Character/*: public Subject*/ {
 private:
 	int HPMax;
 	int HP;
-	int attack;
+	int attackValue;
 	int attackBuff;
-	int defence;
+	int defenceValue;
 	int defenceBuff;
 	bool isHostile;
 	bool isPlayer;
@@ -31,7 +34,7 @@ private:
 	// used by move when walking over potion applies
 	// the potion on the currentCell to the
 	// character, if character is player
-	virtual void applyPotion(Potion& potion);
+	virtual void applyPotion(std::shared_ptr<Item> potion);
 
 	// used by attack method, checks for death
 	// and runs deathRoutine for defender if necessary
@@ -47,7 +50,7 @@ private:
 
 public:
 	// ctor
-	Character(Race race, Cell currentCell, int wallet);
+	Character(Race race, int wallet);
 
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
@@ -81,16 +84,16 @@ public:
 	void move(Direction direction);
 
 	// used during initialization to set the character's location
-	void setCell(Cell& cell);
+	void setCell(Cell* cell);
 
 	// accessors:
 
 	virtual int getScore() const; // returns score
 	int getHP() const; // returns the current HP
 	bool getPlayerState() const; // returns isPlayer
-	Cell* getCurrentCell; // returns the currentCell
+	Cell* getCurrentCell(); // returns the currentCell
 	std::string getLastAction(); // returns the lastAction done
-	std::getName(); // returns the name of the character
+	std::string getName(); // returns the name of the character
 
 };
 

@@ -1,21 +1,22 @@
 #include <string>
 #include <cmath>
+#include <vector>
 #include "Character.h"
 #include "Messaging.h"
+//#include "Potion.h"
+//#include "Generator.h"
+#include "PotionType.h"
+#include "Direction.h"
+#include "ItemType.h"
 using namespace std;
-
-enum class Race;
-enum class Direction;
-class Generator;
-class Potion;
 
 extern bool merchantsAngered;
 extern vector<PotionType> usedPotions;
 
 
-void Character::applyPotion(Potion& potion) {
-	PotionType type = potion.getType();
-	int potency = potion.getPotency();
+void Character::applyPotion(shared_ptr<Item> potion) {
+	PotionType type = potion->getType();
+	int potency = potion->getPotency();
 	
 	// health based potions
 	if (type == PotionType::RestoreHealth
@@ -26,13 +27,13 @@ void Character::applyPotion(Potion& potion) {
 	// attack based potions
 	else if (type == PotionType::BoostAttack
                 || type == PotionType::WoundAttack) {
-                this->attackbuff += potency;
+                this->attackBuff += potency;
         }
 
 	// defence based potions
 	else if (type == PotionType::BoostDefence
                 || type == PotionType::WoundDefence) {
-                this->defencebuff += potency;
+                this->defenceBuff += potency;
         }
 
 	usedPotions.emplace_back(type);
@@ -49,7 +50,7 @@ void Character::postAttackRoutine(Character& defender) {
 		defender.deathRoutine(*this);
 
 		this->lastAction += 
-			makeMsg(this->name, "killed" defender.getName());
+			makeMsg(this->name, "killed", defender.getName());
 	}
 
 }
@@ -83,24 +84,24 @@ void Character::addGold(int amount) {
 
 
 int Character::getAttack() {
-	return this->attack + this->attackBuff;
+	return this->attackValue + this->attackBuff;
 }
 
 
 int Character::getDefence() {
-	return this->defence + this->defenceBuff;
+	return this->defenceValue + this->defenceBuff;
 }
 	
 
-Character::Character(Race race, Cell currentCell; int wallet): 
+Character::Character(Race race, int wallet): 
 	isHostile{race != Race::Dragon 
-	|| (race == Merchant && merchantsAngered) ? true : false},
+	|| (race == Race::Merchant && merchantsAngered) ? true : false},
 	 isPlayer{false}, race{race}, wallet{wallet}, name{raceToText(race)} {}
 
 
 void Character::attack(Character& defender, Generator& rng) {
 	int damage = ceil((100/(100 + defender.getDefence())) 
-		* this->getAttack())
+		* this->getAttack());
 
 	if (defender.defend(damage, rng)) {
 		// reports hit
@@ -126,9 +127,8 @@ bool Character::defend(int incomingDamage, Generator& rng) {
 	if (this->getPlayerState() && !(rng.genHitMiss())) {
 		// reports dodge
 		this->lastAction +=
-			makeMsg(this->name, "dodges", 
-			"attack " + " (" + to_damage(incomingDamage) + 
-			" damage)";
+			makeMsg(this->name, "dodges", "attack " 
+			+ " (" + to_string(incomingDamage) + " damage)");
 
 		return false;
 	}
@@ -193,7 +193,7 @@ void Character::move(Direction direction) {
 	}
 
 	// finds the item on the new cell
-	shared_ptr<Item> item = currentCell.getItem();
+	shared_ptr<Item> item = currentCell->getItem();
 	ItemType itemType = item->getItemType();
 
 	// if item exists
@@ -204,8 +204,8 @@ void Character::move(Direction direction) {
 		}
 
 		// if item is Potion
-		else if (itemType == Potion) {
-			this->applyPotion(*item);
+		else if (itemType == ItemType::Potion) {
+			this->applyPotion(item);
 		}
 
 	}
@@ -228,12 +228,12 @@ int Character::getHP() const {
 }
 
 
-bool Character::getPlayerState const {
+bool Character::getPlayerState() const {
 	return this->isPlayer;
 }
 
 
-Cell* Character::getCurrentCell {
+Cell* Character::getCurrentCell() {
 	return this->currentCell;
 }
 
