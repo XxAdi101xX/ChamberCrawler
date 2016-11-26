@@ -1,6 +1,7 @@
 #include <string>
 #include <math>
 #include <Character.h>
+#include <Messaging.h>
 using namespace std;
 
 enum class Race;
@@ -9,6 +10,7 @@ class Generator;
 class Potion;
 
 extern bool merchantsAngered;
+extern vector<PotionType> usedPotions;
 
 
 void Character::applyPotion(Potion& potion) {
@@ -22,17 +24,22 @@ void Character::applyPotion(Potion& potion) {
 	}
 
 	// attack based potions
-	if (type == PotionType::BoostAttack
+	else if (type == PotionType::BoostAttack
                 || type == PotionType::WoundAttack) {
                 this->attackbuff += potency;
         }
 
 	// defence based potions
-	if (type == PotionType::BoostDefence
+	else if (type == PotionType::BoostDefence
                 || type == PotionType::WoundDefence) {
                 this->defencebuff += potency;
         }
 
+	usedPotions.emplace_back(type);
+
+	// reports what potion was used
+	this->lastAction += 
+		makeMsg(this->name, "used", potionToText(potion));
 }
 
 
@@ -40,21 +47,28 @@ void Character::postAttackRoutine(Character& defender) {
 	// checks for defender's death
 	if (defender.getHP() <= 0) {
 		defender.deathRoutine(*this);
+
+		this->lastAction += 
+			makeMsg(this->name, "killed" defender.getName());
 	}
 
 }
 
 
 void Character::addHP(int amount) {
-	// when amount added doesn't exceed HPMax
-	if (amount <= this->HPMax - this->getHP()) {
-		this->HP += amount;
+	int HPToBeAdded = amount;
+	// if amount added exceeds HPMax
+	if (amount > this->HPMax - this->getHP()) {
+		HPToBeAdded = this->HPMax - this->getHP();
+
 	}
 
-	// when amount added exceeds HPMax
-	else {
-		this->HP = this->HPMax;
-	}
+	// adds HP
+	this->HP += HPToBeAdded;
+
+	// reports how much HP was gained
+	this->lastAction +=
+		makeMsg(this->name, "gained", to_string(HPToBeAdded) + " HP");
 
 }
 
@@ -62,6 +76,9 @@ void Character::addHP(int amount) {
 void Character::addGold(int amount) {
 	this->wallet += amount;
 	this->score += amount;
+
+	this->lastAction += 
+		makeMsg(this->name, "gained", to_string(amount) + " gold");
 }
 
 
@@ -78,36 +95,26 @@ int Character::getDefence() {
 Character::Character(Race race, Cell currentCell; int wallet): 
 	isHostile{race != Race::Dragon 
 	|| (race == Merchant && merchantsAngered) ? true : false},
-	 isPlayer{false}, race{race}, wallet{wallet} {
-	int numberOfRaces = 12;
-
-	// an array of character races in order
-	Race ordered[numberOfRaces] 
-		= {Race::Shade, Race::Drow, Race:: Vampire;, Race::Troll,
-		Race::Goblin, Race::Human, Race::Dwarf, Race::Elf
-		Race::Orc, Race::Merchant, Race::Dragon, Race::Halfling}
-
-	int index = 0;
-
-	while (ordered[index] != race) {
-		++index;
-	}
-
-	// all default names in order
-	string orderedNames[numberOfRaces] 
-		= {"S", "R", "V", "T", "G","H", "W", "E", "O", "M", "D", "L"}
-
-	this->name = orderedNames[index];
-}
+	 isPlayer{false}, race{race}, wallet{wallet}, name{raceToText(race)} {}
 
 
 void Character::attack(Character& defender, Generator& rng) {
 	int damage = ceiling((100/(100 + defender.getDefence())) 
 		* this->getAttack())
 
-	if (defender.defend(damage, rng)) {}
+	if (defender.defend(damage, rng)) {
+		// reports hit
+		this->lastAction += 
+			makeMsg(this->name, 
+			"dealt " + to_string(damage) + " damage to", 
+			defender.getName());
+	}
 
-	else {}
+	else {
+		// reports miss
+		this->lastAction += 
+			makeMsg(this->name, "misses", defender.getName());
+	}
 
 	this->postAttackRoutine(defender);
 	
@@ -117,16 +124,33 @@ void Character::attack(Character& defender, Generator& rng) {
 bool Character::defend(int incomingDamage, Generator& rng) {
 	// if is player, and attacker misses
 	if (this->getPlayerState() && !(rng.genHitMiss())) {
+		// reports dodge
+		this->lastAction +=
+			makeMsg(this->name, "dodges", 
+			"attack " + " (" + to_damage(incomingDamage) + 
+			" damage)";
+
 		return false;
 	}
 
 	this->HP -= incomingDamage;
+
+	// reports damage taken
+	this->lastAction +=
+		makeMsg(this->name, "took", 
+		to_string(incomingDamage) + " damage"); 
+
 	return true;
 }
 
 
 void Character::deathRoutine(Character& killer) {
+	// gives money to killer
 	killer.addGold(this->wallet);
+
+	// reports death
+	this->lastAction +=
+		makeMsg(this->name, "was killed by", killer.getName());
 }
 
 
@@ -149,6 +173,23 @@ void Character::move(Direction direction) {
 	Cell* cell = (this->currentCell)->getNeighbour(direction);
 	if (cell != nullptr) {
 		this->setCell(cell);
+		
+		// reports movement
+		this->lastAction +=
+			makeMsg(this->name, "moves", 
+			directionToText(direction));
+
+		for (auto neighbour: 
+			this->currentCell->getNeighbours()) {
+			shared_ptr<Item> item = neighbour.getItem();
+			if (item != nullptr) {
+				this->lastAction +=
+					makeMsg(this->name, "sees",
+						itemToText(item));
+			}
+
+		}
+
 	}
 
 	// finds the item on the new cell

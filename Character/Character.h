@@ -1,3 +1,6 @@
+#ifndef _CHARACTER_H_
+#define _CHARACTER_H_
+
 #include <string>
 #include <Subject.h>
 #include <Race.h>
@@ -90,5 +93,8 @@ public:
 	std::getName(); // returns the name of the character
 
 };
+
+
+#endif
 
 

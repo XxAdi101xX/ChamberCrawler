@@ -1,3 +1,6 @@
+#ifndef _VAMPIRE_H_
+#define _VAMPIRE_H_
+
 #include <Character.h>
 
 
@@ -10,5 +13,8 @@ public:
 	virtual void setStats() override; // sets Vampire stats
 
 };
+
+
+#endif
 
 

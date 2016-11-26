@@ -1,3 +1,6 @@
+#ifndef _DRAGON_H_
+#define _DRAGON_H_
+
 #include <Character.h>
 
 
@@ -13,5 +16,8 @@ public:
 	virtual void setStats() override; // set Dragon stats
 
 };
+
+
+#endif
 
 

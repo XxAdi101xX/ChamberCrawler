@@ -1,3 +1,6 @@
+#ifndef _ELF_H_
+#define _ELF_H_
+
 #include <Character.h>
 class Generator;
 
@@ -9,5 +12,8 @@ public:
 	virtual void setStats() override; // sets Elf stats
 
 };
+
+
+#endif
 
 

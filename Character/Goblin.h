@@ -1,3 +1,6 @@
+#ifndef _GOBLIN_H_
+#define _GOBLIN_H_
+
 #include <Character.h>
 
 
@@ -10,5 +13,8 @@ public:
 	virtual void setStats() override; // sets Goblin stats
 
 };
+
+
+#endif
 
 

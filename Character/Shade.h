@@ -1,3 +1,6 @@
+#ifndef _SHADE_H_
+#define _SHADE_H_
+
 #include <Character.h>
 
 
@@ -10,5 +13,8 @@ public:
 	virtual int getScore() const override;
 
 };
+
+
+#endif
 
 

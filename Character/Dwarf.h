@@ -1,3 +1,6 @@
+#ifndef _DWARF_H_
+#define _DWARF_H_
+
 #include <Character.h>
 
 
@@ -6,5 +9,8 @@ public:
 	virtual void setStats() override; // sets Dwarf stats
 
 };
+
+
+#endif
 
 

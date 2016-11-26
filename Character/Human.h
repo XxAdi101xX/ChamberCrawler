@@ -1,3 +1,6 @@
+#ifndef _HUMAN_H_
+#define _HUMAN_H_
+
 #include <Character.h>
 
 
@@ -8,5 +11,8 @@ public:
 	virtual void setStats() override; // sets Human stats
 
 };
+
+
+#endif
 
 

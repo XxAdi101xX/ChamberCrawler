@@ -1,3 +1,6 @@
+#ifndef _MERCHANT_H_
+#define _MERCHANT_H_
+
 #include <Character.h>
 
 
@@ -11,5 +14,8 @@ public:
 	virtual void setStats() override; // sets Merchant stats
 
 };
+
+
+#endif
 
 

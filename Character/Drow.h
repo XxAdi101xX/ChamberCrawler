@@ -1,3 +1,6 @@
+#ifndef _DROW_H_
+#define _DROW_H_
+
 #include <Character.h>
 class Potion;
 
@@ -16,5 +19,8 @@ public:
 	virtual void setStats() override; // set stats for a Drow
 
 };
+
+
+#endif
 
 
