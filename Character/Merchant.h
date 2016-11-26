@@ -1,7 +1,7 @@
 #ifndef _MERCHANT_H_
 #define _MERCHANT_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Merchant final: public Character {

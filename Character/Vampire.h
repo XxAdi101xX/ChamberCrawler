@@ -1,7 +1,7 @@
 #ifndef _VAMPIRE_H_
 #define _VAMPIRE_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Vampire final: public Character {

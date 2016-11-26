@@ -1,7 +1,7 @@
 #ifndef _SHADE_H_
 #define _SHADE_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Shade final: public Character {

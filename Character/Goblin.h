@@ -1,7 +1,7 @@
 #ifndef _GOBLIN_H_
 #define _GOBLIN_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Goblin final;: public Character {

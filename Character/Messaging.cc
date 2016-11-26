@@ -1,10 +1,15 @@
-#include<string>
-#include<memory>
+#include <string>
+#include <memory>
+#include <vector>
+#include "Race.h"
+#include "Direction.h"
+#include "ItemType.h"
+#include "PotionType.h"
+//#include "Item.h"
+//#include "Potion.h"
+//#include "GoldPile.h"
 using namespace std;
 
-enum class Race;
-enum class Direction;
-class Item;
 
 extern vector<PotionType> usedPotions;
 
@@ -14,13 +19,13 @@ string makeMsg(string subject, string action, string object) {
 }
 
 
-string raceToText(Race::race) {
+string raceToText(Race race) {
 	int numberOfRaces = 12;
 
         // an array of character races in order
         Race orderedRaces[numberOfRaces]
-                = {Race::Shade, Race::Drow, Race:: Vampire;, Race::Troll,
-                Race::Goblin, Race::Human, Race::Dwarf, Race::Elf
+                = {Race::Shade, Race::Drow, Race::Vampire, Race::Troll,
+                Race::Goblin, Race::Human, Race::Dwarf, Race::Elf,
                 Race::Orc, Race::Merchant, Race::Dragon, Race::Halfling};
 
         int index = 0;
@@ -39,7 +44,7 @@ string raceToText(Race::race) {
 }
 
 
-string directionToText(Direction:: direction) {
+string directionToText(Direction direction) {
 	int numberOfDirections = 8;
 
         // an array of directions in order
@@ -47,12 +52,12 @@ string directionToText(Direction:: direction) {
                 = {Direction::North, Direction::NorthWest, 
 		Direction::West, Direction::SouthWest, 
 		Direction::South, Direction::SouthEast, 
-		Direction::East, Direction::NortheEast};
+		Direction::East, Direction::NorthEast};
 
         int index = 0;
 
 	// traverses orderedDirctions to find match
-        while (orderedDirection[index] != Direction) {
+        while (orderedDirections[index] != direction) {
                 ++index;
         }
 
@@ -71,11 +76,11 @@ string itemToText(const shared_ptr<Item> item) {
 		return "";
 	}
 
-	else if (item->getType() == GoldPile) {
+	else if (item->getType() == ItemType::GoldPile) {
 		return goldPileToText(*item);		
 	}
 
-	else if (item->getType() == Potion) {
+	else if (item->getType() == ItemType::Potion) {
 		return potionToText(*item);
 	}
 
@@ -83,7 +88,7 @@ string itemToText(const shared_ptr<Item> item) {
 
 
 string goldPileToText(const GoldPile goldPile) {
-	int value = goldPile->getValue();
+	int value = goldPile.getValue();
 
 	int numberOfGoldPiles = 4;
 
@@ -108,13 +113,13 @@ string goldPileToText(const GoldPile goldPile) {
 
 
 string potionToText(const Potion potion) {
-	PotionType type = potion->getPotionType;
+	PotionType type = potion.getPotionType;
 	bool used = false;
 	
 	// check if player has used potion
 	for (auto usedPotion: usedPotions) {
 		if (usedPotion == type) {
-			seen = true;
+			used = true;
 			break;
 		}
 	}
@@ -136,7 +141,7 @@ string potionToText(const Potion potion) {
         	int index = 0;
 
         	// traverses orderedPotionTypes to find match
-        	while (orderedPotionTypes[index] != value) {
+        	while (orderedPotionTypes[index] != type) {
                		++index;
         	}
 

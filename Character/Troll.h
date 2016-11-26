@@ -1,7 +1,7 @@
 #ifndef _TROLL_H_
 #define _TROLL_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Troll final: public Character {

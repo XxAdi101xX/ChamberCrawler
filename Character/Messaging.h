@@ -1,13 +1,15 @@
 #ifndef _MESSAGING_H_
 #define _MESSAGING_H_
 
-#include<string>
-#include<memory>
+#include <string>
+#include <memory>
 
-enum class Race;
-enum class Direction;
+class Race;
+class Direction;
+
 class Item;
-
+class Potion;
+class GoldPile;
 
 // creates a message given a subject doing the action, an action
 // and the object the action is done on
@@ -16,12 +18,12 @@ std::string makeMsg(std::string subject,
 
 
 // converts Race enumeration to text
-std::string raceToText(Race::race);
+std::string raceToText(Race race);
 
 
 
 // converts Direction enumeration to text
-std::string directionToText(Direction:: direction)
+std::string directionToText(Direction direction)
 
 
 // converts Item to text, along with addition info

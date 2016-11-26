@@ -1,7 +1,7 @@
 #ifndef _HUMAN_H_
 #define _HUMAN_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Human final: public Character {

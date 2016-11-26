@@ -1,7 +1,7 @@
 #ifndef _DRAGON_H_
 #define _DRAGON_H_
 
-#include <Character.h>
+#include "Character.h"
 
 
 class Dragon final: public Character {

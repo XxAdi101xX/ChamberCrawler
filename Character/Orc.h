@@ -1,7 +1,7 @@
 #ifndef _ORC_H_
 #define _ORC_H_
 
-#include <Character.h>
+#include "Character.h"
 class Generator;
 
 

@@ -1,7 +1,7 @@
 #include <string>
-#include <math>
-#include <Character.h>
-#include <Messaging.h>
+#include <cmath>
+#include "Character.h"
+#include "Messaging.h"
 using namespace std;
 
 enum class Race;
@@ -99,7 +99,7 @@ Character::Character(Race race, Cell currentCell; int wallet):
 
 
 void Character::attack(Character& defender, Generator& rng) {
-	int damage = ceiling((100/(100 + defender.getDefence())) 
+	int damage = ceil((100/(100 + defender.getDefence())) 
 		* this->getAttack())
 
 	if (defender.defend(damage, rng)) {

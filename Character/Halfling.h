@@ -1,7 +1,7 @@
 #ifndef _HALFLING_H_
 #define _HALFLING_H_
 
-#include <Subject.h>
+#include "Character.h"
 class Generator;
 
 
