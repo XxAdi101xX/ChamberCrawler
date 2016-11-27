@@ -1,4 +1,7 @@
-#include <Character.h>
+#ifndef _GOBLIN_H_
+#define _GOBLIN_H_
+
+#include "Character.h"
 
 
 class Goblin final;: public Character {
@@ -10,5 +13,8 @@ public:
 	virtual void setStats() override; // sets Goblin stats
 
 };
+
+
+#endif
 
 

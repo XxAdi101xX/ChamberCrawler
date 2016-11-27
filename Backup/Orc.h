@@ -1,4 +1,7 @@
-#include <Character.h>
+#ifndef _ORC_H_
+#define _ORC_H_
+
+#include "Character.h"
 class Generator;
 
 
@@ -9,5 +12,8 @@ public:
 	virtual void setStats() override; // sets Orc stats
 
 };
+
+
+#endif
 
 

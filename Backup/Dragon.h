@@ -1,17 +1,29 @@
-#include <Character.h>
+#ifndef _DRAGON_H_
+#define _DRAGON_H_
+
+#include "Character.h"
 
 
 class Dragon final: public Character {
 private:
-	GoldPile& dragonHoard;
+	Cell* dragonHoardCell; // the cell with the dragonHoard on it
 public:
-	// overrides to unbind the dragon hoard
-        virtual void deathRoutine(Character& killer) override;
+	Dragon(int wallet); // ctor
+
+	// overrides move to do nothing
+	virtual void move(Direction direction) override;
 
 	// checks whether or not to turn hostile
-	virtual void endTurnRoutine() override;
-	virtual void setStats() override; // set Dragon stats
+        virtual void startTurnRoutine() override;
 
+	// unbinds the dragon hoard
+	virtual void deathRoutine() override;
+	
+	// sets the dragonHoardCell field
+	void setDragonHoardCell(Cell* dragonHoardCell);
 };
+
+
+#endif
 
 

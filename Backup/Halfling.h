@@ -1,4 +1,7 @@
-#include <Subject.h>
+#ifndef _HALFLING_H_
+#define _HALFLING_H_
+
+#include "Character.h"
 class Generator;
 
 
@@ -8,5 +11,8 @@ public:
         bool defend(int incomingDamage, Generator& rng) override;
 	virtual void setStats() override; // sets Halfling stats
 };
+
+
+#endif
 
 

@@ -1,18 +1,15 @@
-#include <Elf.h>
+#include "Elf.h"
+#include "Race.h"
 using namespace std;
 
 class Character;
 class Generator;
 
 
-void Elf::attack(Character& defender, Generator& rng) {}
+Elf::Elf(int wallet): Character{140, 140, 30, 10, Race::Elf, wallet}, 
+	attackedTwice{false} {}
 
 
-void Elf::setStats() {
-        this->HPMax = 140;
-        this->HP = 140;
-        this->attack = 30;
-        this->defence = 10;
-}
+void Elf::postAttackRoutine(Character* defender) {}
 
 

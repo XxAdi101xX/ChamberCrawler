@@ -1,13 +1,24 @@
-#include <Character.h>
+#ifndef _ELF_H_
+#define _ELF_H_
+
+#include "Character.h"
 class Generator;
 
 
 class Elf final: public Character {
+private:
+	bool attackedTwice;
+
 public:
-	// overrides attack to attack twice except against Drow
-	virtual void attack(Character& defender, Generator& rng) override;
-	virtual void setStats() override; // sets Elf stats
+	Elf(int wallet); // ctor
+
+	// overrides postAttackRoutine to attack again if
+	// it hasn't and the target is not a Drow
+	virtual void postAttackRoutine(Character* defender) override;
 
 };
+
+
+#endif
 
 

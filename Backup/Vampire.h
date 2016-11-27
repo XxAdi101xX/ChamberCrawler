@@ -1,4 +1,7 @@
-#include <Character.h>
+#ifndef _VAMPIRE_H_
+#define _VAMPIRE_H_
+
+#include "Character.h"
 
 
 class Vampire final: public Character {
@@ -10,5 +13,8 @@ public:
 	virtual void setStats() override; // sets Vampire stats
 
 };
+
+
+#endif
 
 
