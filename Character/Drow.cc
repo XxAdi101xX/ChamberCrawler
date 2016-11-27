@@ -1,7 +1,11 @@
 #include "Drow.h"
+#include "Race.h"
 using namespace std;
 
 class Potion;
+
+
+Drow::Drow(int wallet): Character{150, 150, 25, 15, true, Race::Drow, wallet} {}
 
 
 void Drow::addHPViaPotion(int amount) {
@@ -16,14 +20,6 @@ int Drow::getTotalAttack() {
 
 int Drow::getTotalDefence() {
         return this->getDefenceValue() + 1.5 * this->getDefenceBuff();
-}
-
-
-void Drow::setStats() {
-	this->setHPMax(150);
-        this->setHP(150);
-        this->setAttackValue(25);
-        this->setDefenceValue(15);
 }
 
 

@@ -155,10 +155,11 @@ int Character::getDefenceBuff() {
 }
 
 
-Character::Character(Race race, int wallet): 
-	isHostile{race != Race::Dragon 
-	|| (race == Race::Merchant && merchantsAngered) ? true : false},
-	 isPlayer{false}, race{race}, wallet{wallet}, name{raceToText(race)} {}
+Character::Character(int HPMax int HP, int attackValue int defenceValue,
+                bool isHostile, Race race, int wallet): 
+	HPMax{HPMax}, HP{HP}, attackValue{attackValue}, 
+	defenceValue{defenceValue}, isHostile{isHostile}, isPlayer{false}, 
+	race{race}, wallet{wallet}, name{raceToText(race)} {}
 
 
 void Character::attack(Character& defender, Generator& rng) {

@@ -73,7 +73,8 @@ protected:
 
 public:
 	// ctor
-	Character(Race race, int wallet);
+	Character(int HPMax int HP, int attackValue int defenceValue, 
+		bool isHostile, Race race, int wallet);
 
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
@@ -103,9 +104,6 @@ public:
 
 	void setPlayer(); // sets isPlayer to true
 	
-	// uses template method pattern
-	// to set stats of all different races
-	virtual void setStats() = 0;
 	void clearBuffs(); // sets buffs to 0, used when entering new floor
 
 	// responsible to movement, and picking up/utilizing

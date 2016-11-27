@@ -7,6 +7,8 @@ class Potion;
 
 class Drow final: public Character {
 private:
+	Drow(int wallet); // ctor
+
 	// overrides the normal addHPViaPotion
 	// to amplify effects by 50% 
 	virtual void addHPViaPotion(int amount) override;

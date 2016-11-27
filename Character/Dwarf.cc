@@ -1,12 +1,8 @@
 #include "Dwarf.h"
+#include "Race.h"
 using namespace std;
 
 
-void Dwarf::setStats() {
-        this->HPMax = 100;
-        this->HP = 100;
-        this->attack = 20;
-        this->defence = 30;
-}
+Dwarf::Dwarf(int wallet): Character{100, 100, 20, 30, Race::Dwarf, wallet} {}
 
 

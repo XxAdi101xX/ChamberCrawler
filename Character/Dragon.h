@@ -8,6 +8,8 @@ class Dragon final: public Character {
 private:
 	Cell* dragonHoardCell; // the cell with the dragonHoard on it
 public:
+	Dragon(int wallet); // ctor
+
 	// overrides move to do nothing
 	virtual void move(Direction direction) override;
 
@@ -16,8 +18,7 @@ public:
 
 	// unbinds the dragon hoard
 	virtual void deathRoutine() override;
-	virtual void setStats() override; // set Dragon stats
-
+	
 	// sets the dragonHoardCell field
 	void setDragonHoardCell(Cell* dragonHoardCell);
 };

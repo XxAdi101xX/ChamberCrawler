@@ -1,8 +1,12 @@
 #include <vector>
 #include "Dragon.h"
+#include "Race.h"
 using namespace std;
 
 class Character;
+
+
+Dragon::Dragon(int wallet): Character{150, 150, 20, 20, false, Race::Dragon, wallet} {}
 
 
 void Dragon::move(Direction direction) {/* does not move */}
@@ -46,15 +50,6 @@ void Dragon::startTurnRoutine() {
 
         }
 
-}
-
-
-void Dragon::setStats() {
-	this->setHPMax(150);
-	this->setHP(150);
-	this->setAttackValue(20);
-	this->setDefenceValue(20);
-	this->setHostile(false);
 }
 
 
