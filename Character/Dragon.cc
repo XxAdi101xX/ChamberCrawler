@@ -1,5 +1,6 @@
 #include <vector>
 #include "Dragon.h"
+#include "Messaging.h"
 #include "Race.h"
 using namespace std;
 

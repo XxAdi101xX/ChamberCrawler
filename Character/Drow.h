@@ -7,8 +7,6 @@ class Potion;
 
 class Drow final: public Character {
 private:
-	Drow(int wallet); // ctor
-
 	// overrides the normal addHPViaPotion
 	// to amplify effects by 50% 
 	virtual void addHPViaPotion(int amount) override;
@@ -16,7 +14,7 @@ private:
 	virtual int getTotalDefence() override; // amplifies potion effects by 50%
 
 public:
-	virtual void setStats() override; // set stats for a Drow
+	Drow(int wallet); // ctor
 
 };
 

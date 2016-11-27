@@ -1,6 +1,6 @@
-#ifndef CELLTYPE_H_
-#define CELLTYPE_H_
+#ifndef _CELLTYPE_H_
+#define _CELLTYPE_H_
 
-enum class Celltype {Wall, FloorTile, DoorWay, Passage, Stairs, Null};
+enum class CellType {Wall, FloorTile, DoorWay, Passage, Stairs, Null};
 
 #endif

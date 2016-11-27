@@ -14,7 +14,8 @@ public:
 
 	// overrides postAttackRoutine to attack again if
 	// it hasn't and the target is not a Drow
-	virtual void postAttackRoutine(Character* defender) override;
+	virtual void postAttackRoutine(Character& defender, 
+		Generator& rng) override;
 
 };
 

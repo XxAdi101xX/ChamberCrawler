@@ -3,6 +3,6 @@
 using namespace std;
 
 
-Dwarf::Dwarf(int wallet): Character{100, 100, 20, 30, Race::Dwarf, wallet} {}
+Dwarf::Dwarf(int wallet): Character{100, 100, 20, 30, true, Race::Dwarf, wallet} {}
 
 
