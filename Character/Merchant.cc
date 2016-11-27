@@ -4,7 +4,10 @@ using namespace std;
 class Character;
 
 
-void Merchant::deathRoutine(Character& killer) {}
+void Merchant::startTurnRoutine() {}
+
+
+void Merchant::deathRoutine() {}
 
 
 void Merchant::setStats() {

@@ -6,15 +6,20 @@
 
 class Dragon final: public Character {
 private:
-	GoldPile& dragonHoard;
+	Cell* dragonHoardCell; // the cell with the dragonHoard on it
 public:
-	// overrides to unbind the dragon hoard
-        virtual void deathRoutine(Character& killer) override;
+	// overrides move to do nothing
+	virtual void move(Direction direction) override;
 
 	// checks whether or not to turn hostile
-	virtual void endTurnRoutine() override;
+        virtual void startTurnRoutine() override;
+
+	// unbinds the dragon hoard
+	virtual void deathRoutine() override;
 	virtual void setStats() override; // set Dragon stats
 
+	// sets the dragonHoardCell field
+	void setDragonHoardCell(Cell* dragonHoardCell);
 };
 
 

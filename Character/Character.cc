@@ -8,10 +8,32 @@
 #include "PotionType.h"
 #include "Direction.h"
 #include "ItemType.h"
+#include "CellType.h"
 using namespace std;
 
 extern bool merchantsAngered;
 extern vector<PotionType> usedPotions;
+
+
+void Character::applyItem(shared_ptr<Item> item) {
+	// gets the item type
+	ItemType itemType = item->getItemType();
+
+        // if item is GoldPile
+        if (itemType == ItemType::GoldPile) {
+                // if GoldPile is not bound
+                if (!(item->getBoundState) {
+                        this->addGold(item->getValue());
+                }
+
+        }
+
+        // if item is Potion
+        else if (itemType == ItemType::Potion) {
+                this->applyPotion(item);
+        }
+
+}
 
 
 void Character::applyPotion(shared_ptr<Item> potion) {
@@ -39,21 +61,11 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 	usedPotions.emplace_back(type);
 
 	// reports what potion was used
-	this->lastAction += 
-		makeMsg(this->name, "used", potionToText(potion));
+	this->addAction(makeMsg(this->name, "used", potionToText(potion)));
 }
 
 
-void Character::postAttackRoutine(Character& defender) {
-	// checks for defender's death
-	if (defender.getHP() <= 0) {
-		defender.deathRoutine(*this);
-
-		this->lastAction += 
-			makeMsg(this->name, "killed", defender.getName());
-	}
-
-}
+void Character::postAttackRoutine(Character& defender) {/* nothing by default */}
 
 
 void Character::addHP(int amount) {
@@ -68,8 +80,8 @@ void Character::addHP(int amount) {
 	this->HP += HPToBeAdded;
 
 	// reports how much HP was gained
-	this->lastAction +=
-		makeMsg(this->name, "gained", to_string(HPToBeAdded) + " HP");
+	this->addAction(
+		makeMsg(this->name, "gained", to_string(HPToBeAdded) + " HP"));
 
 }
 
@@ -78,8 +90,8 @@ void Character::addGold(int amount) {
 	this->wallet += amount;
 	this->score += amount;
 
-	this->lastAction += 
-		makeMsg(this->name, "gained", to_string(amount) + " gold");
+	this->addAction(
+		makeMsg(this->name, "gained", to_string(amount) + " gold"));
 }
 
 
@@ -91,7 +103,32 @@ int Character::getAttack() {
 int Character::getDefence() {
 	return this->defenceValue + this->defenceBuff;
 }
-	
+
+
+void Character::setHPMax(int value) {
+	this->HPMax = value;
+}
+
+
+void Character::setHP(int value) {
+	this->HP = value;
+}
+
+
+void Character::setAttackValue(int value) {
+	this->attackValue = value;
+}
+
+
+void Character::setDefenceValue(int value) {
+	this->defenceValue = value;
+}
+
+
+void Character::setHostile(bool value) {
+	this->isHostile = value;
+}
+
 
 Character::Character(Race race, int wallet): 
 	isHostile{race != Race::Dragon 
@@ -105,10 +142,9 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	if (defender.defend(damage, rng)) {
 		// reports hit
-		this->lastAction += 
-			makeMsg(this->name, 
+		this->addAction(makeMsg(this->name, 
 			"dealt " + to_string(damage) + " damage to", 
-			defender.getName());
+			defender.getName()));
 	}
 
 	else {
@@ -117,8 +153,19 @@ void Character::attack(Character& defender, Generator& rng) {
 			makeMsg(this->name, "misses", defender.getName());
 	}
 
-	this->postAttackRoutine(defender);
-	
+	this->postAttackRoutine()
+
+        // checks for defender's death
+        if (defender.getHP() <= 0) {
+		this->addGold(defender->getWallet());
+                defender.deathRoutine(*this);
+
+                this->addAction(makeMsg(this->name, "killed", defender.getName()));
+		defender.addAction(
+			makeMsg(defender.getName(), 
+			"was killed by", this->name));
+        }
+
 }
 
 
@@ -126,9 +173,8 @@ bool Character::defend(int incomingDamage, Generator& rng) {
 	// if is player, and attacker misses
 	if (this->getPlayerState() && !(rng.genHitMiss())) {
 		// reports dodge
-		this->lastAction +=
-			makeMsg(this->name, "dodges", "attack " 
-			+ " (" + to_string(incomingDamage) + " damage)");
+		this->addAction(makeMsg(this->name, "dodges", "attack " 
+			+ " (" + to_string(incomingDamage) + " damage)"));
 
 		return false;
 	}
@@ -136,25 +182,20 @@ bool Character::defend(int incomingDamage, Generator& rng) {
 	this->HP -= incomingDamage;
 
 	// reports damage taken
-	this->lastAction +=
-		makeMsg(this->name, "took", 
-		to_string(incomingDamage) + " damage"); 
+	this->addAction(makeMsg(this->name, "took", 
+		to_string(incomingDamage) + " damage")); 
 
 	return true;
 }
 
 
-void Character::deathRoutine(Character& killer) {
-	// gives money to killer
-	killer.addGold(this->wallet);
-
-	// reports death
-	this->lastAction +=
-		makeMsg(this->name, "was killed by", killer.getName());
-}
+void Character::startTurnRoutine() {/* nothing by default */}
 
 
-void Character::endTurnRoutine() {}
+void Character::deathRoutine() {/* nothing by default */}
+
+
+void Character::endTurnRoutine() {/* nothing by default */}
 
 
 void Character::setPlayer() {
@@ -172,42 +213,68 @@ void Character::clearBuffs() {
 void Character::move(Direction direction) {
 	Cell* cell = (this->currentCell)->getNeighbour(direction);
 	if (cell != nullptr) {
+		// type of cell attempting to move to
+		CellType cellType = cell->getType()
+
+		// seperating cases of non movement for clarity
+
+		// nobody can enter a Wall or Null
+		if ((cellType == CellType::Wall) 
+			|| (cellType == CellType::Null)) {
+			return;
+		}
+
+		// NPCs cannot leave their chamber
+		if (!(this->isPlayer) && (cellType != CellType::FloorTile)
+			&& (cellType != CellType::Stairs)); {
+			return;
+		}
+
+		// NPCs cannot occupy a tile if it has an item
+		if (!(this->isPlayer) && cell->getItem()) {
+			return;
+		}
+
+		// two characters cannot be on the same cell
+		if (cell->getOccupant) {
+			return;
+		}
+
+		// removes character from currentCell
+		(this->currentCell)->setOccupant(this);
+		
+		// changes currentCell to the new one
+		// setOccupant is done in setCell
 		this->setCell(cell);
 		
 		// reports movement
-		this->lastAction +=
-			makeMsg(this->name, "moves", 
-			directionToText(direction));
+		this->addAction(makeMsg(this->name, "moves", 
+			directionToText(direction)));
 
-		for (auto neighbour: 
-			this->currentCell->getNeighbours()) {
+		// gets the neighbourhood
+		vector<Cell*> neighbourhood 
+			= (this->currentCell)->getNeighbours();
+
+		// reports all item sightings
+		for (auto neighbour: neighbourhood) {
 			shared_ptr<Item> item = neighbour.getItem();
 			if (item != nullptr) {
-				this->lastAction +=
+				this->addAction(
 					makeMsg(this->name, "sees",
-						itemToText(item));
+					itemToText(item)));
 			}
 
 		}
 
 	}
 
-	// finds the item on the new cell
-	shared_ptr<Item> item = currentCell->getItem();
-	ItemType itemType = item->getItemType();
+	// if is player, and there's an item on the new cell;
+	if (this->isPlayer && currentCell->getItem()) {
+		// uses the item
+		this->applyItem(currentCell->getItem());
 
-	// if item exists
-	if (item != nullptr) {
-		// if item is GoldPile
-		if (itemType == ItemType::GoldPile) {
-			this->addGold(item->getValue());
-		}
-
-		// if item is Potion
-		else if (itemType == ItemType::Potion) {
-			this->applyPotion(item);
-		}
-
+		// remove the item from the cell
+		currentCell->setItem(nullptr);
 	}
 
 }
@@ -215,6 +282,19 @@ void Character::move(Direction direction) {
 
 void Character::setCell(Cell* cell) {
 	this->currentCell = cell;
+
+	(this->currentCell)->setOccupant(this);
+
+}
+
+
+void Character::addAction(std::string action) {
+	this->lastAction += action;
+}
+
+
+int Character::getWallet() {
+	return this->wallet;
 }
 
 

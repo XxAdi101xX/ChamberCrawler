@@ -4,7 +4,7 @@ using namespace std;
 class Character;
 
 
-void Human::deathRoutine(Character& killer) {}
+void Human::deathRoutine() {}
 
 
 void Human::setStats() {

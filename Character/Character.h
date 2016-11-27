@@ -31,13 +31,18 @@ private:
 
 	// helpers:
 
-	// used by move when walking over potion applies
-	// the potion on the currentCell to the
-	// character, if character is player
+	// used when walking over any item, applies item
+	// to character if character is player
+	// may call applyPotion
+	void applyItem(std::shared_ptr<Item> item);
+
+	// used when walking over potion, applies potion
+	// to character if character is player
 	virtual void applyPotion(std::shared_ptr<Item> potion);
 
-	// used by attack method, checks for death
-	// and runs deathRoutine for defender if necessary
+	// runs after attack
+	// normally does nothing, but overrides implements specific
+        // racial traits
 	virtual void postAttackRoutine(Character& defender);
 
 	// helper mutators:
@@ -47,6 +52,13 @@ private:
 	// helper accessors:
 	virtual int getAttack(); // returns total attack value
 	virtual int getDefence(); // returns total defence value
+
+protected:
+	void setHPMax(int value); // sets HPMax to value
+	void setHP(int value); // sets HP to value
+	void setAttackValue(int value); // sets attackValue to value
+	void setDefenceValue(int value); // sets defenceValue to value
+	void setHostile(bool value = true); // sets IsHostile to value
 
 public:
 	// ctor
@@ -60,12 +72,18 @@ public:
 	// defends from incoming damage, evasion is
         // decided here by rng
         virtual bool defend(int incomingDamage, Generator& rng);
+        
+	// runs at turn start
+	// normally does nothing, but overrides implements specific
+        // racial traits
+	virtual void startTurnRoutine();
 
 	// run upon character death (HP == 0)
-        // called by postAttackRoutine
-        // gives killer gold
-        virtual void deathRoutine(Character& killer);
+        // normally does nothing, but overrides implements specific
+        // racial traits
+	virtual void deathRoutine();
 
+	// runs at turn end
 	// normally does nothing, but overrides implements specific
 	// racial traits
 	virtual void endTurnRoutine();
@@ -81,13 +99,17 @@ public:
 
 	// responsible to movement, and picking up/utilizing
 	// items if moved over
-	void move(Direction direction);
+	virtual void move(Direction direction);
 
 	// used during initialization to set the character's location
 	void setCell(Cell* cell);
 
+	// appends a string action to lastAction
+	void addAction(std::string action);
+
 	// accessors:
 
+	int getWallet(); // returns wallet
 	virtual int getScore() const; // returns score
 	int getHP() const; // returns the current HP
 	bool getPlayerState() const; // returns isPlayer
