@@ -46,19 +46,30 @@ private:
 	virtual void postAttackRoutine(Character& defender);
 
 	// helper mutators:
-	void addHP(int amount); // adds HP but does not exceed HPMax
+	
+	// adds hp using addHP, wrapper to be overriden
+	virtual void addHPViaPotion(int amount);
 	void addGold(int amount); // adds gold and thus score as well
 
 	// helper accessors:
-	virtual int getAttack(); // returns total attack value
-	virtual int getDefence(); // returns total defence value
+	virtual int getTotalAttack(); // returns total attack value
+	virtual int getTotalDefence(); // returns total defence value
 
 protected:
+	// helper mutators:
 	void setHPMax(int value); // sets HPMax to value
 	void setHP(int value); // sets HP to value
 	void setAttackValue(int value); // sets attackValue to value
 	void setDefenceValue(int value); // sets defenceValue to value
 	void setHostile(bool value = true); // sets IsHostile to value
+	void addHP(int amount); // adds HP but does not exceed HPMax       
+ 
+	// helper accessors:
+	int getAttackValue(); // returns attackValue
+	int getDefenceValue(); // returns defenceValue
+	int getAttackBuff(); // returns attackBuff value
+        int getDefenceBuff(); // returns defenceBuff value
+
 
 public:
 	// ctor

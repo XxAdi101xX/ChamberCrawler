@@ -43,7 +43,7 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 	// health based potions
 	if (type == PotionType::RestoreHealth
 		|| type == PotionType::PoisonHealth) {
-		this->addHP(potency);
+		this->addHPViaPotion(potency);
 	}
 
 	// attack based potions
@@ -86,6 +86,11 @@ void Character::addHP(int amount) {
 }
 
 
+void Character::addHPViaPotion(int amount) {
+	this->addHP(amount);
+}
+
+
 void Character::addGold(int amount) {
 	this->wallet += amount;
 	this->score += amount;
@@ -95,12 +100,12 @@ void Character::addGold(int amount) {
 }
 
 
-int Character::getAttack() {
+int Character::getTotalAttack() {
 	return this->attackValue + this->attackBuff;
 }
 
 
-int Character::getDefence() {
+int Character::getTotalDefence() {
 	return this->defenceValue + this->defenceBuff;
 }
 
@@ -120,13 +125,33 @@ void Character::setAttackValue(int value) {
 }
 
 
+int getAttack() {
+	return this->attackValue;
+}
+
+
 void Character::setDefenceValue(int value) {
 	this->defenceValue = value;
 }
 
 
+int getDefence() {
+        return this->defenceValue;
+}
+
+
 void Character::setHostile(bool value) {
 	this->isHostile = value;
+}
+
+
+int Character::getAttackBuff() {
+        return this->attackBuff;
+}
+
+
+int Character::getDefenceBuff() {
+        return this->defenceBuff;
 }
 
 
@@ -137,8 +162,8 @@ Character::Character(Race race, int wallet):
 
 
 void Character::attack(Character& defender, Generator& rng) {
-	int damage = ceil((100/(100 + defender.getDefence())) 
-		* this->getAttack());
+	int damage = ceil((100/(100 + defender.getTotalDefence())) 
+		* this->getTotalAttack());
 
 	if (defender.defend(damage, rng)) {
 		// reports hit

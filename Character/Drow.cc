@@ -4,20 +4,26 @@ using namespace std;
 class Potion;
 
 
-void Drow::applyPotion(Potion& potion) {}
+void Drow::addHPViaPotion(int amount) {
+	this->addHP(amount * 1.5);
+}
 
 
-int Drow::getAttack() {}
+int Drow::getTotalAttack() {
+	return this->getAttackValue() + 1.5 * this->getAttackBuff();
+}
 
 
-int Drow::getDefence() {}
+int Drow::getTotalDefence() {
+        return this->getDefenceValue() + 1.5 * this->getDefenceBuff();
+}
 
 
 void Drow::setStats() {
-	this->HPMax = 150;
-        this->HP = 150;
-        this->attack = 25;
-        this->defence = 15;
+	this->setHPMax(150);
+        this->setHP(150);
+        this->setAttackValue(25);
+        this->setDefenceValue(15);
 }
 
 
