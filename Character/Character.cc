@@ -205,6 +205,11 @@ void Character::doMove(Direction direction) {
 }
 
 
+void Character::addAction(std::string action) {
+        this->lastAction += action;
+}
+
+
 int Character::getTotalAttack() const {
 	return this->attackValue + this->attackBuff 
 		+ this->getAttackBuffBonus();
@@ -368,11 +373,6 @@ void Character::setCell(Cell* cell) {
 
 	(this->currentCell)->setOccupant(this);
 
-}
-
-
-void Character::addAction(std::string action) {
-	this->lastAction += action;
 }
 
 

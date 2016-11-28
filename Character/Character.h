@@ -88,6 +88,9 @@ private:
         // if moved over item
 	virtual void doMove(Direction direction);
 
+        // appends a string action to lastAction
+        void addAction(std::string action);
+
 	// helper accessors:
 
 	int getTotalAttack() const; // returns total attack value
@@ -143,9 +146,6 @@ public:
 
 	// used during initialization to set the character's location
 	void setCell(Cell* cell);
-
-	// appends a string action to lastAction
-	void addAction(std::string action);
 
 	// accessors:
 
