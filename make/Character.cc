@@ -124,15 +124,6 @@ void Character::addHPViaPotion(int amount) {
 }
 
 
-void Character::addGold(int amount) {
-	this->wallet += amount;
-	this->score += amount;
-
-	this->addAction(
-		makeMsg(this->name, "gained", to_string(amount) + " gold"));
-}
-
-
 void Character::doMove(Direction direction) {
         Cell* cell = (this->currentCell)->getNeighbour(direction);
         if (cell != nullptr) {
@@ -206,12 +197,14 @@ void Character::doMove(Direction direction) {
 
 
 int Character::getTotalAttack() {
-	return this->attackValue + this->attackBuff;
+	return this->attackValue + this->attackBuff 
+		+ this->getAttackBuffBonus();
 }
 
 
 int Character::getTotalDefence() {
-	return this->defenceValue + this->defenceBuff;
+	return this->defenceValue + this->defenceBuff 
+		+ this->getDefenceBuffBonus();
 }
 
 
@@ -253,6 +246,15 @@ void Character::addHP(int amount) {
         this->addAction(
                 makeMsg(this->name, "gained", to_string(HPToBeAdded) + " HP"));
 
+}
+
+
+void Character::addGold(int amount) {
+        this->wallet += amount;
+        this->score += amount;
+
+        this->addAction(
+                makeMsg(this->name, "gained", to_string(amount) + " gold"));
 }
 
 
@@ -328,6 +330,7 @@ void Character::endTurnRoutine() {
 
 void Character::setPlayer() {
 	this->isPlayer = true;
+	this->isHostile = false;
 	this->name = "PC";
 }
 	
@@ -371,6 +374,11 @@ int Character::getHP() const {
 }
 
 
+Race Character::getRace() const {
+	return this->race;
+}
+
+
 bool Character::getPlayerState() const {
 	return this->isPlayer;
 }
@@ -394,3 +402,14 @@ string Character::getLastAction() {
 string Character::getName() {
 	return this->name;
 }
+
+
+char getInfo() {
+	if (this->isPlayer) {
+		return '@';
+	}
+
+	return this->name;
+}
+
+

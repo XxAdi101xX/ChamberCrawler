@@ -2,17 +2,17 @@
 #include "Race.h"
 using namespace std;
 
-class Character
+class Character;
 
 
 Goblin::Goblin(int wallet): Character{110, 110, 15, 20, true, Race::Goblin, wallet} {}
 
 
-void Goblin::postAttackRoutine(Character& defender, Generator& rng) {
+void Goblin::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	int goblinBonusGoldAmount = 5;
 
-	if (defender.getHP() <= 0) {
-		this->addGold(goblinBonusGoldAmount)
+	if (defender.getHP() <= 0 && hit) {
+		this->addGold(goblinBonusGoldAmount);
 	}
 
 }

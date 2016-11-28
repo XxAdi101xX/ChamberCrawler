@@ -83,7 +83,6 @@ private:
 	
 	// adds hp using addHP, wrapper to be overriden
 	virtual void addHPViaPotion(int amount);
-	void addGold(int amount); // adds gold and thus score as well
 	
 	// responsible to movement, and calls applyItem
         // if moved over item
@@ -107,7 +106,8 @@ protected:
 	// helper mutators:
 
 	void setHostile(bool value = true); // sets isHostile to value
-	void addHP(int amount); // adds HP but does not exceed HPMax       
+	void addHP(int amount); // adds HP but does not exceed HPMax
+	void addGold(int amount); // adds gold and thus score as well
  
 	// helper accessors:
 
@@ -152,11 +152,13 @@ public:
 	int getWallet(); // returns wallet
 	int getScore() const; // wrapper for doGetScore, uses NVI idiom
 	int getHP() const; // returns the current HP
+	Race getRace() const; // returns race
 	bool getPlayerState() const; // returns isPlayer
 	bool getHostileState() const; // returns isHostile
 	Cell* getCurrentCell(); // returns the currentCell
 	std::string getLastAction(); // returns the lastAction done
 	std::string getName(); // returns the name of the character
+	char getInfo(); // returns information for observer
 
 };
 

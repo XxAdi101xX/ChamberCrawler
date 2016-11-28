@@ -10,8 +10,9 @@ Elf::Elf(int wallet): Character{140, 140, 30, 10, true, Race::Elf, wallet},
 	attackedTwice{false} {}
 
 
-void Elf::postAttackRoutine(Character& defender, Generator& rng) {
-	if (this->attackedTwice) {
+void Elf::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
+	// not attacking again if already attacked or target is Drow
+	if (this->attackedTwice || defender.getRace() == Race::Drow) {
 		this->attackedTwice = false;
 		return;
 	}

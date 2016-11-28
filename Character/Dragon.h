@@ -11,10 +11,10 @@ public:
 	Dragon(int wallet); // ctor
 
 	// overrides move to do nothing
-	virtual void move(Direction direction) override;
+	virtual void doMove(Direction direction) override;
 
 	// checks whether or not to turn hostile
-        virtual void startTurnRoutine() override;
+        virtual void doStartTurnRoutine() override;
 
 	// unbinds the dragon hoard
 	virtual void deathRoutine() override;

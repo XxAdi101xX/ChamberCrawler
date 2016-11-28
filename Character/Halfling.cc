@@ -1,17 +1,14 @@
 #include "Halfling.h"
+//#include "Generator.h"
 using namespace std;
 
-class Generator;
+
+Halfling::Halfling(int wallet): Character{100, 100, 15, 20, true, Race::Halfling, wallet} {}
 
 
-bool Halfling::defend(int incomingDamage, Generator& rng) {}
-
-
-void Halfling::setStats() {
-        this->HPMax = 100;
-        this->HP = 100;
-        this->attack = 15;
-        this->defence = 20;
+bool Halfling::takeDamageFrom(Character& attacker, 
+	int& Damage, Generator& rng) {
+	return rng.genHitMiss();
 }
 
 

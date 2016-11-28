@@ -1,17 +1,40 @@
+#include <vector>
 #include "Human.h"
+//#include "GoldPile.h"
 using namespace std;
 
 class Character;
+class GoldPile
+
+extern int normalGoldPileValue;
+extern int numberOfGoldPilesDroppedByHuman;
 
 
-void Human::deathRoutine() {}
+Human::Human(int wallet): 
+	Character{140, 140, 20, 20, true, Race::Human, wallet} {}
 
 
-void Human::setStats() {
-	this->HPMax = 140;
-        this->HP = 140;
-        this->attack = 20;
-        this->defence = 20;
+void Human::deathRoutine() {
+	vector<Cell*> neighbourHood 
+		= (this->getCurrentCell())->getNeighbours();
+
+	int numberOfGoldPilesAlreadyDropped = 0;
+
+
+	for (auto neighbour : neighbourHood) {
+		// if there is no item on a neighbouring cell
+		if (!(neighbour->getItem)) {
+			neighbour->setItem(
+				make_shared<GoldPile>(normalGoldPileValue));
+		}
+
+		if (numberOfGoldPilesAlreadyDropped 
+			== numberOfGoldPilesDroppedByHuman) {
+			return;
+		}
+
+	}
+
 }
 
 

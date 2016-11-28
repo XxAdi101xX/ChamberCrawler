@@ -13,13 +13,13 @@ void Drow::addHPViaPotion(int amount) {
 }
 
 
-int Drow::getTotalAttack() {
-	return this->getAttackValue() + 1.5 * this->getAttackBuff();
+int Drow::getAttackBuffBonus() {
+	return 0.5 * this->getAttackBuffProt();
 }
 
 
-int Drow::getTotalDefence() {
-        return this->getDefenceValue() + 1.5 * this->getDefenceBuff();
+int Drow::getDefenceBuffBonus() {
+        return 0.5 * this->getDefenceBuffProt();
 }
 
 
