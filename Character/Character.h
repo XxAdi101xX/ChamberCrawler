@@ -38,7 +38,7 @@ private:
 
 	// used when walking over potion, applies potion
 	// to character if character is player
-	virtual void applyPotion(std::shared_ptr<Item> potion);
+	void applyPotion(std::shared_ptr<Item> potion);
 
         // runs at turn start
         // normally does nothing, but overrides implements specific
