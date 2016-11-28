@@ -1,6 +1,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <map>
 #include "Race.h"
 #include "Direction.h"
 #include "ItemType.h"
@@ -8,10 +9,63 @@
 //#include "Item.h"
 //#include "Potion.h"
 //#include "GoldPile.h"
+#include "Localisation.cc"
+#include "Defines.cc"
 using namespace std;
 
+// all string literals reside in Localisation.cc
+// all value literals reside in Defines.cc
 
 extern vector<PotionType> usedPotions;
+
+// Race to race name mapping
+map<Race, string> races = {
+	{Race::Shade, SHADE_NAME}, 
+	{Race::Drow, DROW_NAME}, 
+	{Race::Vampire, VAMPIRE_NAME}, 
+	{Race::Troll, TROLL_NAME}, 
+	{Race::Goblin, GOBLIN_NAME}, 
+	{Race::Human, HUMAN_NAME}, 
+	{Race::Dwarf, DWARF_NAME}, 
+	{Race::Elf, ELF_NAME}, 
+	{Race::Orc, ORC_NAME}, 
+	{Race::Merchant, MERCHANT_NAME}, 
+	{Race::Dragon, DRAGON_NAME}, 
+	{Race::Halfling, HALFLING_NAME} 
+};
+
+
+// Direction to direction name mapping
+map<Direction, string> directions = {
+	{Direction::North, NORTH_NAME}, 
+	{Direction::NorthWest, NORTH_WEST_NAME}, 
+	{Direction::West, WEST_NAME}, 
+	{Direction::SouthWest, SOUTH_WEST_NAME}, 
+	{Direction::South,  SOUTH_NAME}, 
+	{Direction::SouthEast, SOUTH_EAST_NAME}, 
+	{Direction::East, EAST_NAME}, 
+	{Direction::NorthEast, NORTH_EAST_NAME} 
+};
+
+
+// GoldPile value to gold pile name mapping
+map<int, string> goldPiles = {
+	{GOLD_PILE_SMALL_VALUE, GOLD_PILE_SMALL_NAME}, 
+	{GOLD_PILE_NORMAL_VALUE, GOLD_PILE_NORMAL_NAME}, 
+	{GOLD_PILE_MERCHANT_HOARD_VALUE, GOLD_PILE_MERCHANT_HOARD_NAME}, 
+	{GOLD_PILE_DRAGON_HOARD_VALUE, GOLD_PILE_DRAGON_HOARD_NAME} 
+};
+
+
+// PotionType to potion type name mapping
+map<PotionType, string> potionTypes = {
+	{PotionType::RestoreHealth, POTION_RESTORE_HEALTH_NAME}, 
+	{PotionType::PoisonHealth, POTION_POISON_HEALTH_NAME}, 
+	{PotionType::BoostAttack, POTION_BOOST_ATTACK_NAME}, 
+	{PotionType::BoostDefence, POTION_BOOST_DEFENCE_NAME}, 
+	{PotionType::WoundAttack, POTION_WOUND_ATTACK_NAME}, 
+	{PotionType::WoundDefence, POTION_WOUND_DEFENCE_NAME} 
+};
 
 
 string makeMsg(string subject, string action, string object) {
@@ -20,54 +74,12 @@ string makeMsg(string subject, string action, string object) {
 
 
 string raceToText(Race race) {
-	int numberOfRaces = 12;
-
-        // an array of character races in order
-        Race orderedRaces[numberOfRaces]
-                = {Race::Shade, Race::Drow, Race::Vampire, Race::Troll,
-                Race::Goblin, Race::Human, Race::Dwarf, Race::Elf,
-                Race::Orc, Race::Merchant, Race::Dragon, Race::Halfling};
-
-        int index = 0;
-
-	// traverses orderedRaces to find match
-        while (orderedRaces[index] != race) {
-                ++index;
-        }
-
-        // all default names in order
-        string orderedRaceNames[numberOfRaces]
-                = {"S", "R", "V", "T", "G","H", "W", "E", "O", "M", "D", "L"};
-
-	// uses matching index
-        return orderedRaceNames[index];
+	return races[race];
 }
 
 
 string directionToText(Direction direction) {
-	int numberOfDirections = 8;
-
-        // an array of directions in order
-        Direction orderedDirections[numberOfDirections]
-                = {Direction::North, Direction::NorthWest, 
-		Direction::West, Direction::SouthWest, 
-		Direction::South, Direction::SouthEast, 
-		Direction::East, Direction::NorthEast};
-
-        int index = 0;
-
-	// traverses orderedDirctions to find match
-        while (orderedDirections[index] != direction) {
-                ++index;
-        }
-
-        // all directions as text in order
-        string orderedDirectionNames[numberOfDirections]
-                = {"North", "North West", "West", "South West", 
-		"South","South East", "East", "North East"};
-
-	// uses matching index
-        return orderedDirectionNames[index];
+	return directions[direction];
 }
 
 
@@ -88,27 +100,7 @@ string itemToText(const shared_ptr<Item> item) {
 
 
 string goldPileToText(const GoldPile goldPile) {
-	int value = goldPile.getValue();
-
-	int numberOfGoldPiles = 4;
-
-        // an array of GoldPiles in order
-        int orderedGoldPiles[numberOfGoldPiles] = {1, 2, 4, 6};
-
-        int index = 0;
-
-        // traverses orderedGoldPiles to find match
-        while (orderedGoldPiles[index] != value) {
-                ++index;
-        }
-
-        // all GoldPiles as text in order
-        string orderedGoldPileNames[numberOfGoldPiles]
-                = {"a small gold pile", "a normal gold pile", 
-		"a merchant hoard", "a dragon hoard"};
-
-        // uses matching index
-        return orderedGoldPileNames[index];
+	return goldPiles[goldPile.getValue()];
 }
 
 
@@ -124,41 +116,11 @@ string potionToText(const Potion potion) {
 		}
 	}
 
-	string output;
-
 	if (used) {
-		int numberOfPotionTypes = 6;
-
-        	// an array of PotionTypes in order
-        	PotionType orderedPotionTypes[numberOfPotionTypes] 
-			= {PotionType::RestoreHealth, 
-			PotionType::PoisonHealth, 
-			PotionType::BoostAttack, 
-			PotionType::BoostDefence, 
-			PotionType::WoundAttack, 
-			PotionType::WoundDefence};
-
-        	int index = 0;
-
-        	// traverses orderedPotionTypes to find match
-        	while (orderedPotionTypes[index] != type) {
-               		++index;
-        	}
-
-        	// all PotionTypes as text in order
-        	string orderedPotionTypeNames[numberOfPotionTypes]
-                	= {"a RH", "a PH", "a BA", "a BD", "a WA", "a WD"};
-
-        	// uses matching index
-        	output += orderedPotionTypeNames[index];
-
+		return potionTypes[type] + " " + ITEM_POTION_NAME;
 	}
 
-	else {
-		output += "an unknown";
-	}
-
-	return output + " potion";
+	return POTION_UNKNOWN_NAME + " " + ITEM_POTION_NAME;
 }
 
 
