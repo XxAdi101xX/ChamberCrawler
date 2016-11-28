@@ -2,13 +2,14 @@
 #include <cmath>
 #include <vector>
 #include "Character.h"
-#include "Messaging.h"
 //#include "Potion.h"
 //#include "Generator.h"
 #include "PotionType.h"
 #include "Direction.h"
 #include "ItemType.h"
 #include "CellType.h"
+#include "Messaging.h"
+#include "Info.h"
 #include "Localisation.cc"
 using namespace std;
 
@@ -249,7 +250,7 @@ void Character::addHP(int amount) {
         int HPToBeAdded = amount;
         // if amount added exceeds HPMax
         if (amount > this->HPMax - this->getHP()) {
-                HPToBeAdded = this->HPMax - this->getHP();
+                HPToBe6Added = this->HPMax - this->getHP();
 
         }
 
@@ -421,13 +422,14 @@ string Character::getName() const {
 }
 
 
-char Character::getInfo() const {
-	if (this->isPlayer) {
-		return PLAYER_CHAR;
-	}
+Info Character::getInfo() const {
+	Info characterInfo;
 
-	// needs changing to char
-	return this->name[1];
+	// sets fields with proper info
+	characterInfo.displayChar = this->isPlayer ? '@' : this->name[1];
+	characterInfo.lastAction = this->lastAction;
+
+	return characterInfo;
 }
 
 

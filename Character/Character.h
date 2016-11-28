@@ -11,6 +11,8 @@ class Item;
 class Generator;
 class Potion;
 class Cell;
+class Info;
+
 
 class Character/*: public Subject*/ {
 private:
@@ -158,7 +160,7 @@ public:
 	Cell* getCurrentCell() const; // returns the currentCell
 	std::string getLastAction() const; // returns the lastAction done
 	std::string getName() const; // returns the name of the character
-	char getInfo() const; // returns information for observer
+	Info getInfo() const; // returns information for observer
 
 };
 
