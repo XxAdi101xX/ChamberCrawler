@@ -16,7 +16,6 @@ using namespace std;
 // note that all string literals for reporting messages are 
 // stored in Localisation.cc
 
-extern bool merchantsAngered;
 extern vector<PotionType> usedPotions;
 
 

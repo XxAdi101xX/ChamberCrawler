@@ -93,3 +93,6 @@ const string POTION_UNKNOWN_NAME = "an unknown";
 const string ITEM_POTION_NAME = "potion";
 
 
+// Miscellaneous:
+
+const string PERIOD = ".";
