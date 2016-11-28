@@ -90,17 +90,17 @@ private:
 
 	// helper accessors:
 
-	int getTotalAttack(); // returns total attack value
-	int getTotalDefence(); // returns total defence value
+	int getTotalAttack() const; // returns total attack value
+	int getTotalDefence() const; // returns total defence value
 
 	// returns the bonus to attackBuff, default 0
-	virtual int getAttackBuffBonus();
+	virtual int getAttackBuffBonus() const;
 	
 	// returns the bonus to defenceBuff, default 0
-	virtual int getDefenceBuffBonus();
+	virtual int getDefenceBuffBonus() const;
 	
 	// returns the bonus to score, default 0
-	virtual int getScoreBonus();
+	virtual int getScoreBonus() const;
 
 protected:
 	// helper mutators:
@@ -111,9 +111,9 @@ protected:
  
 	// helper accessors:
 
-	int getAttackBuffProt(); // returns attackBuff value for subclasses
-        int getDefenceBuffProt(); // returns defenceBuff value for subclasses
-	int getScoreProt(); // returns score for subclasses
+	int getAttackBuffProt() const; // returns attackBuff value for subclasses
+        int getDefenceBuffProt() const; // returns defenceBuff value for subclasses
+	int getScoreProt() const; // returns score for subclasses
 
 
 public:
@@ -149,16 +149,16 @@ public:
 
 	// accessors:
 
-	int getWallet(); // returns wallet
+	int getWallet() const; // returns wallet
 	int getScore() const; // wrapper for doGetScore, uses NVI idiom
 	int getHP() const; // returns the current HP
 	Race getRace() const; // returns race
 	bool getPlayerState() const; // returns isPlayer
 	bool getHostileState() const; // returns isHostile
-	Cell* getCurrentCell(); // returns the currentCell
-	std::string getLastAction(); // returns the lastAction done
-	std::string getName(); // returns the name of the character
-	char getInfo(); // returns information for observer
+	Cell* getCurrentCell() const; // returns the currentCell
+	std::string getLastAction() const; // returns the lastAction done
+	std::string getName() const; // returns the name of the character
+	char getInfo() const; // returns information for observer
 
 };
 

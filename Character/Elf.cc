@@ -1,23 +1,28 @@
 #include "Elf.h"
 #include "Race.h"
+#include "Defines.cc"
 using namespace std;
+
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
 class Character;
 class Generator;
 
 
-Elf::Elf(int wallet): Character{140, 140, 30, 10, true, Race::Elf, wallet}, 
-	attackedTwice{false} {}
+Elf::Elf(int wallet): Character{ELF_HP_MAX, ELF_HP, 
+	ELF_ATTACK_VALUE, ELF_DEFENCE_VALUE, true, Race::Elf, wallet}, 
+	extraAttacks{ELF_NUMBER_OF_EXTRA_ATTACKS} {}
 
 
 void Elf::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	// not attacking again if already attacked or target is Drow
-	if (this->attackedTwice || defender.getRace() == Race::Drow) {
-		this->attackedTwice = false;
+	if (extraAttacks == 0 || defender.getRace() == Race::Drow) {
+		this->extraAttacks = ELF_NUMBER_OF_EXTRA_ATTACKS;
 		return;
 	}
 
-	this->attackedTwice = true;
+	--(this->extraAttacks);
 	
 	// recursive call to attack, attack will
 	// call postAttackRoutine again, but

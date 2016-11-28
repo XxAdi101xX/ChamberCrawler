@@ -5,10 +5,12 @@
 
 
 class Troll final: public Character {
+private:
+        // overrides to add health
+        virtual void doEndTurnRoutine() override;
+
 public:
-	// overrides to add health
-	virtual void endTurnRoutine() override;
-	virtual void setStats() override; // set Troll stats
+	Troll(int wallet);
 
 };
 

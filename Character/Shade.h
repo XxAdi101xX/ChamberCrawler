@@ -5,12 +5,12 @@
 
 
 class Shade final: public Character {
-public:
-	virtual void setStats() override; // sets stats for a Shade
+private:
+	// overrides to give a 50% score bonus
+        virtual int getScoreBonus() const override;
 
-	// returns score, with 50% more due to
-	// racial trait
-	virtual int getScore() const override;
+public:
+	Shade(int wallet);
 
 };
 

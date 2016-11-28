@@ -9,7 +9,11 @@
 #include "Direction.h"
 #include "ItemType.h"
 #include "CellType.h"
+#include "Localisation.cc"
 using namespace std;
+
+// note that all string literals for reporting messages are 
+// stored in Localisation.cc
 
 extern bool merchantsAngered;
 extern vector<PotionType> usedPotions;
@@ -61,7 +65,7 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 	usedPotions.emplace_back(type);
 
 	// reports what potion was used
-	this->addAction(makeMsg(this->name, "used", potionToText(potion)));
+	this->addAction(makeMsg(this->name, USE_PAST_TENSE , potionToText(potion)));
 }
 
 
@@ -89,8 +93,11 @@ bool Character::defend(Character& attacker,
         		this->HP -= incomingDamage;
 
                 	// reports damage taken
-               		this->addAction(makeMsg(this->name, "took",
-                	        to_string(incomingDamage) + " damage"));
+               		this->addAction(makeMsg(attacker.getName(), 
+				DEAL_PAST_TENSE + " " 
+				+ to_string(incomingDamage) + " " 
+				+ DAMAGE_NOUN + " " + TO_PREPOSITION, 
+				this->name));
 
         	        return true;
 	
@@ -99,8 +106,10 @@ bool Character::defend(Character& attacker,
 	}
 
         // reports dodge
-        this->addAction(makeMsg(this->name, "dodges", "attack ("
-               + to_string(incomingDamage) + " damage)"));
+        this->addAction(makeMsg(this->name, DODGE_PAST_TENSE + " " 
+		+ ATTACK_NOUN + " (" + to_string(incomingDamage) + " " 
+		+ DAMAGE_NOUN + ")" + FROM_PROPOSITION, attacker.getName()));
+
 	return false;
 }
 
@@ -164,7 +173,7 @@ void Character::doMove(Direction direction) {
                 this->setCell(cell);
 
                 // reports movement
-                this->addAction(makeMsg(this->name, "moves",
+                this->addAction(makeMsg(this->name, MOVE_PAST_TENSE,
                         directionToText(direction)));
 
                 // gets the neighbourhood
@@ -176,7 +185,7 @@ void Character::doMove(Direction direction) {
                         shared_ptr<Item> item = neighbour->getItem();
                         if (item != nullptr) {
                                 this->addAction(
-                                        makeMsg(this->name, "sees",
+                                        makeMsg(this->name, SEE_PAST_TENSE,
                                         itemToText(item)));
                         }
 
@@ -196,31 +205,31 @@ void Character::doMove(Direction direction) {
 }
 
 
-int Character::getTotalAttack() {
+int Character::getTotalAttack() const {
 	return this->attackValue + this->attackBuff 
 		+ this->getAttackBuffBonus();
 }
 
 
-int Character::getTotalDefence() {
+int Character::getTotalDefence() const {
 	return this->defenceValue + this->defenceBuff 
 		+ this->getDefenceBuffBonus();
 }
 
 
-int Character::getAttackBuffBonus() {
+int Character::getAttackBuffBonus() const {
 	// 0 by default
 	return 0;
 }
 
 
-int Character::getDefenceBuffBonus() {
+int Character::getDefenceBuffBonus() const {
 	// 0 by default
         return 0;
 }
 
 
-int Character::getScoreBonus() {
+int Character::getScoreBonus() const {
 	// 0 by default
 	return 0;
 }
@@ -242,9 +251,12 @@ void Character::addHP(int amount) {
         // adds HP
         this->HP += HPToBeAdded;
 
-        // reports how much HP was gained
+        // reports how much HP was gained/lost
         this->addAction(
-                makeMsg(this->name, "gained", to_string(HPToBeAdded) + " HP"));
+                makeMsg(this->name, HPToBeAdded >= 0 
+		? GAIN_PAST_TENSE : LOSE_PAST_TENSE, 
+		to_string(HPToBeAdded >= 0 ? HPToBeAdded : -1 * HPToBeAdded) 
+		+ " " + HP_NOUN));
 
 }
 
@@ -254,21 +266,22 @@ void Character::addGold(int amount) {
         this->score += amount;
 
         this->addAction(
-                makeMsg(this->name, "gained", to_string(amount) + " gold"));
+                makeMsg(this->name, GAIN_PAST_TENSE, 
+		to_string(amount) + " " + GOLD_NOUN));
 }
 
 
-int Character::getAttackBuffProt() {
+int Character::getAttackBuffProt() const {
         return this->attackBuff;
 }
 
 
-int Character::getDefenceBuffProt() {
+int Character::getDefenceBuffProt() const {
         return this->defenceBuff;
 }
 
 
-int Character::getScoreProt() {
+int Character::getScoreProt() const {
 	return this->score;
 }
 
@@ -290,7 +303,8 @@ void Character::attack(Character& defender, Generator& rng) {
 		if (defender.defend(*this, damage, rng)) {
 			// reports hit
 			this->addAction(makeMsg(this->name, 
-				"dealt " + to_string(damage) + " damage to", 
+				DEAL_PAST_TENSE + to_string(damage) 
+				+ " " + DAMAGE_NOUN + TO_PREPOSITION, 
 				defender.getName()));
 		}
 
@@ -298,8 +312,9 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	else {
 		// reports miss
-                this->lastAction +=
-                        makeMsg(this->name, "misses", defender.getName());	
+                this->addAction(makeMsg(this->name, MISS_PAST_TENSE +"( " 
+			+ to_string(damage) + " " + DAMAGE_NOUN + ")", 
+			defender.getName()));	
 	}
 
 	this->postAttackRoutine(defender, firstRollForHit, rng);
@@ -309,10 +324,12 @@ void Character::attack(Character& defender, Generator& rng) {
 		this->addGold(defender.getWallet());
                 defender.deathRoutine();
 
-                this->addAction(makeMsg(this->name, "killed", defender.getName()));
+                this->addAction(makeMsg(this->name, KILL_PAST_TENSE, 
+			defender.getName()));
 		defender.addAction(
 			makeMsg(defender.getName(), 
-			"was killed by", this->name));
+			IS_PAST_TENSE + KILL_PAST_TENSE + BY_PREPOSITION, 
+			this->name));
         }
 
 }
@@ -331,7 +348,7 @@ void Character::endTurnRoutine() {
 void Character::setPlayer() {
 	this->isPlayer = true;
 	this->isHostile = false;
-	this->name = "PC";
+	this->name = PLAYER_NAME;
 }
 	
 
@@ -359,7 +376,7 @@ void Character::addAction(std::string action) {
 }
 
 
-int Character::getWallet() {
+int Character::getWallet() const {
 	return this->wallet;
 }
 
@@ -389,27 +406,28 @@ bool Character::getHostileState() const {
 }
 
 
-Cell* Character::getCurrentCell() {
+Cell* Character::getCurrentCell() const {
 	return this->currentCell;
 }
 
 
-string Character::getLastAction() {
+string Character::getLastAction() const {
 	return this->lastAction;
 }
 
 
-string Character::getName() {
+string Character::getName() const {
 	return this->name;
 }
 
 
-char getInfo() {
+char Character::getInfo() const {
 	if (this->isPlayer) {
-		return '@';
+		return PLAYER_CHAR;
 	}
 
-	return this->name;
+	// needs changing to char
+	return this->name[1];
 }
 
 

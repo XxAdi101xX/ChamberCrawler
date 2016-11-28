@@ -2,12 +2,18 @@
 #include "Dragon.h"
 #include "Messaging.h"
 #include "Race.h"
+#include "Defines.cc"
 using namespace std;
+
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
 class Character;
 
 
-Dragon::Dragon(int wallet): Character{150, 150, 20, 20, false, Race::Dragon, wallet} {}
+Dragon::Dragon(int wallet): Character{DRAGON_HP_MAX, DRAGON_HP, 
+	DRAGON_ATTACK_VALUE, DRAGON_DEFENCE_VALUE, 
+	false, Race::Dragon, wallet} {}
 
 
 void Dragon::doMove(Direction direction) {/* does not move */}

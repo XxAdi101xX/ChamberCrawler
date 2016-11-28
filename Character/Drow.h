@@ -10,8 +10,12 @@ private:
 	// overrides the normal addHPViaPotion
 	// to amplify effects by 50% 
 	virtual void addHPViaPotion(int amount) override;
-	virtual int getAttackBuffBonus() override; // add 50% potion effects
-	virtual int getDefenceBuffBonus() override; // add 50% potion effects
+	
+	// add 50% to potion effects
+	virtual int getAttackBuffBonus() const override;
+	
+	// add 50% to potion effects
+	virtual int getDefenceBuffBonus() const override;
 
 public:
 	Drow(int wallet); // ctor
