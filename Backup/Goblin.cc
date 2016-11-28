@@ -1,17 +1,25 @@
 #include "Goblin.h"
+#include "Race.h"
+#include "Defines.cc"
 using namespace std;
 
-class Character
+// many literal values have been converted to variables,
+// and stored in Defines.cc
+
+class Character;
 
 
-void Goblin::postAttackRoutine(Character& defender) {}
+Goblin::Goblin(int wallet): Character{GOBLIN_HP_MAX, GOBLIN_HP, 
+	GOBLIN_ATTACK_VALUE, GOBLIN_DEFENCE_VALUE, 
+	true, Race::Goblin, wallet} {}
 
 
-void Goblin::setStats() {
-        this->HPMax = 110;
-        this->HP = 110;
-        this->attack = 15;
-        this->defence = 20;
+void Goblin::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
+	// if defender is dead, and goblin killed it
+	if (defender.getHP() <= 0 && hit) {
+		this->addGold(GOBLIN_LOOT_BONUS);
+	}
+
 }
 
 

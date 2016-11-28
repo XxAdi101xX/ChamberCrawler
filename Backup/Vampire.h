@@ -6,11 +6,12 @@
 
 class Vampire final: public Character {
 private:
-	// override adds health after attack
-	virtual void postAttackRoutine(Character& defender) override;
+	// override adds health if enemy was hit
+	virtual void postAttackRoutine(Character& defender, 
+		bool hit, Generator& rng) override;
 
 public:	
-	virtual void setStats() override; // sets Vampire stats
+	Vampire(int wallet);
 
 };
 

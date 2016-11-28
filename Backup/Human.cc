@@ -1,17 +1,44 @@
+#include <vector>
 #include "Human.h"
+//#include "GoldPile.h"
+#include "Defines.cc"
 using namespace std;
 
+// many literal values have been converted to variables,
+// and stored in Defines.cc
+
 class Character;
+class GoldPile;
 
 
-void Human::deathRoutine() {}
+Human::Human(int wallet): Character{HUMAN_HP_MAX, HUMAN_HP, 
+	HUMAN_ATTACK_VALUE, HUMAN_DEFENCE_VALUE, true, Race::Human, wallet} {}
 
 
-void Human::setStats() {
-	this->HPMax = 140;
-        this->HP = 140;
-        this->attack = 20;
-        this->defence = 20;
+void Human::deathRoutine() {
+	vector<Cell*> neighbourHood 
+		= (this->getCurrentCell())->getNeighbours();
+
+	int numberOfGoldPilesAlreadyDropped = 0;
+
+
+	for (auto neighbour : neighbourHood) {
+		// if there is no item on a neighbouring cell
+		if (!(neighbour->getItem)) {
+			neighbour->setItem(
+				make_shared<GoldPile>
+				(HUMAN_DROPPED_GOLD_PILE_VALUE));
+
+			++numberOfGoldPilesAlreadyDropped;
+		}
+
+		if (numberOfGoldPilesAlreadyDropped 
+			== HUMAN_NUMBER_OF_GOLD_PILES_DROPPED) {
+			return;
+		}
+
+	}
+
 }
 
 

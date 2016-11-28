@@ -1,17 +1,27 @@
 #include "Vampire.h"
+#include "Defines.cc"
 using namespace std;
+
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
 class Character;
 
 
-void Vampire::postAttackRoutine(Character& defender) {}
+Vampire::Vampire(int wallet): Character{VAMPIRE_HP_MAX, VAMPIRE_HP,
+        VAMPIRE_ATTACK_VALUE, VAMPIRE_DEFENCE_VALUE, true, Race::Vampire, wallet} {}
 
 
-void Vampire::setStats() {
-	this->HPMax = INT_MAX;
-        this->HP = 50;
-        this->attack = 25;
-        this->defence = 25;
+void Vampire::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
+	// calculates potential HP gain/loss
+	int HPToBeAdded = defender.getRace() == Race::Dwarf 
+		? -1 * VAMPIRE_ON_HIT_HEAL : VAMPIRE_ON_HIT_HEAL;
+
+	// only add if actually hit enemy
+	if (hit) {
+		this->addHP(HPToBeAdded);
+	}
+
 }
 
 

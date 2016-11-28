@@ -1,15 +1,17 @@
 #include "Shade.h"
+#include "Defines.cc"
 using namespace std;
 
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
-void Shade::setStats() {
-        this->HPMax = 125;
-        this->HP = 125;
-        this->attack = 25;
-        this->defence = 25;
+
+Shade::Shade(int wallet): Character{SHADE_HP_MAX, SHADE_HP,
+        SHADE_ATTACK_VALUE, SHADE_DEFENCE_VALUE, true, Race::Shade, wallet} {}
+
+
+int Shade::getScoreBonus() const {
+	return SHADE_SCORE_BONUS * this->getScoreProt();
 }
-
-
-int Shade::getScore() const {}
 
 

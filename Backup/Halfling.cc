@@ -1,17 +1,20 @@
 #include "Halfling.h"
+//#include "Generator.h"
+#include "Defines.cc"
 using namespace std;
 
-class Generator;
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
 
-bool Halfling::defend(int incomingDamage, Generator& rng) {}
+Halfling::Halfling(int wallet): Character{HALFLING_HP_MAX, HALFLING_HP, 
+	HALFLING_ATTACK_VALUE, HALFLING_DEFENCE_VALUE, 
+	true, Race::Halfling, wallet} {}
 
 
-void Halfling::setStats() {
-        this->HPMax = 100;
-        this->HP = 100;
-        this->attack = 15;
-        this->defence = 20;
+bool Halfling::takeDamageFrom(Character& attacker, 
+	int& damage, Generator& rng) {
+	return rng.genHitMiss();
 }
 
 

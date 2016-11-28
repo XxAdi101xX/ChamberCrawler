@@ -5,11 +5,15 @@
 class Generator;
 
 
-class Character: public Subject {
+class Halfling final: public Character {
+private:
+        // override to add 50% chance to miss
+        virtual bool takeDamageFrom(Character& attacker,
+                int& damage, Generator& rng) override;
+
 public:
-	// override defend to add 50% chance to miss
-        bool defend(int incomingDamage, Generator& rng) override;
-	virtual void setStats() override; // sets Halfling stats
+	Halfling(int wallet);
+
 };
 
 

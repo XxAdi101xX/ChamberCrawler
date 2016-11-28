@@ -1,25 +1,30 @@
 #include "Drow.h"
 #include "Race.h"
+#include "Defines.cc"
 using namespace std;
+
+// many literal values have been converted to variables,
+// and stored in Defines.cc
 
 class Potion;
 
 
-Drow::Drow(int wallet): Character{150, 150, 25, 15, true, Race::Drow, wallet} {}
+Drow::Drow(int wallet): Character{DROW_HP_MAX, DROW_HP, 
+	DROW_ATTACK_VALUE, DROW_DEFENCE_VALUE, true, Race::Drow, wallet} {}
 
 
 void Drow::addHPViaPotion(int amount) {
-	this->addHP(amount * 1.5);
+	this->addHP(amount * (1 + DROW_POTION_BONUS));
 }
 
 
-int Drow::getTotalAttack() {
-	return this->getAttackValue() + 1.5 * this->getAttackBuff();
+int Drow::getAttackBuffBonus() const {
+	return DROW_POTION_BONUS * this->getAttackBuffProt();
 }
 
 
-int Drow::getTotalDefence() {
-        return this->getDefenceValue() + 1.5 * this->getDefenceBuff();
+int Drow::getDefenceBuffBonus() const {
+        return DROW_POTION_BONUS * this->getDefenceBuffProt();
 }
 
 

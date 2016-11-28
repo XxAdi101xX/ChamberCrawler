@@ -6,9 +6,10 @@
 
 class Human final: public Character {
 public:
-	// overrides to drop two normal goldpile upon death
+	Human(int wallet); // ctor
+
+	// overrides to drop two normal GoldPile upon death
         virtual void deathRoutine() override;
-	virtual void setStats() override; // sets Human stats
 
 };
 
