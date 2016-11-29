@@ -9,7 +9,7 @@ class Character;
 
 
 Vampire::Vampire(int wallet): Character{VAMPIRE_HP_MAX, VAMPIRE_HP,
-        VAMPIRE_ATTACK_VALUE, VAMPIRE_DEFENCE_VALUE, true, Race::Vampire, wallet} {}
+	VAMPIRE_ATTACK_VALUE, VAMPIRE_DEFENCE_VALUE, true, Race::Vampire, wallet} {}
 
 
 void Vampire::postAttackRoutine(Character& defender, bool hit, Generator& rng) {

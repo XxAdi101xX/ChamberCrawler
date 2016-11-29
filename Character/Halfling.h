@@ -7,9 +7,9 @@ class Generator;
 
 class Halfling final: public Character {
 private:
-        // override to add 50% chance to miss
-        virtual bool takeDamageFrom(Character& attacker,
-                int& damage, Generator& rng) override;
+		// override to add 50% chance to miss
+		virtual bool takeDamageFrom(Character& attacker, 
+			int& damage, Generator& rng) override;
 
 public:
 	Halfling(int wallet);

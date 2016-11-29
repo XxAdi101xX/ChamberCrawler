@@ -24,7 +24,7 @@ int Drow::getAttackBuffBonus() const {
 
 
 int Drow::getDefenceBuffBonus() const {
-        return DROW_POTION_BONUS * this->getDefenceBuffProt();
+		return DROW_POTION_BONUS * this->getDefenceBuffProt();
 }
 
 

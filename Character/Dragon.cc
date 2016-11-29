@@ -27,35 +27,34 @@ void Dragon::deathRoutine() {
 
 
 void Dragon::doStartTurnRoutine(Generator& rng) {
-        // gets all neighbours of the dragonHoard
-        vector<Cell*> neighbourhood 
-		= (this->dragonHoardCell)->getNeighbours();
-        
+	// gets all neighbours of the dragonHoard
+	vector<Cell*> neighbourhood = (this->dragonHoardCell)->getNeighbours();
+	
 	// check if they have a player on them
-        for (auto neighbour: neighbourhood) {
-                Character* occupant = neighbour->getOccupant();
+	for (auto neighbour: neighbourhood) {
+		Character* occupant = neighbour->getOccupant();
 
-                if (occupant && occupant->getPlayerState()) {
-                        this->setHostile();
+		if (occupant && occupant->getPlayerState()) {
+			this->setHostile();
 
-                        // attackes player if they are next to dragon hoard
-                        this->attack(*occupant, rng);
+			// attackes player if they are next to dragon hoard
+			this->attack(*occupant, rng);
 
-                        // throws so that the program know the dragon already
-                        // attacked
-                        throw;
-                }
+			// throws so that the program know the dragon already
+			// attacked
+			throw;
+		}
 
-        }
+	}
 
 
 	// gets all neighbours of dragon
 	neighbourhood = (this->getCurrentCell())->getNeighbours();
 
-        // note that I would not like to repeat this code,
-        // but there's no operator+ for vectors so I have
-        // to check them seperately instead of together
-	
+	// note that I would not like to repeat this code,
+	// but there's no operator+ for vectors so I have
+	// to check them seperately instead of together
+
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
 		Character* occupant = neighbour->getOccupant();

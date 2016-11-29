@@ -20,25 +20,30 @@ bool isValidCoordinates(vector<int> coord) {
 
 // checks if coordinates given has an Item or Character on it
 bool isOccupied(vector<int> coord) {
-	return (currentFloor.getCell(coord))->getOccupant()
-		|| (currentFloor.getCell(coord)->getItem()) 
-		? true : false;
+	return (currentFloor.getCell(coord))->getOccupant() 
+	|| (currentFloor.getCell(coord)->getItem()) ? true : false;
 }
 
 
 // wrapper for generator that only returns a valid coordinate
-vector<int> getValidCoordinates() {
+vector<int> getValidCoords() {
 	// safety check no necessary assuming there is enough room for spawning
 
-        do {
-                vector<int> tempCoordinates = rng.genCoordinate();
+	do {
+		vector<int> tempCoordinates = rng.genCoordinate();
 
-                // reroll if coordinates are not for a FloorTile
-                // or has an occupant already
-        } while (!(isValidCoordinates(tempCoordinates))
-		|| isOccupied(tempCoordinates));
+		// reroll if coordinates are not for a FloorTile
+		// or has an occupant already
+	} while (!(isValidCoordinates(tempCoordinates))
+	|| isOccupied(tempCoordinates));
 
 	return tempCoordinates;
+}
+
+
+// wrapper for getValidCoords that turns the coordinate to a Cell *
+Cell* getValidCell() {
+	return currentFloor.getCell(getValidCoords());
 }
 
 
@@ -50,35 +55,35 @@ vector<int> getValidNeighbourCoordinates(vector<int> base) {
 	vector<vector<int>> checkedCoordinates
 
 	do {
-                vector<int> tempCoordinates = rng.genNeighbourCoord(base);
+		vector<int> tempCoordinates = rng.genNeighbourCoord(base);
 
 		bool checked = false;
 
-                // checks if neighbour was logged
+		// checks if neighbour was logged
 		for (auto coordinates: checkedCoordinates) {
-                        if (coordinates == tempCoordinates) {
-                                checked = true;
-                                break;
-                        }
-                }
+			if (coordinates == tempCoordinates) {
+					checked = true;
+					break;
+				}
+		}
 
 		// if neighbour was not logged, log it
-                if (!(checked)) {
-                        checkedCoordinates.emplace_back(tempCoordinates);
-                }
+		if (!(checked)) {
+			checkedCoordinates.emplace_back(tempCoordinates);
+		}
 
 		// checks if all neighbours were tried
-                if (checkedCoordinates.size() == DIRECTION_ENUMERATION) {
-                        // no valid neighbour
+		if (checkedCoordinates.size() == DIRECTION_ENUMERATION) {
+			// no valid neighbour
 			throw;
-                }
+		}
 
-                // reroll if coordinates are not for a FloorTile
-                // or has an occupant already
-        } while (!(isValidCoordinates(tempCoordinates))
-                || isOccupied(tempCoordinates));
+		// reroll if coordinates are not for a FloorTile
+		// or has an occupant already
+	} while (!(isValidCoordinates(tempCoordinates))
+		|| isOccupied(tempCoordinates));
 
-        return tempCoordinates;
+		return tempCoordinates;
 
 }
 
@@ -131,7 +136,7 @@ Direction getValidMove(vector<int> base) {
 		// reroll if cell in direction is not a FloorTile
 		// or has an occupant already
 	} while (!(isValidCoordinates(tempCoordinates))
-                || isOccupied(tempCoordinates));
+		|| isOccupied(tempCoordinates));
 
 	return tempDirection;
 }

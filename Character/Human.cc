@@ -26,15 +26,15 @@ void Human::deathRoutine() {
 	for (auto neighbour : neighbourHood) {
 		// if there is no item on a neighbouring cell
 		if (!(neighbour->getItem)) {
-			neighbour->setItem(
-				make_shared<GoldPile>
-				(HUMAN_DROPPED_GOLD_PILE_VALUE));
+			neighbour->setItem
+				(make_shared<GoldPile>(HUMAN_DROPPED_GOLD_PILE_VALUE));
 
 			++numberOfGoldPilesAlreadyDropped;
 		}
 
 		if (numberOfGoldPilesAlreadyDropped 
 			== HUMAN_NUMBER_OF_GOLD_PILES_DROPPED) {
+			
 			return;
 		}
 

@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) {
 	shared_ptr<Character> tempDefender;
 
 	vector<int> tempCoords;
+
 	vector<int> dragonCoords;
 
 	bool playerHasActed;
@@ -72,34 +73,29 @@ titleScreen:
 
 		switch(cmd) {
 			case CMD_SHADE_SELECT :
-				cout << "You have selected" << " " 
-					<< SHADE_NAME << endl;
+				cout << "You have selected" << " " << SHADE_NAME << endl;
 				player = createCharacter(Race::Shade);			
 				break;
 
 			case CMD_DROW_SELECT :
-				cout << RACE_SELECTION_MESSAGE << " " 
-					<< DROW_NAME << endl;
+				cout << RACE_SELECTION_MESSAGE << " " << DROW_NAME << endl;
 				player = createCharacter(Race::Drow);
 				break;
 
-                	case CMD_VAMPIRE_SELECT :
-                        	cout << "You have selected" << " "
-                                	<< VAMPIRE_NAME << endl;
-                        	player = createCharacter(Race::Vampire);
-                        	break;
+			case CMD_VAMPIRE_SELECT :
+				cout << "You have selected" << " " << VAMPIRE_NAME << endl;
+				player = createCharacter(Race::Vampire);
+				break;
 
-                	case CMD_GOBLIN_SELECT :
-                       		cout << "You have selected" << " "
-                                	<< GOBLIN_NAME << endl;
-                        	player = createCharacter(Race::Goblin);
-                        	break;
+			case CMD_GOBLIN_SELECT :
+				cout << "You have selected" << " " << GOBLIN_NAME << endl;
+				player = createCharacter(Race::Goblin);
+				break;
 
-                	case CMD_TROLL_SELECT :
-                        	cout << "You have selected" << " "
-                	                << TROLL_NAME << endl;
-        	                player = createCharacter(Race::Troll);
-	                        break;
+			case CMD_TROLL_SELECT :
+				cout << "You have selected" << " " << TROLL_NAME << endl;
+				player = createCharacter(Race::Troll);
+				break;
 
 			case CMD_RESTART :
 				goto titleScreen;
@@ -111,9 +107,9 @@ titleScreen:
 
 	}
 
-	// attaches player to display so we can report what
-	// happened to the player
-	player.attach(&theTextDisplay);
+// attaches player to display so we can report what
+// happened to the player
+player.attach(&theTextDisplay);
 
 
 newFloorStart:
@@ -125,7 +121,7 @@ newFloorStart:
 		cout << GAME_CLEARED_MSG << endl;
 		cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
 		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    " 
-			<< REPLAY_PROMPT << endl;
+		<< REPLAY_PROMPT << endl;
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
 			cout << GOODBYE_MSG << endl;
@@ -150,103 +146,124 @@ newFloorStart:
 
 	// generate player location
 	// gets proper coordinates for player	
-	playerCoords = getValidCoordinates();
+	playerCoords = getValidCoords();
+
+	// gets the cell at playerCoords
+	tempCell = currentFloor.getCell(playerCoords);
 
 	// sets the player in place
 	// cell also gets set occupant
-	player.setCell(floor.getCell(playerCoords));
+	player.setCell(tempCell);
+
+	// sets the player character as the player
 	player.setPlayer();
 
-
-	// informs player
+	// informs player of progress in loading
 	cout << PERIOD;
 
 	// generate stairs location
 	// gets a proper coordinates for stairs
 	do {
-		stairCoords = getValidCoordinates();
+		stairCoords = getValidCoorDS();
 
 		// reroll if coordinates are in the same chamber as player
 	} while(currentFloor.sameChamber(playerCoords, stairCoords));
 
+	temp
+
 	// sets the stairs in place
-        floor.getCell(stairCoords)->setCellType(CellType::Stairs);
+	currentFloor.getCell(stairCoords)->setCellType(CellType::Stairs);
 
 	cout << PERIOD;
 
 	// generates potions
 	while (numberOfSpawnedPotions < POTION_SPAWN_NUMBER) {
-		// gets proper coordinates
-		tempCoords = getValidCoordinates();
+		// gets proper cell
+		tempCell = getValidCell();
 
 		// gets a random PotionType
 		tempPotionType = rng.genPotionType();
 
-		(currentFloor.getCell(tempCoords))
-			->setItem(make_shared<Potion>(tempPotionType));
+		// adds a potion to the cell
+		tempCell->setItem(make_shared<Potion>(tempPotionType));
 
 		++numberOfSpawnedPotions;
 	}
 	
 	cout << PERIOD;
 
-        // generates gold
-        while (numberOfSpawnedGoldPiles < GOLD_PILE_SPAWN_NUMBER) {
+		// generates gold
+		while (numberOfSpawnedGoldPiles < GOLD_PILE_SPAWN_NUMBER) {
 		// gets proper coordinates
-		tempCoords = getValidCoordinates();
+		tempCoords = getValidCoords();
 
-                // gets a random GoldPile value
-                tempGoldPileValue = rng.genGold();
+		// gets the cell at tempCoords
+		tempCell = currentFloor.getCell(tempCoords);
 
-		if (tempGoldValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
-                	(currentFloor.getCell(tempCoords))
-                        	->setItem(
-				make_shared<GoldPile>(tempGoldPileValue));
-		}
+		// gets a random GoldPile value
+		tempGoldPileValue = rng.genGold();
 
 		// if the gold spawned was a dragon hoard
 		if (tempGoldValue == GOLD_PILE_DRAGON_HOARD_VALUE) {
 			try {
-				dragonCoords 
-					= getValidNeighbourCoordinates
-					(tempCoords);
+				// get a valid neighbouring coordinate
+				dragonCoords = getValidNeighbourCoordinates(tempCoords);
 
-	                        (currentFloor.getCell(dragonCoords))
-                                	->setOccupant
-					(createCharacter(Race::Dragon));
+				// get a dragon
+				tempCharacter = createCharacter(Race::Dragon);
+
+				// sets dragon in place
+				tempCharacter->setCell(tempCell);
+
+				// gives it it's cell
+				tempCharacter
+					->setDragonHoardCell(tempCell);
 
 			}
 
 			catch {
 				// remove the pile added
-				(currentFloor.getCell(tempCoords))
-					->setItem(nullptr);
+				tempCell->setItem(nullptr);
 
-				// decrement counter to allow second try
+				// decrements counter to allow second try
 				--numberOfSpawnedGoldPiles;
 
 			}
 
 		}
 
+				// not a merchant hoard, not a dragon hoard
+				else if (tempGoldValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
+					tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
+				}
+
+		// is actually a merchant hoard
+		else {
+			// decrements counter to allow second try
+			--numberOfSpawnedGoldPiles;
+		}
+
 		++numberOfSpawnedGoldPiles;
-        }
+		}
 
 	cout << PERIOD;
 
 	// generates enemies
-        while (numberOfSpawnedNPCs < NPC_SPAWN_NUMBER) {
-		// gets proper coordinates
-		tempCoords = getValidCoordinates();
+		while (numberOfSpawnedNPCs < NPC_SPAWN_NUMBER) {
+		// gets a proper cell
+		tempCell = getValidCell();
 
-                // gets a random Race
-                tempRace = rng.genNPCRace();
+		// gets a random Race
+		tempRace = rng.genNPCRace();
 
-                (currentFloor.getCell(tempCoords))
-                        ->setOccupant(createCharacter(tempRace));
+		// gets a random NPC
+		tempCharacter = createCharacter(tempRace);
+
+		// sets NPC in place
+		tempCharacter->setCell(tempCell);
 
 		++numberOfSpawnedNPCs;
-        }
+		}
 
 	cout << FINISH_PAST_TENSE << endl;
 
@@ -281,28 +298,28 @@ newFloorStart:
 				case CMD_MOVE_NORTH_EAST :
 					break;
 
-                      		case CMD_MOVE_NORTH_WEST :
-                                	break;
+				case CMD_MOVE_NORTH_WEST :
+					break;
 
-                        	case CMD_MOVE_SOUTH_EAST :
-                                	break;
+				case CMD_MOVE_SOUTH_EAST :
+					break;
 
-                        	case CMD_MOVE_SOUTH_WEST :
-                                	break;
+				case CMD_MOVE_SOUTH_WEST :
+					break;
 
-                        	case CMD_USE :
-                                	break;
+				case CMD_USE :
+					break;
 
-                        	case CMD_ATTACK :
-                                	break;
+				case CMD_ATTACK :
+					break;
 
-                        	case CMD_STOP :
-                                	break;
+				case CMD_STOP :
+					break;
 
-                        	case CMD_RESTART :
+				case CMD_RESTART :
 					// clears data
 					// TO BE IMPLEMENTED ......................................................
-                                	break;
+					break;
 
 				default :
 					// invalid command
@@ -326,80 +343,57 @@ newFloorStart:
 				tempCharacter = tempCell->getOccupant();
 				tempNeighbourhood = tempCell->getNeighbours();
 
-				if (tempCharacter 
-					&& !(tempCharacter
-					->getPlayerState())) {
-
+				if (tempCharacter && !(tempCharacter->getPlayerState())) {
 					try {
-						// dragon may attack player
-						// during startTurnRoutine
-						// if they are next to
-						// dragon hoard
+						// dragon may attack player during startTurnRoutine
+						// if they are next to dragon hoard
 						// will throw if so
-						tempCharacter
-							->startTurnRoutine();
+						tempCharacter->startTurnRoutine();
 					}
 
 					catch {
 						// caught dragon attacking
-						alreadyActed
-							.emplace_back
-							(tempCharacter);
+						alreadyActed.emplace_back(tempCharacter);
 					}
 
-					for (auto neighbour: 
-						tempNeighbourhood) {
+					for (auto neighbour: tempNeighbourhood) {
 						// checks if already acked
 						if (hasActed(tempCharacter)) {
 							break;
 						}
 
-						tempDefender 
-							= neighbour
-							->getOccupant();
+						tempDefender = neighbour->getOccupant();
 
-						// if player is beside NPC,
-						// and NPC is hostile
-						if (tempDefender
-							->getPlayerState()
-							&& tempCharacter
-							->getHostileState()) {
-							tempCharacter
-								->attack
-								(*tempDefender, 
-								rng);
+						// if player is beside NPC,// and NPC is hostile
+						if (tempDefender->getPlayerState() 
+							&& tempCharacter->getHostileState()) {
+
+							tempCharacter->attack(*tempDefender, rng);
 
 							// logs the attacker
-							alreadyActed
-								.emplace_back
-								(tempCharacter);
+							alreadyActed.emplace_back(tempCharacter);
 							break;
 						}
 
 					}
 
-					if (!(hasActed(tempCharacter) 
-						&& !NPCMovementPaused)) {
+					if (!(hasActed(tempCharacter) && !NPCMovementPaused)) {
 						try {
-							tempCharacter
-								->move
-								(getValidDirection);
+							tempCharacter->move(getValidDirection);
 						}
 
 						catch{}
 
 						// logs the character 
 						// than just moved
-						alreadyActed
-						.emplace_back
-						(tempCharacter);
+						alreadyActed.emplace_back(tempCharacter);
 					}
 
 					tempCharacter->endTurnRoutine();
 
 					// report updates to theTextDisplay
 					tempCharacter->notifyObservers();
-                               	}
+								}
 
 				// report updates to theTextDisplay
 				tempCell->notifyObservers();
@@ -422,14 +416,14 @@ newFloorStart:
 	// game over
 	while (player.getHP() <= 0) {
 		cout << GAME_OVER_MSG << end;
-        	cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
-        	cout << "(" << CMD_YES << "|" << CMD_NO << ")    "
-                	<< REPLAY_PROMPT << endl;
+		cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
+		cout << "(" << CMD_YES << "|" << CMD_NO << ")    " 
+		<< REPLAY_PROMPT << endl;
 
-        	if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
+		if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
 			cout << GOODBYE_MSG << endl;
-                	return 0;
-        	}
+			return 0;
+		}
 
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
 			// clear game data
@@ -437,9 +431,9 @@ newFloorStart:
 			goto titleScreen;	
 		}
 
-        	else {
-                	cout << INVALID_CMD_MSG << endl;
-        	}
+		else {
+				cout << INVALID_CMD_MSG << endl;
+		}
 
 	}
 
