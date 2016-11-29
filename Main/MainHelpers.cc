@@ -1,13 +1,28 @@
 #include <vector>
 #include <memory>
 #include "Floor.h"
+#include "Generator.h"
+#include "TextDisplay.h"
+#include "Character.h"
 #include "Direction.h"
 #include "Defines.cc"
 using namespace std;
 
 extern Generator rng;
-extern Floor currentFloor;
+extern Floor currentFloor; // note that floor is cleared at initialization
+extern TextDisplay theTextDisplay;
+
+// globals that need to be reset
+extern int floorCount;
+extern bool NPCMovementPaused;
+extern bool merchantsAngered;
+extern vector<PotionType> usedPotions;
+extern shared_ptr<Character> player;
 extern vector<shared_ptr<Character>> alreadyActed;
+extern bool playerHasActed;
+extern int numberOfSpawnedPotions;
+extern int numberOfSpawnedGoldPiles;
+extern int numberOfSpawnedNPCs;
 
 
 
@@ -128,7 +143,7 @@ Direction getValidMove(vector<int> base) {
 		}
 
 		// checks if all directions were tried
-		if (checkedDirections.size() == DIRECTION_ENUMERATION) {
+		if (checkedDirections.size() == DIRECTION_ENUMERATION {
 			// no valid move
 			throw;
 		}
@@ -156,3 +171,64 @@ int getNormalOrSmallGoldPile () {
 }
 
 
+// creates a character using the given race
+shared_ptr<Character> createCharacter(Race race) {
+	int tempWallet = getNormalOrSmallGoldPile();
+
+	switch(race) {
+		case Race::Shade : 
+			return Shade(tempWallet);
+		case Race::Drow : 
+            return Drow(tempWallet);
+		case Race::Vampire : 
+            return Vampire(tempWallet);
+		case Race::Troll : 
+            return Troll(tempWallet);
+		case Race::Goblin : 
+            return Goblin(tempWallet);
+		case Race::Human : 
+            return Human(tempWallet);
+		case Race::Dwarf : 
+            return Dwarf(tempWallet);
+		case Race::Elf : 
+            return Elf(tempWallet);
+		case Race::Orc : 
+            return Orc(tempWallet);
+		case Race::Merchant : 
+            return Merchant(tempWallet);
+		case Race::Dragon : 
+            return Dragon(tempWallet);
+		case Race::Halfling : 
+            return Halfling(tempWallet);
+	}
+
+}
+
+
+// resets all necessary global variables for new game
+void reset() {
+	floorCount = 0;
+
+	NPCMovementPaused = false;
+	merchantsAngered = false;
+
+	usedPotions.erase();
+	
+	player = nullptr;
+	
+	alreadyActed.erase();
+	
+	playerHasActed = false;
+	
+	numberOfSpawnedPotions = 0;
+	numberOfSpawnedGoldPiles = 0;
+	numberOfSpawnedNPCs = 0;
+
+}
+
+
+// outputs the game state stored
+// allows adding new displays easily
+void outputGameState() {
+	cout << theTextDisplay << endl;
+}

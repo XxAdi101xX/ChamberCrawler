@@ -68,7 +68,7 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 	usedPotions.emplace_back(type);
 
 	// reports what potion was used
-	this->addAction(makeMsg(this->name, USE_PAST_TENSE , potionToText(potion)));
+	this->addAction(makeMsg(this->name, WORD_USE_PAST_TENSE , potionToText(potion)));
 }
 
 
@@ -98,9 +98,9 @@ bool Character::defend(Character& attacker,
 		this->HP -= incomingDamage;
 
 		// reports damage taken
-		this->addAction(makeMsg(attacker.getName(), DEAL_PAST_TENSE + " " 
-		+ to_string(incomingDamage) + " " + DAMAGE_NOUN + " " + TO_PREPOSITION, 
-		this->name));
+		this->addAction(makeMsg(attacker.getName(), WORD_DEAL_PAST_TENSE + " " 
+		+ to_string(incomingDamage) + " " + WORD_DAMAGE_NOUN + " " 
+		+ WORD_TO_PREPOSITION, this->name));
 
 		return true;
 		}
@@ -108,9 +108,10 @@ bool Character::defend(Character& attacker,
 	}
 
 	// reports dodge
-	this->addAction(makeMsg(this->name, DODGE_PAST_TENSE + " " + ATTACK_NOUN 
-		+ " (" + to_string(incomingDamage) + " " + DAMAGE_NOUN + ")" 
-		+ FROM_PROPOSITION, attacker.getName()));
+	this->addAction(makeMsg(this->name, WORD_DODGE_PAST_TENSE + " " 
+		+ WORD_ATTACK_NOUN + " (" + to_string(incomingDamage) + " " 
+		+ WORD_DAMAGE_NOUN + ")" + WORD_FROM_PREPOSITION, 
+		attacker.getName()));
 
 	return false;
 }
@@ -188,7 +189,7 @@ void Character::doMove(Direction direction) {
 		this->setCell(cell);
 
 		// reports movement
-		this->addAction(makeMsg(this->name, MOVE_PAST_TENSE, 
+		this->addAction(makeMsg(this->name, WORD_MOVE_PAST_TENSE, 
 			directionToText(direction)));
 
 		// gets the neighbourhood
@@ -199,7 +200,7 @@ void Character::doMove(Direction direction) {
 			shared_ptr<Item> item = neighbour->getItem();
 			
 			if (item != nullptr) {
-				this->addAction(makeMsg(this->name, SEE_PAST_TENSE, 
+				this->addAction(makeMsg(this->name, WORD_SEE_PAST_TENSE, 
 					itemToText(item)));
 			}
 
@@ -225,12 +226,14 @@ void Character::addAction(std::string action) {
 
 
 int Character::getTotalAttack() const {
-	return this->attackValue + this->attackBuff + this->getAttackBuffBonus();
+	return this->attackValue 
+		+ this->attackBuff + this->getAttackBuffBonus();
 }
 
 
 int Character::getTotalDefence() const {
-	return this->defenceValue + this->defenceBuff + this->getDefenceBuffBonus();
+	return this->defenceValue 
+		+ this->defenceBuff + this->getDefenceBuffBonus();
 }
 
 
@@ -261,7 +264,7 @@ void Character::addHP(int amount) {
 	int HPToBeAdded = amount;
 	// if amount added exceeds HPMax
 	if (amount > this->HPMax - this->getHP()) {
-		HPToBe6Added = this->HPMax - this->getHP();
+		HPToBeAdded = this->HPMax - this->getHP();
 
 	}
 
@@ -269,9 +272,10 @@ void Character::addHP(int amount) {
 	this->HP += HPToBeAdded;
 
 	// reports how much HP was gained/lost
-	this->addAction(makeMsg(this->name, HPToBeAdded >= 0 ? GAIN_PAST_TENSE 
-		: LOSE_PAST_TENSE, to_string(HPToBeAdded >= 0 ? HPToBeAdded 
-		: -1 * HPToBeAdded) + " " + HP_NOUN));
+	this->addAction(makeMsg(this->name, HPToBeAdded >= 0 
+		? WORD_GAIN_PAST_TENSE : WORD_LOSE_PAST_TENSE, 
+		to_string(HPToBeAdded >= 0 ? HPToBeAdded : -1 * HPToBeAdded) 
+		+ " " + WORD_HP_NOUN));
 
 }
 
@@ -280,8 +284,8 @@ void Character::addGold(int amount) {
 	this->wallet += amount;
 	this->score += amount;
 
-	this->addAction(makeMsg(this->name, GAIN_PAST_TENSE, to_string(amount) 
-		+ " " + GOLD_NOUN));
+	this->addAction(makeMsg(this->name, WORD_GAIN_PAST_TENSE, to_string(amount) 
+		+ " " + WORD_GOLD_NOUN));
 }
 
 
@@ -319,17 +323,19 @@ void Character::attack(Character& defender, Generator& rng) {
 	if (firstRollForHit) {
 		if (defender.defend(*this, damage, rng)) {
 			// reports hit
-			this->addAction(makeMsg(this->name, DEAL_PAST_TENSE 
-				+ to_string(damage) + " " + DAMAGE_NOUN + TO_PREPOSITION, 
-				defender.getName() + " (" + to_string(defender.getHP()) + ")"));
+			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE 
+				+ to_string(damage) + " " + WORD_DAMAGE_NOUN 
+				+ WORD_TO_PREPOSITION, defender.getName() + " (" 
+				+ to_string(defender.getHP()) + ")"));
 		}
 
 	}
 
 	else {
 		// reports miss
-		this->addAction(makeMsg(this->name, MISS_PAST_TENSE +"( " 
-		+ to_string(damage) + " " + DAMAGE_NOUN + ")", defender.getName()));	
+		this->addAction(makeMsg(this->name, WORD_MISS_PAST_TENSE +"( " 
+		+ to_string(damage) + " " + WORD_DAMAGE_NOUN + ")", 
+		defender.getName()));
 	}
 
 	this->postAttackRoutine(defender, firstRollForHit, rng);
@@ -340,17 +346,18 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	defender.deathRoutine();
 
-	this->addAction(makeMsg(this->name, KILL_PAST_TENSE, defender.getName()));
+	this->addAction(
+			makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
 	
-	defender.addAction(makeMsg(defender.getName(), IS_PAST_TENSE 
-		+ KILL_PAST_TENSE + BY_PREPOSITION, this->name));
+	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE 
+		+ WORD_KILL_PAST_TENSE + WORD_BY_PREPOSITION, this->name));
 	}
 
 }
 
 
 void Character::startTurnRoutine(Generator& rng) {
-	this->doStartTurnRoutine(Generator& rng);
+	this->doStartTurnRoutine(rng);
 }
 
 
@@ -362,7 +369,7 @@ void Character::endTurnRoutine() {
 void Character::setPlayer() {
 	this->isPlayer = true;
 	this->isHostile = false;
-	this->name = PLAYER_NAME;
+	this->name = NAME_PLAYER;
 }
 	
 
@@ -435,7 +442,7 @@ Info Character::getInfo() const {
 
 	// sets fields with proper info
 	characterInfo.coordinates = (this->currentCell)->getCoords();
-	characterInfo.displayChar = this->isPlayer ? '@' : this->name[1];
+	characterInfo.displayChar = this->isPlayer ? CHAR_PLAYER : this->name[1];
 	characterInfo.lastAction = this->lastAction;
 
 	return characterInfo;

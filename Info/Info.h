@@ -5,9 +5,9 @@
 #include <vector>
 
 struct Info {
-	vector <int> coordinates;
+	std::vector<int> coordinates;
 	char displayChar;
-	string lastAction;
+	std::string lastAction;
 
 };
 

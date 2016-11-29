@@ -1,9 +1,51 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
+#include <time>
+
+// abstract patterns
+#include "Subject.h"
+#include "Observer.h"
+
+// basic game elements
 #include "Generator.h"
 #include "Floor.h"
+#include "Cell.h"
+
+// displays
+#include "TextDisplay.h"
+
+// Character and subclasses
 #include "Character.h"
+#include "Shade.h"
+#include "Drow.h"
+#include "Vampire.h"
+#include "Troll.h"
+#include "Goblin.h"
+#include "Human.h"
+#include "Dwarf.h"
+#include "Elf.h"
+#include "Orc.h"
+#include "Merchant.h"
+#include "Dragon.h"
+#include "Halfling.h"
+#include "Info.h"
+
+// Item and subclasses
+#include "Item.h"
+#include "GoldPile.h"
+#include "Potion.h"
+
+// enumerations
+#include "Direction.h"
+#include "Race.h"
+#include "ItemType.h"
+#include "PotionType.h"
+#include "CellType.h"
+
+// .cc files
+#include "Defines.cc"
 #include "Localisation.cc"
 #include "MainHelpers.cc"
 using namespace std;
@@ -11,7 +53,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	// game global variables
-	Generator rng = Generator{};
+	Generator rng = Generator{time(NULL)};
 	TextDisplay theTextDisplay = TextDisplay{};
 	int floorCount = 0;
 	Floor currentFloor = Floor{&theTextDisplay};
@@ -37,10 +79,7 @@ int main(int argc, char *argv[]) {
 
 	vector<int> dragonCoords;
 
-	bool playerHasActed;
-
-	// number of attempts made to find valid neighbour
-	int neighbourAttemptsCounter = 0;
+	bool playerHasActed = false;
 
 	int numberOfSpawnedPotions = 0;
 	PotionType tempPotionType;
@@ -50,14 +89,15 @@ int main(int argc, char *argv[]) {
 
 	int numberOfSpawnedNPCs = 0;
 	Race tempRace;
-	int tempWallet;
+
+	shared_ptr<Item> tempItem;
 
 	string cmd;
 
 
 titleScreen:
-	cout << "Welcome to CC3K" << endl;
-	cout << "Please pick one of the following races" << endl;
+	cout << MSG_WELCOME << endl;
+	cout << PROMPT_RACE_SELECTION << endl;
 
 	cout << "(" << CMD_SHADE_SELECT << ")    " << SHADE_NAME << endl;
 	cout << "(" << CMD_DROW_SELECT << ")    " << DROW_NAME << endl;
@@ -65,35 +105,36 @@ titleScreen:
 	cout << "(" << CMD_GOBLIN_SELECT << ")    " << GOBLIN_NAME << endl;
 	cout << "(" << CMD_TROLL_SELECT << ")    " << TROLL_NAME << endl;
 
+	// while player is not yet set
 	while (!player) {
 		if (!(cin >> cmd) || cmd == CMD_QUIT) {
-			cout << GOODBYE_MSG << endl;
+			cout << MSG_GOODBYE << endl;
 			return 0;
 		}
 
 		switch(cmd) {
 			case CMD_SHADE_SELECT :
-				cout << "You have selected" << " " << SHADE_NAME << endl;
+				cout << MSG_RACE_SELECTED << " " << SHADE_NAME << endl;
 				player = createCharacter(Race::Shade);			
 				break;
 
 			case CMD_DROW_SELECT :
-				cout << RACE_SELECTION_MESSAGE << " " << DROW_NAME << endl;
+				cout << MSG_RACE_SELECTED << " " << DROW_NAME << endl;
 				player = createCharacter(Race::Drow);
 				break;
 
 			case CMD_VAMPIRE_SELECT :
-				cout << "You have selected" << " " << VAMPIRE_NAME << endl;
+				cout << MSG_RACE_SELECTED << " " << VAMPIRE_NAME << endl;
 				player = createCharacter(Race::Vampire);
 				break;
 
 			case CMD_GOBLIN_SELECT :
-				cout << "You have selected" << " " << GOBLIN_NAME << endl;
+				cout << MSG_RACE_SELECTED << " " << GOBLIN_NAME << endl;
 				player = createCharacter(Race::Goblin);
 				break;
 
 			case CMD_TROLL_SELECT :
-				cout << "You have selected" << " " << TROLL_NAME << endl;
+				cout << MSG_RACE_SELECTED << " " << TROLL_NAME << endl;
 				player = createCharacter(Race::Troll);
 				break;
 
@@ -101,7 +142,7 @@ titleScreen:
 				goto titleScreen;
 
 			default :
-				cout << INVALID_CMD_MSG << endl;
+				cout << MSG_INVALID_CMD << endl;
 	
 		}
 
@@ -116,31 +157,36 @@ newFloorStart:
 	// updates floor count since this is a new floor
 	++floorCount;
 
+	player->clearBuffs();
+
 	// checks for win
 	while (floorCount > NUMBER_OF_FLOORS) {
-		cout << GAME_CLEARED_MSG << endl;
-		cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
+		cout << MSG_GAME_CLEAR << endl;
+		cout << MSG_FINAL_SCORE << ": " << player->getScore() << endl;
 		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    " 
-		<< REPLAY_PROMPT << endl;
+		<< PROMPT_REPLAY << endl;
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
-			cout << GOODBYE_MSG << endl;
+			cout << MSG_GOODBYE << endl;
 			return 0;
 		}
 
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
+			cout << MSG_RESETTING << endl;			
+
 			// clear game data
-			// NEED TO COMPLETE...........................................	
+			reset();
+
 			goto titleScreen;
 		}
 
 		else {
-			cout << INVALID_CMD_MSG << endl;
+			cout << MSG_INVALID_CMD << endl;
 		}
 
 	}
 
-	cout << LOADING_MSG;
+	cout << MSG_LOADING;
 
 	currentFloor.initialize();
 
@@ -153,10 +199,10 @@ newFloorStart:
 
 	// sets the player in place
 	// cell also gets set occupant
-	player.setCell(tempCell);
+	player->setCell(tempCell);
 
 	// sets the player character as the player
-	player.setPlayer();
+	player->setPlayer();
 
 	// informs player of progress in loading
 	cout << PERIOD;
@@ -164,7 +210,7 @@ newFloorStart:
 	// generate stairs location
 	// gets a proper coordinates for stairs
 	do {
-		stairCoords = getValidCoorDS();
+		stairCoords = getValidCoords();
 
 		// reroll if coordinates are in the same chamber as player
 	} while(currentFloor.sameChamber(playerCoords, stairCoords));
@@ -265,71 +311,264 @@ newFloorStart:
 		++numberOfSpawnedNPCs;
 		}
 
-	cout << FINISH_PAST_TENSE << endl;
+	cout << MSG_LOADING_COMPLETE << endl;
 
+	// outputs game state
+	outputGameState();
 
 	// game start
 
 	while (player.getHP() > 0) {
-		// plater turn start
-		player.startTurnRoutine();
+		// player turn start
+		playerHasActed = false;
+
+		try {
+			player->startTurnRoutine(rng);
+		}
+
+		catch {
+			playerHasActed = true;
+		}
 
 		while (!(playerHasActed)) {
-			playerHasActed = true; // default value
+			playerHasActed = true; // default result
 
 			if (!(cin >> cmd) || cmd == CMD_QUIT) {
-				cout << GOODBYE_MSG << endl;
+				cout << MSG_GOODBYE << endl;
 				return 0;
 			}
 
 			switch(cmd) {
-				case CMD_MOVE_NORTH :
+				case CMD_NORTH :
+					player->move(Direction::North);
 					break;
 
-				case CMD_MOVE_SOUTH :
+				case CMD_SOUTH :
+					player->move(Direction::South);
 					break;
 
-				case CMD_MOVE_EAST :
+				case CMD_EAST :
+					player->move(Direction::East);
 					break;
 
-				case CMD_MOVE_WEST :
+				case CMD_WEST :
+					player->move(Direction::West);
 					break;
 
-				case CMD_MOVE_NORTH_EAST :
+				case CMD_NORTH_EAST :
+					player->move(Direction::NorthEast);
 					break;
 
-				case CMD_MOVE_NORTH_WEST :
+				case CMD_NORTH_WEST :
+					player->move(Direction::NorthWest);
 					break;
 
-				case CMD_MOVE_SOUTH_EAST :
+				case CMD_SOUTH_EAST :
+					player->move(Direction::SouthEast);
 					break;
 
-				case CMD_MOVE_SOUTH_WEST :
+				case CMD_SOUTH_WEST :
+					player->move(Direction::SouthWest);
 					break;
 
 				case CMD_USE :
-					break;
+					while (!playerHasActed && cin >> cmd) {
+						playerHasActed = true; // default result
 
-				case CMD_ATTACK :
-					break;
+						switch(cmd) {
+	                		case CMD_NORTH :
+								tempCell = (currentFloor.getCell(playerCoords))
+									->getNeighbour(Direction::North);
+							break;
+
+            	    		case CMD_SOUTH :
+								tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::South);
+								break;
+
+             	    		case CMD_EAST :
+                   				tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::East);
+								break;
+
+                			case CMD_WEST :
+                            	tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::West);
+                    			break;
+
+                			case CMD_NORTH_EAST :
+                            	tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::NorthEast);
+                    			break;
+
+                			case CMD_NORTH_WEST :
+                            	tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::NorthWest);	
+								break;
+
+                			case CMD_SOUTH_EAST :
+                    			tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::SouthEast);
+								break;
+
+                			case CMD_SOUTH_WEST :
+                            	tempCell = (currentFloor.getCell(playerCoords))
+                                	->getNeighbour(Direction::SouthWest);
+                    			break;
+
+							default : 
+							// invalid direction
+							cout << MSG_INVALID_DIRECTION << endl;
+
+							// makes sure to wait for player cmd
+							playerHasActed = false;
+						}
+
+						// if valid command was issued
+						if (playerHasActed) {
+							// gets the item on cell
+							tempItem = tempCell->getItem();
+
+							// if there is actually an item, use it
+							if (tempItem) {
+                        		player->applyItem(tempItem);
+
+                        		tempCell->setItem(nullptr);
+							}
+
+							// otherwise pretend it was invalid commmand
+							else {
+								//invalid direction
+								cout << MSG_INVALID_DIRECTION << endl;
+
+								// makes sure to wait for player cmd
+								playerHasActed = false;
+							}
+
+						}
+
+					}
+                    	
+					if (cin.fail() || cin.eof()) {
+                        cout << MSG_GOODBYE << endl;
+                        return 0;
+                    }
+
+                    break;
+
+                case CMD_ATTACK :
+                    while (!playerHasActed && cin >> cmd) {
+						playerHasActed = true; // default result
+
+                        switch(cmd) {
+                            case CMD_NORTH :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::North);
+                            break;
+
+                            case CMD_SOUTH :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::South);
+                                break;
+
+                            case CMD_EAST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::East);
+                                break;
+
+                            case CMD_WEST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::West);
+                                break;
+
+                            case CMD_NORTH_EAST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::NorthEast);
+                                break;
+
+                            case CMD_NORTH_WEST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::NorthWest);
+                                break;
+
+                            case CMD_SOUTH_EAST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::SouthEast);
+                                break;
+
+                            case CMD_SOUTH_WEST :
+                                tempCell = (currentFloor.getCell(playerCoords))
+                                    ->getNeighbour(Direction::SouthWest);
+                                break;
+
+                            default : 
+							// invalid direction
+							cout << MSG_INVALID_DIRECTION << endl;
+
+							// makes sure to wait for player cmd
+                            playerHasActed = false;
+                        }
+
+						// if valid command was issued
+                        if (playerHasActed) {
+							// gets the cell occupant
+                            tempDefender = tempCell->getOccupant();
+
+							// if occupant acutally exits
+							if (tempDefender) {
+								player->attack(*tempDefender, rng);
+							}
+
+							// otherwise pretend it was invalid command
+							else {
+								// invalid direction
+								cout << MSG_INVALID_DIRECTION << endl;
+
+								// makes sure to wait for player cmd
+								playerHasActed = false;
+							}
+
+                        }
+
+                    }
+
+                    if (cin.fail() || cin.eof()) {
+                        cout << MSG_GOODBYE << endl;
+                        return 0;
+                    }
+
+                    break;
 
 				case CMD_STOP :
+					NPCMovementPaused = true;
 					break;
 
 				case CMD_RESTART :
+					cout << MSG_RESETTING << endl;
+
 					// clears data
-					// TO BE IMPLEMENTED ......................................................
-					break;
+					reset();
+
+					goto titleScreen;
 
 				default :
 					// invalid command
+					cout << MSG_INVALID_CMD << endl;
 
 					// makes sure to wait for player cmd
 					playerHasActed = false;
 		}
 
-		player.endTurnRoutine();
+		player->endTurnRoutine();
 
+		// reports updates to observers
+		player->notifyObservers();
+
+		// need to update coordinates that main has
+		playerCoords = (player->getInfo()).coordinates;
+
+		// outputs new game state
+		outputGameState();
 
 		// NPC turn start
 		for (int i = 0; 
@@ -405,34 +644,40 @@ newFloorStart:
 		// clears logged NPCs
 		alreadyActed.erase();
 
-		// report updates to theTextDisplay
-		player.notifyObserver();
+		// report updates to observer
+		player->notifyObserver();
+
+		// for DLC purposes (e.g. knockback)
+		playerCoords = (player-getInfo()).coordinates;
 
 		// outputs the new game state
-		cout << theTextDisplay << endl;
+		outputGameState();
 	}
 
 
 	// game over
 	while (player.getHP() <= 0) {
-		cout << GAME_OVER_MSG << end;
-		cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
+		cout << MSG_GAME_OVER << end;
+		cout << MSG_FINAL_SCORE << ": " << player.getScore() << endl;
 		cout << "(" << CMD_YES << "|" << CMD_NO << ")    " 
-		<< REPLAY_PROMPT << endl;
+		<< PROMPT_REPLAY << endl;
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
-			cout << GOODBYE_MSG << endl;
+			cout << MSG_GOODBYE << endl;
 			return 0;
 		}
 
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
+			cout << MSG_RESETTING << endl;			
+
 			// clear game data
-			// NEED TO COMPLETE...........................................
-			goto titleScreen;	
+			reset();
+
+			goto titleScreen;
 		}
 
 		else {
-				cout << INVALID_CMD_MSG << endl;
+				cout << MSG_INVALID_CMD << endl;
 		}
 
 	}
