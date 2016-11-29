@@ -94,6 +94,7 @@ bool hasActed(shared_ptr<Character> character) {
 	return false;
 }
 
+
 // wrapper for generator that only returns a valid direction to move to
 // given the current coordinate
 // throws if no valid move exists
@@ -134,3 +135,19 @@ Direction getValidMove(vector<int> base) {
 
 	return tempDirection;
 }
+
+
+// wrapper for generator that only produces a small or 
+// normal amount of gold as described by defines.cc
+int getNormalOrSmallGoldPile () {
+	do {
+		int tempAmount = rng.genGold();
+
+		// reroll if value is not small or not normal
+	} while (tempAmount != GOLD_PILE_SMALL_VALUE 
+		|| tempAmount != GOLD_PILE_NORMAL_VALUE);
+
+	return tempAmmount;
+}
+
+

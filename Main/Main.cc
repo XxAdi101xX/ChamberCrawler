@@ -92,7 +92,7 @@ titleScreen:
                 	case CMD_GOBLIN_SELECT :
                        		cout << "You have selected" << " "
                                 	<< GOBLIN_NAME << endl;
-                        	player = createCharacter(Race::Goblin;
+                        	player = createCharacter(Race::Goblin);
                         	break;
 
                 	case CMD_TROLL_SELECT :
@@ -121,7 +121,7 @@ newFloorStart:
 	++floorCount;
 
 	// checks for win
-	if (floorCount > NUMBER_OF_FLOORS) {
+	while (floorCount > NUMBER_OF_FLOORS) {
 		cout << GAME_CLEARED_MSG << endl;
 		cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
 		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    " 
@@ -155,6 +155,7 @@ newFloorStart:
 	// sets the player in place
 	// cell also gets set occupant
 	player.setCell(floor.getCell(playerCoords));
+	player.setPlayer();
 
 
 	// informs player
@@ -252,7 +253,7 @@ newFloorStart:
 
 	// game start
 
-	while (player.getHP() != 0) {
+	while (player.getHP() > 0) {
 		// plater turn start
 		player.startTurnRoutine();
 
@@ -329,7 +330,22 @@ newFloorStart:
 					&& !(tempCharacter
 					->getPlayerState())) {
 
-					tempCharacter->startTurnRoutine();
+					try {
+						// dragon may attack player
+						// during startTurnRoutine
+						// if they are next to
+						// dragon hoard
+						// will throw if so
+						tempCharacter
+							->startTurnRoutine();
+					}
+
+					catch {
+						// caught dragon attacking
+						alreadyActed
+							.emplace_back
+							(tempCharacter);
+					}
 
 					for (auto neighbour: 
 						tempNeighbourhood) {
@@ -392,6 +408,9 @@ newFloorStart:
 
 		}
 
+		// clears logged NPCs
+		alreadyActed.erase();
+
 		// report updates to theTextDisplay
 		player.notifyObserver();
 
@@ -401,25 +420,28 @@ newFloorStart:
 
 
 	// game over
-	cout << GAME_OVER_MSG << end;
-        cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
-        cout << "(" << CMD_YES << "|" << CMD_NO << ")    "
-                << REPLAY_PROMPT << endl;
+	while (player.getHP() <= 0) {
+		cout << GAME_OVER_MSG << end;
+        	cout << FINAL_SCORE_MSG << ": " << player.getScore() << endl;
+        	cout << "(" << CMD_YES << "|" << CMD_NO << ")    "
+                	<< REPLAY_PROMPT << endl;
 
-        if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
-		cout << GOODBYE_MSG << endl;
-                return 0;
-        }
+        	if (!(cin >> cmd) || cmd == CMD_QUIT || CMD_NO) {
+			cout << GOODBYE_MSG << endl;
+                	return 0;
+        	}
 
-	else if (cmd == CMD_YES || cmd == CMD_RESTART) {
-		// clear game data
-		// NEED TO COMPLETE...........................................
-		goto titleScreen;	
+		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
+			// clear game data
+			// NEED TO COMPLETE...........................................
+			goto titleScreen;	
+		}
+
+        	else {
+                	cout << INVALID_CMD_MSG << endl;
+        	}
+
 	}
-
-        else {
-                cout << INVALID_CMD_MSG << endl;
-        }
 
 }
 

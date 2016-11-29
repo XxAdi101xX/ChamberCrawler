@@ -69,7 +69,7 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 }
 
 
-void Character::doStartTurnRoutine() {/* nothing by default */}
+void Character::doStartTurnRoutine(Generator& rng) {/* nothing by default */}
 
 
 void Character::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
@@ -348,8 +348,8 @@ void Character::attack(Character& defender, Generator& rng) {
 }
 
 
-void Character::startTurnRoutine() {
-	this->doStartTurnRoutine();
+void Character::startTurnRoutine(Generator& rng) {
+	this->doStartTurnRoutine(Generator& rng);
 }
 
 

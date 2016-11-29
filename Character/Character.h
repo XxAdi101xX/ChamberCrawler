@@ -45,7 +45,7 @@ private:
         // runs at turn start
         // normally does nothing, but overrides implements specific
         // racial traits
-        virtual void doStartTurnRoutine();
+        virtual void doStartTurnRoutine(Generator& rng);
 
         // runs after attack
         // normally does nothing, but overrides implements specific
@@ -132,7 +132,7 @@ public:
 	void attack(Character& defender, Generator& rng);
  
 	// wrapper for doStartTurnRoutine, uses NVI idiom
-	void startTurnRoutine();
+	void startTurnRoutine(Generator& rng);
 
 	// wrapper for doEndTurnRoutine, uses NVI idiom
 	void endTurnRoutine();

@@ -18,7 +18,7 @@ Merchant::Merchant(int wallet): Character{MERCHANT_HP_MAX, MERCHANT_HP,
         MERCHANT_ATTACK_VALUE, MERCHANT_DEFENCE_VALUE, false, Race::Merchant, 0} {}
 
 
-void Merchant::doStartTurnRoutine() {
+void Merchant::doStartTurnRoutine(Generator& rng) {
 	// makes merchant hostile if
 	// player has killed a merchant before
         if (merchantsAngered) {

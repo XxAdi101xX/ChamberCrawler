@@ -7,12 +7,13 @@
 class Dragon final: public Character {
 private:
 	Cell* dragonHoardCell; // the cell with the dragonHoard on it
+	bool alreadyAttacked;
 
         // overrides move to do nothing
         virtual void doMove(Direction direction) override;
 
         // checks whether or not to turn hostile
-        virtual void doStartTurnRoutine() override;
+        virtual void doStartTurnRoutine(Generator& rng) override;
 
         // unbinds the dragon hoard
         virtual void deathRoutine() override;

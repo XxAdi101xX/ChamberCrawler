@@ -26,15 +26,35 @@ void Dragon::deathRoutine() {
 }
 
 
-void Dragon::doStartTurnRoutine() {
-	// save on some runtime
-	if (this->getHostileState()) {
-		return;
-	}
+void Dragon::doStartTurnRoutine(Generator& rng) {
+        // gets all neighbours of the dragonHoard
+        vector<Cell*> neighbourhood 
+		= (this->dragonHoardCell)->getNeighbours();
+        
+	// check if they have a player on them
+        for (auto neighbour: neighbourhood) {
+                Character* occupant = neighbour->getOccupant();
 
-	// gets all neighbours
-	vector<Cell*> neighbourhood 
-		= (this->getCurrentCell())->getNeighbours();
+                if (occupant && occupant->getPlayerState()) {
+                        this->setHostile();
+
+                        // attackes player if they are next to dragon hoard
+                        this->attack(*occupant, rng);
+
+                        // throws so that the program know the dragon already
+                        // attacked
+                        throw;
+                }
+
+        }
+
+
+	// gets all neighbours of dragon
+	neighbourhood = (this->getCurrentCell())->getNeighbours();
+
+        // note that I would not like to repeat this code,
+        // but there's no operator+ for vectors so I have
+        // to check them seperately instead of together
 	
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
@@ -42,26 +62,11 @@ void Dragon::doStartTurnRoutine() {
 
 		if (occupant && occupant->getPlayerState()) {
 			this->setHostile();
+			// don't attack because dragon
+			// will get to attack later
 		}
 
 	}
-
-	// gets all neighbours of the dragonHoard
-	neighbourhood = (this->dragonHoardCell)->getNeighbours();
-
-	// note that I would not like to repeat this code,
-	// but there's no operator+ for vectors so I have
-	// to check them seperately instead of together
-
-	// check if they have a player on them
-	for (auto neighbour: neighbourhood) {
-		Character* occupant = neighbour->getOccupant();
-
-        	if (occupant && occupant->getPlayerState()) {
-                	this->setHostile();
-                }
-
-        }
 
 }
 
