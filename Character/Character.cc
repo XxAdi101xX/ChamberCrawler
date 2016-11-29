@@ -153,6 +153,12 @@ void Character::doMove(Direction direction) {
                         return;
                 }
 
+		// nobody can walk over a potion
+		if (cell->getItem() && (cell->getItem())->getItemType() 
+			== ItemType::Potion) {
+			return;
+		}
+
                 // NPCs cannot occupy a tile if it has an item
                 if (!(this->isPlayer) && cell->getItem()) {
                         return;
@@ -163,10 +169,11 @@ void Character::doMove(Direction direction) {
                         return;
                 }
 
+
                 // otherwise move as normal
 
                 // removes character from currentCell
-                (this->currentCell)->setOccupant(this);
+                (this->currentCell)->setOccupant(nullptr);
 
                 // changes currentCell to the new one
                 // setOccupant is done in setCell
@@ -193,7 +200,7 @@ void Character::doMove(Direction direction) {
 
         }
 
-        // if is player, and there's an item on the new cell;
+        // if is player, and there's an item on the new cell (not potion);
         if (this->isPlayer && currentCell->getItem()) {
                 // uses the item
                 this->applyItem(currentCell->getItem());
@@ -310,7 +317,8 @@ void Character::attack(Character& defender, Generator& rng) {
 			this->addAction(makeMsg(this->name, 
 				DEAL_PAST_TENSE + to_string(damage) 
 				+ " " + DAMAGE_NOUN + TO_PREPOSITION, 
-				defender.getName()));
+				defender.getName() + " (" 
+				+ to_string(defender.getHP()) + ")"));
 		}
 
 	}

@@ -11,9 +11,10 @@ using namespace std;
 class Character;
 
 
+// Dragon does not give gold on death, hence wallet field is set to 0
 Dragon::Dragon(int wallet): Character{DRAGON_HP_MAX, DRAGON_HP, 
 	DRAGON_ATTACK_VALUE, DRAGON_DEFENCE_VALUE, 
-	false, Race::Dragon, wallet} {}
+	false, Race::Dragon, 0} {}
 
 
 void Dragon::doMove(Direction direction) {/* does not move */}

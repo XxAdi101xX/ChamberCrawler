@@ -13,8 +13,9 @@ class GoldPile;
 extern bool merchantsAngered;
 
 
+// Merchant does not give gold on death, hence wallet field is set to 0
 Merchant::Merchant(int wallet): Character{MERCHANT_HP_MAX, MERCHANT_HP,
-        MERCHANT_ATTACK_VALUE, MERCHANT_DEFENCE_VALUE, false, Race::Merchant, wallet} {}
+        MERCHANT_ATTACK_VALUE, MERCHANT_DEFENCE_VALUE, false, Race::Merchant, 0} {}
 
 
 void Merchant::doStartTurnRoutine() {
