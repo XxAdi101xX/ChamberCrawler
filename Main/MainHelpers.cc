@@ -1,11 +1,6 @@
 #include <vector>
 #include <memory>
-#include "Floor.h"
-#include "Generator.h"
-#include "TextDisplay.h"
-#include "Character.h"
-#include "Direction.h"
-#include "Defines.cc"
+#include <iostream>
 using namespace std;
 
 extern Generator rng;
@@ -67,7 +62,7 @@ Cell* getValidCell() {
 // throws if all neighbours are not valid
 vector<int> getValidNeighbourCoordinates(vector<int> base) {
 	// safety check
-	vector<vector<int>> checkedCoordinates
+	vector<vector<int>> checkedCoordinates;
 
 	do {
 		vector<int> tempCoordinates = rng.genNeighbourCoord(base);
@@ -123,9 +118,10 @@ Direction getValidMove(vector<int> base) {
 	vector<Direction>  checkedDirections;
 
 	do {
-		tempDirection = rng.genDirection();
+		Cell* tempCell = currentFloor.getCell(base);
+		Direction tempDirection = rng.genDirection();
 		vector<int> tempCoordinates 
-			= (base->getNeighbour(tempDirection))->getCoord();
+			= (tempCell->getNeighbour(tempDirection))->getCoord();
 
 		bool checked = false;
 
@@ -143,7 +139,7 @@ Direction getValidMove(vector<int> base) {
 		}
 
 		// checks if all directions were tried
-		if (checkedDirections.size() == DIRECTION_ENUMERATION {
+		if (checkedDirections.size() == DIRECTION_ENUMERATION) {
 			// no valid move
 			throw;
 		}
@@ -167,7 +163,7 @@ int getNormalOrSmallGoldPile () {
 	} while (tempAmount != GOLD_PILE_SMALL_VALUE 
 		|| tempAmount != GOLD_PILE_NORMAL_VALUE);
 
-	return tempAmmount;
+	return tempAmount;
 }
 
 
@@ -175,31 +171,52 @@ int getNormalOrSmallGoldPile () {
 shared_ptr<Character> createCharacter(Race race) {
 	int tempWallet = getNormalOrSmallGoldPile();
 
-	switch(race) {
-		case Race::Shade : 
-			return Shade(tempWallet);
-		case Race::Drow : 
-            return Drow(tempWallet);
-		case Race::Vampire : 
-            return Vampire(tempWallet);
-		case Race::Troll : 
-            return Troll(tempWallet);
-		case Race::Goblin : 
-            return Goblin(tempWallet);
-		case Race::Human : 
-            return Human(tempWallet);
-		case Race::Dwarf : 
-            return Dwarf(tempWallet);
-		case Race::Elf : 
-            return Elf(tempWallet);
-		case Race::Orc : 
-            return Orc(tempWallet);
-		case Race::Merchant : 
-            return Merchant(tempWallet);
-		case Race::Dragon : 
-            return Dragon(tempWallet);
-		case Race::Halfling : 
-            return Halfling(tempWallet);
+	if (race == Race::Shade) {
+		return make_shared<Shade>(tempWallet);
+	}
+
+	else if (race == Race::Drow) {
+        return make_shared<Drow>(tempWallet);
+	}
+	
+	else if	(race == Race::Vampire) {
+        return make_shared<Vampire>(tempWallet);
+	}
+
+	else if (race == Race::Troll) {
+        return make_shared<Troll>(tempWallet);
+	}
+
+	else if (race == Race::Goblin) {
+        return make_shared<Goblin>(tempWallet);
+	}
+
+	else if (race == Race::Human) {
+        return make_shared<Human>(tempWallet);
+	}
+
+	else if (race == Race::Dwarf) {
+        return make_shared<Dwarf>(tempWallet);
+	}
+	
+	else if (race == Race::Elf) {
+        return make_shared<Elf>(tempWallet);
+	}
+
+	else if (race == Race::Orc) {
+        return make_shared<Orc>(tempWallet);
+	}
+
+	else if (race == Race::Merchant) {
+        return make_shared<Merchant>(tempWallet);
+	}
+
+	else if (race == Race::Dragon) {
+        return make_shared<Dragon>(tempWallet);
+	}
+
+	else if (race == Race::Halfling) {
+        return make_shared<Halfling>(tempWallet);
 	}
 
 }
@@ -212,11 +229,11 @@ void reset() {
 	NPCMovementPaused = false;
 	merchantsAngered = false;
 
-	usedPotions.erase();
+	usedPotions.clear();
 	
 	player = nullptr;
 	
-	alreadyActed.erase();
+	alreadyActed.clear();
 	
 	playerHasActed = false;
 	

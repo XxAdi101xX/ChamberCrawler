@@ -1,7 +1,54 @@
 #include <string>
 using namespace std;
 
+// commands
+const string CMD_NORTH = "no";
+const string CMD_SOUTH = "so";
+const string CMD_WEST = "ea";
+const string CMD_EAST = "we";
+const string CMD_NORTH_EAST = "ne";
+const string CMD_NORTH_WEST = "nw";
+const string CMD_SOUTH_EAST = "se";
+const string CMD_SOUTH_WEST = "sw";
 
+const string CMD_USE = "u";
+const string CMD_ATTACK = "a";
+
+const string CMD_SHADE_SELECT = "s";
+const string CMD_DROW_SELECT = "d";
+const string CMD_VAMPIRE_SELECT = "v";
+const string CMD_GOBLIN_SELECT = "g";
+const string CMD_TROLL_SELECT = "t";
+
+const string CMD_STOP = "f";
+const string CMD_RESTART = "r";
+const string CMD_QUIT = "q";
+
+const string CMD_YES = "y";
+const string CMD_NO = "n";
+
+// messages
+const string MSG_WELCOME = "Welcome to CC3k!";
+const string MSG_GOODBYE = "Goodbye!";
+
+const string MSG_GAME_CLEAR = "Game Cleared!";
+const string MSG_GAME_OVER = "Game Over!";
+
+const string MSG_RESETTING = "Resetting...";
+
+const string MSG_LOADING = "Loading";
+const string MSG_LOADING_COMPLETE = "Done!";
+
+const string MSG_FINAL_SCORE = "Final score";
+
+const string MSG_INVALID_CMD = "Invalid command";
+const string MSG_INVALID_DIRECTION = "Invalid direction";
+
+const string MSG_RACE_SELECTED = "You have selected";
+
+// prompts
+const string PROMPT_RACE_SELECTION = "Please select a race";
+const string PROMPT_REPLAY = "Replay?";
 
 
 // vocab:
@@ -88,6 +135,7 @@ const string NAME_POTION_BOOST_ATTACK = "a BA";
 const string NAME_POTION_BOOST_DEFENCE = "a BD";
 const string NAME_POTION_WOUND_ATTACK = "a WA";
 const string NAME_POTION_WOUND_DEFENCE = "a WD";
+
 const string NAME_POTION_UNKNOWN = "an unknown";
 
 

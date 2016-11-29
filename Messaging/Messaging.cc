@@ -10,7 +10,7 @@
 //#include "Potion.h"
 //#include "GoldPile.h"
 #include "Localisation.cc"
-#include "Defines.cc"
+//#include "Defines.cc"
 using namespace std;
 
 // all string literals reside in Localisation.cc

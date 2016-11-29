@@ -33,11 +33,6 @@ private:
 
 	// helpers mutators:
 
-	// used when walking over any item, applies item
-	// to character if character is player
-	// may call applyPotion
-	void applyItem(std::shared_ptr<Item> item);
-
 	// used when walking over potion, applies potion
 	// to character if character is player
 	void applyPotion(std::shared_ptr<Item> potion);
@@ -125,6 +120,11 @@ public:
 	// ctor
 	Character(int HPMax, int HP, int attackValue, int defenceValue, 
 		bool isHostile, Race race, int wallet);
+
+	// used when walking over gold pile, or called by use command,
+    // applies item to character if character is player
+    // may call applyPotion or addGold
+    void applyItem(std::shared_ptr<Item> item);
 
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine

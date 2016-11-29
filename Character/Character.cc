@@ -19,27 +19,6 @@ using namespace std;
 extern vector<PotionType> usedPotions;
 
 
-void Character::applyItem(shared_ptr<Item> item) {
-	// gets the item type
-	ItemType itemType = item->getItemType();
-
-	// if item is GoldPile
-	if (itemType == ItemType::GoldPile) {
-		// if GoldPile is not bound
-		if (!(item->getBoundState)) {
-				this->addGold(item->getValue());
-		}
-
-	}
-
-	// if item is Potion
-	else if (itemType == ItemType::Potion) {
-		this->applyPotion(item);
-	}
-
-}
-
-
 void Character::applyPotion(shared_ptr<Item> potion) {
 	PotionType type = potion->getType();
 	int potency = potion->getPotency();
@@ -312,6 +291,27 @@ Character::Character(int HPMax, int HP, int attackValue, int defenceValue,
 	race{race}, wallet{wallet}, name{raceToText(race)} 
 
 	{}
+
+
+void Character::applyItem(shared_ptr<Item> item) {
+    // gets the item type
+    ItemType itemType = item->getItemType();
+
+    // if item is GoldPile
+    if (itemType == ItemType::GoldPile) {
+        // if GoldPile is not bound
+        if (!(item->getBoundState)) {
+                this->addGold(item->getValue());
+        }
+
+    }
+
+    // if item is Potion
+    else if (itemType == ItemType::Potion) {
+        this->applyPotion(item);
+    }
+
+}
 
 
 void Character::attack(Character& defender, Generator& rng) {
