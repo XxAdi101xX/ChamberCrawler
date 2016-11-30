@@ -55,7 +55,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	// default seed
-	int seed = time{NULL};
+	int seed = time(NULL);
 
 	ifstream file;
 	bool readFromFile = false;
@@ -71,11 +71,11 @@ int main(int argc, char *argv[]) {
 		
 		try {
 			file = ifstream{argv[1]};
-			file.peek() = test;
+			test = file.peek();
 			readFromFile = true;
 		}
 
-		catch (failure f) {
+		catch (...) {
 			cerr << ERR_BAD_FILE << endl;
 			return 2;
 		}
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 			seed = stoi(argv[2]);
 		}
 
-		catch (invalid_argument a) {
+		catch (...) {
 			cerr << ERR_BAD_SEED << endl;
 			return 3;
 		}
@@ -92,13 +92,15 @@ int main(int argc, char *argv[]) {
 	}
 
 	else if (argc = 2) {
+		string test;
+
 	    try {
             file = ifstream{argv[1]};
-            file.peek() = test;
+            test = file.peek();
 			readFromFile = true;
         }
 
-        catch (failure f) {
+        catch (...) {
         	try {
             	seed = stoi(argv[1]);
         	}
@@ -129,8 +131,10 @@ int main(int argc, char *argv[]) {
 
 	vector<int> stairCoords;
 
-	// read generation variables
+	// read generation variables and temporaries
 	vector<int> floorDimensions; // for reading a floor from file 
+
+	char tempChar;
 
 	bool playerHasBeenPlaced = false;
 
@@ -140,7 +144,7 @@ int main(int argc, char *argv[]) {
 
 	shared_ptr<GoldPile> tempGoldPile;
 
-	// counters and temporaries
+	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
 	Cell* tempCell;
 	vector<Cell*> tempNeighbourhood;
@@ -267,7 +271,7 @@ newFloorStart:
 		file >> currentFloor;
 
 		// reinitialize the file to scan for objects on the floor
-		file = ifstream{argv[1]}
+		file = ifstream{argv[1]};
 
 		floorDimensions = currentFloor.getFloorDimensions();
 
@@ -370,7 +374,7 @@ newFloorStart:
 					tempCharacter = createCharacter(Race::Halfling);
                     break;
 
-				default :
+				default : ;
 					// do nothing
 
 			}
@@ -417,7 +421,7 @@ newFloorStart:
 		}
 
 		// if we have unlinked dragons or dragon hoard cells
-		if (dragonStack.size() != 0 || dragonHoardCellStack.size != 0) {
+		if (dragonStack.size() != 0 || dragonHoardCellStack.size() != 0) {
 				cerr << ERR_BAD_MAP << endl;
 				return 5;
 		}
@@ -505,7 +509,7 @@ newFloorStart:
 
 				}
 
-				catch (int i) {
+				catch (...) {
 					// remove the pile added
 					tempCell->setItem(nullptr);
 
@@ -566,7 +570,7 @@ newFloorStart:
 			player->startTurnRoutine(rng);
 		}
 
-		catch (int i) {
+		catch (...) {
 			playerHasActed = true;
 		}
 
@@ -816,8 +820,8 @@ newFloorStart:
 		outputGameState();
 
 		// NPC turn start
-		for (int i = 0; i < (currentFloor->getFloorDimension())[0]; ++i) {
-			for (int j = 0; j < (currentFloor->getFloorDimension())[1]; ++j) {
+		for (int i = 0; i < (currentFloor.getFloorDimension())[0]; ++i) {
+			for (int j = 0; j < (currentFloor.getFloorDimension())[1]; ++j) {
 
 				// gets the all necessary info for this cell
 				tempCell = currentFloor.getCell(vector<int>{i,j});
@@ -832,7 +836,7 @@ newFloorStart:
 						tempCharacter->startTurnRoutine(rng);
 					}
 
-					catch (int i) {
+					catch (...) {
 						// caught dragon attacking
 						alreadyActed.emplace_back(tempCharacter);
 					}
@@ -864,7 +868,7 @@ newFloorStart:
 								->move(getValidMove(vector<int>{i,j}));
 						}
 
-						catch (int i) {}
+						catch (...) {}
 
 						// logs the character 
 						// than just moved

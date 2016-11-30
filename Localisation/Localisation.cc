@@ -48,15 +48,15 @@ const string PROMPT_RACE_SELECTION = "Please select a race";
 const string PROMPT_REPLAY = "Replay?";
 
 // errors
-const string ERR_INVALID_CMD = "Invalid command"
-const string ERR_INVALID_DIRECTION = "Invalid direction"
+const string ERR_INVALID_CMD = "Invalid command";
+const string ERR_INVALID_DIRECTION = "Invalid direction";
 
 const string ERR_USAGE = "Usage: cc3k [filename] [seed]";
 const string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS 
-	= "Invalid number of command line arguments"
+	= "Invalid number of command line arguments";
 const string ERR_BAD_FILE = "File does not exist or could not be read";
 const string ERR_BAD_SEED = "Seed was not in the correct integer form";
-const string ERR_BAD_CMD_LINE_ARGS = "Invalid command line argument";
+const string ERR_BAD_CMD_LINE_ARG = "Invalid command line argument";
 const string ERR_BAD_MAP = "The map read was invalid";
 
 // vocab:
@@ -88,7 +88,7 @@ const string NAME_DROW = "R";
 const string NAME_DWARF = "W";
 const string NAME_ELF = "E";
 const string NAME_GOBLIN = "B";
-const string NAME_HALFLING = "H";
+const string NAME_HALFLING = "L";
 const string NAME_HUMAN = "H";
 const string NAME_MERCHANT = "M";
 const string NAME_ORC = "O";
@@ -105,7 +105,9 @@ const char CHAR_HORIZONTAL_WALL = '-';
 const char CHAR_FLOOR_TILE = '.';
 const char CHAR_DOOR_WAY = '+';
 const char CHAR_PASSAGE = '#';
-const char CHAR_STAIRS = '\';
+
+// 92 == '\', compiler won't let me enter the literal
+const char CHAR_STAIRS = 92;
 const char CHAR_NULL = ' ';
 
 const char CHAR_DRAGON = 'D';
@@ -113,7 +115,7 @@ const char CHAR_DROW = 'R';
 const char CHAR_DWARF = 'W';
 const char CHAR_ELF = 'E';
 const char CHAR_GOBLIN = 'B';
-const char CHAR_HALFLING = 'H';
+const char CHAR_HALFLING = 'L';
 const char CHAR_HUMAN = 'H';
 const char CHAR_MERCHANT = 'M';
 const char CHAR_ORC = 'O';
