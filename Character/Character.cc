@@ -387,7 +387,9 @@ void Character::move(Direction direction) {
 void Character::setCell(Cell* cell) {
 	this->currentCell = cell;
 
-	(this->currentCell)->setOccupant(this);
+	if (cell) {
+		cell->setOccupant(this);
+	}
 
 }
 

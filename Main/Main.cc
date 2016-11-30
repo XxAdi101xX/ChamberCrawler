@@ -1,6 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
+#include <utility>
 #include <memory>
 #include <ctime>
 
@@ -52,8 +54,67 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
+	// default seed
+	int seed = time{NULL};
+
+	ifstream file;
+	bool readFromFile = false;
+
+	if (argc > 3) {
+		cerr << ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS << endl;
+		cerr << ERR_USAGE << endl;
+		return 1;
+	}
+
+	else if (argc = 3) {
+		string test;
+		
+		try {
+			file = ifstream{argv[1]};
+			file.peek() = test;
+			readFromFile = true;
+		}
+
+		catch (failure f) {
+			cerr << ERR_BAD_FILE << endl;
+			return 2;
+		}
+
+		try {
+			seed = stoi(argv[2]);
+		}
+
+		catch (invalid_argument a) {
+			cerr << ERR_BAD_SEED << endl;
+			return 3;
+		}
+
+	}
+
+	else if (argc = 2) {
+	    try {
+            file = ifstream{argv[1]};
+            file.peek() = test;
+			readFromFile = true;
+        }
+
+        catch (failure f) {
+        	try {
+            	seed = stoi(argv[1]);
+        	}
+
+        	catch (invalid_argument a) {
+            	cerr << ERR_BAD_CMD_LINE_ARG << endl;
+            	return 4;
+        	}
+
+        }
+
+
+	}
+
 	// game global variables
-	Generator rng = Generator{time(NULL)};
+	Generator rng = Generator{seed};
 	TextDisplay theTextDisplay = TextDisplay{};
 	int floorCount = 0;
 	Floor currentFloor = Floor{&theTextDisplay};
@@ -67,6 +128,17 @@ int main(int argc, char *argv[]) {
 	vector<int> playerCoords;
 
 	vector<int> stairCoords;
+
+	// read generation variables
+	vector<int> floorDimensions; // for reading a floor from file 
+
+	bool playerHasBeenPlaced = false;
+
+	// two stacks are utilized to link dragon hoards with dragons
+	vector<Cell*> dragonHoardCellStack;
+	vector<shared_ptr<Dragon>> dragonStack;
+
+	shared_ptr<GoldPile> tempGoldPile;
 
 	// counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
@@ -143,7 +215,7 @@ titleScreen:
 		}
 
 		else {
-			cout << MSG_INVALID_CMD << endl;
+			cerr << ERR_INVALID_CMD << endl;
 		}
 
 	}
@@ -182,133 +254,301 @@ newFloorStart:
 		}
 
 		else {
-			cout << MSG_INVALID_CMD << endl;
+			cerr << ERR_INVALID_CMD << endl;
 		}
 
 	}
 
 	cout << MSG_LOADING;
 
-	currentFloor.initialize();
+	if (readFromFile) {
+		readFromFile = false;
 
-	// generate player location
-	// gets proper coordinates for player	
-	playerCoords = getValidCoords();
+		file >> currentFloor;
 
-	// gets the cell at playerCoords
-	tempCell = currentFloor.getCell(playerCoords);
+		// reinitialize the file to scan for objects on the floor
+		file = ifstream{argv[1]}
 
-	// sets the player in place
-	// cell also gets set occupant
-	player->setCell(tempCell);
+		floorDimensions = currentFloor.getFloorDimensions();
 
-	// sets the player character as the player
-	player->setPlayer();
+		tempCoords = vector<int>{0,0};
 
-	// informs player of progress in loading
-	cout << PERIOD;
+		while (file.get(tempChar)) {
+			tempCell = currentFloor.getCell(tempCoords);
+			tempCharacter = nullptr;
+			tempDragon = nullptr;
+			tempItem = nullptr;
+			tempGoldPile = nullptr;
 
-	// generate stairs location
-	// gets a proper coordinates for stairs
-	do {
-		stairCoords = getValidCoords();
+			switch(tempChar) {
+				case CHAR_READ_POTION_RESTORE_HEALTH :
+					tempItem = make_shared<Potion>(PotionType::RestoreHealth);
+					break;
 
-		// reroll if coordinates are in the same chamber as player
-	} while(currentFloor.sameChamber(playerCoords, stairCoords));
+                case CHAR_READ_POTION_POISON_HEALTH :
+					tempItem = make_shared<Potion>(PotionType::PoisonHealth);
+                    break;
 
-	// sets the stairs in place
-	currentFloor.getCell(stairCoords)->setCellType(CellType::Stairs);
+                case CHAR_READ_POTION_BOOST_ATTACK :
+					tempItem = make_shared<Potion>(PotionType::BoostAttack);
+                    break;
 
-	cout << PERIOD;
+                case CHAR_READ_POTION_BOOST_DEFENCE :
+					tempItem = make_shared<Potion>(PotionType::BoostDefence);
+                    break;
 
-	// generates potions
-	while (numberOfSpawnedPotions < SPAWN_NUMBER_POTION) {
-		// gets proper cell
-		tempCell = getValidCell();
+                case CHAR_READ_POTION_WOUND_ATTACK :
+					tempItem = make_shared<Potion>(PotionType::WoundAttack);
+                    break;
 
-		// gets a random PotionType
-		tempPotionType = rng.genPotionType();
+                case CHAR_READ_POTION_WOUND_DEFENCE :
+					tempItem = make_shared<Potion>(PotionType::WoundDefence);
+                    break;
 
-		// adds a potion to the cell
-		tempCell->setItem(make_shared<Potion>(tempPotionType));
+                case CHAR_READ_GOLD_PILE_NORMAL :
+					tempItem = make_shared<GoldPile>(GOLD_PILE_NORMAL_VALUE);
+                    break;
 
-		++numberOfSpawnedPotions;
-	}
-	
-	cout << PERIOD;
+                case CHAR_READ_GOLD_PILE_SMALL :
+					tempItem = make_shared<GoldPile>(GOLD_PILE_SMALL_VALUE);
+                    break;
 
-	// generates gold
-	while (numberOfSpawnedGoldPiles < SPAWN_NUMBER_GOLD_PILE) {
+                case CHAR_READ_GOLD_PILE_MERCHANT_HOARD :
+					tempItem 
+						= make_shared<GoldPile>
+						(GOLD_PILE_MERCHANT_HOARD_VALUE);
+                    break;
 
-		// gets proper coordinates
-		tempCoords = getValidCoords();
+                case CHAR_READ_GOLD_PILE_DRAGON_HOARD :
+					tempGoldPile 
+						= make_shared<GoldPile>
+						(GOLD_PILE_DRAGON_HOARD_VALUE);
+					
+					// adds dragon hoard cell to stack for linking
+					dragonHoardCellStack.emplace_back(
+						currentFloor.getCell(tempCoords));
+                    break;
 
-		// gets the cell at tempCoords
-		tempCell = currentFloor.getCell(tempCoords);
+                case CHAR_PLAYER :
+					if (playerHasBeenPlaced) {
+						cerr << ERR_BAD_MAP << endl;
+						return 5;
+					}
 
-		// gets a random GoldPile value
-		tempGoldPileValue = rng.genGold();
+					tempCharacter = player;
+					playerHasBeenPlaced = true;
+                    break;
 
-		// if the gold spawned was a dragon hoard
-		if (tempGoldPileValue == GOLD_PILE_DRAGON_HOARD_VALUE) {
-			try {
-				// get a valid neighbouring coordinate
-				dragonCoords = getValidNeighbourCoordinates(tempCoords);
+                case CHAR_HUMAN :
+					tempCharacter = createCharacter(Race::Human);
+                    break;
 
-				// get a dragon
-				tempDragon = createCharacter(Race::Dragon);
+                case CHAR_DWARF :
+					tempCharacter = createCharacter(Race::Dwarf);
+                    break;
 
-				// sets dragon in place
-				tempDragon->setCell(tempCell);
+                case CHAR_ELF :
+					tempCharacter = createCharacter(Race::Elf);
+                    break;
 
-				// gives it it's cell
-				tempDragon
-					->setDragonHoardCell(tempCell);
+                case CHAR_ORC :
+					tempCharacter = createCharacter(Race::Orc);
+                    break;
+
+                case CHAR_MERCHANT :
+					tempCharacter = createCharacter(Race::Merchant);
+                    break;
+
+                case CHAR_DRAGON :
+					tempDragon = createCharacter(Race::Dragon);
+					
+					// adds dragon to stack for linking
+					dragonStack.emplace_back(tempDragon);
+                    break;
+
+                case CHAR_HALFLING :
+					tempCharacter = createCharacter(Race::Halfling);
+                    break;
+
+				default :
+					// do nothing
 
 			}
 
-			catch (int i) {
-				// remove the pile added
-				tempCell->setItem(nullptr);
+			// if an Item was read, place the item
+			if (tempItem) {
+				tempCell->setItem(tempItem);
+			}
 
-				// decrements counter to allow second try
-				--numberOfSpawnedGoldPiles;
+			// special case due to typing differences
+			else if (tempGoldPile) {
+			}
+
+			// if an Character was read, place the character
+			else if (tempChararacter) {
+				tempCharacter->setCell(tempCell);
+			}
+
+			// special case due to typing differences
+			else if (tempDragon) {
+				tempDragon->setCell(tempCell);
+			}
+
+			// handling dragon and dragon hoards
+			if (dragonStack.size() >= 0 
+				&& dragonHoardCellStack.size() >= 0) {
+
+				// cell that the dragon hoard is on
+				tempCell = dragonHoardCellStack.back();
+
+				// the dragon
+				tempDragon = dragonStack.back();
+
+				// links the two above
+				tempDragon->setDragonHoardCell(tempCell);
+
+				// removes the two since their generation
+				// is complete
+				dragonStack.pop_back();
+				dragonHoardCellStack.pop_back();
 
 			}
 
 		}
 
-				// not a merchant hoard, not a dragon hoard
-				else if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
-					tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
+		// if we have unlinked dragons or dragon hoard cells
+		if (dragonStack.size() != 0 || dragonHoardCellStack.size != 0) {
+				cerr << ERR_BAD_MAP << endl;
+				return 5;
+		}
+		
+	}
+
+	else {
+		currentFloor.initialize();
+
+		// generate player location
+		// gets proper coordinates for player	
+		playerCoords = getValidCoords();
+
+		// gets the cell at playerCoords
+		tempCell = currentFloor.getCell(playerCoords);
+
+		// sets the player in place
+		// cell also gets set occupant
+		player->setCell(tempCell);
+
+		// sets the player character as the player
+		player->setPlayer();
+
+		playerHasBeenPlaced = true;
+
+		// informs player of progress in loading
+		cout << PERIOD;
+
+		// generate stairs location
+		// gets a proper coordinates for stairs
+		do {
+			stairCoords = getValidCoords();
+
+			// reroll if coordinates are in the same chamber as player
+		} while(currentFloor.sameChamber(playerCoords, stairCoords));
+
+		// sets the stairs in place
+		currentFloor.getCell(stairCoords)->setCellType(CellType::Stairs);
+
+		cout << PERIOD;
+
+		// generates potions
+		while (numberOfSpawnedPotions < SPAWN_NUMBER_POTION) {
+			// gets proper cell
+			tempCell = getValidCell();
+
+			// gets a random PotionType
+			tempPotionType = rng.genPotionType();
+
+			// adds a potion to the cell
+			tempCell->setItem(make_shared<Potion>(tempPotionType));
+
+			++numberOfSpawnedPotions;
+		}
+		
+		cout << PERIOD;
+
+		// generates gold
+		while (numberOfSpawnedGoldPiles < SPAWN_NUMBER_GOLD_PILE) {
+
+			// gets proper coordinates
+			tempCoords = getValidCoords();
+
+			// gets the cell at tempCoords
+			tempCell = currentFloor.getCell(tempCoords);
+
+			// gets a random GoldPile value
+			tempGoldPileValue = rng.genGold();
+
+			// if the gold spawned was a dragon hoard
+			if (tempGoldPileValue == GOLD_PILE_DRAGON_HOARD_VALUE) {
+				try {
+					// get a valid neighbouring coordinate
+					dragonCoords = getValidNeighbourCoordinates(tempCoords);
+
+					// get a dragon
+					tempDragon = createCharacter(Race::Dragon);
+
+					// sets dragon in place
+					tempDragon->setCell(tempCell);
+
+					// gives it it's cell
+					tempDragon
+						->setDragonHoardCell(tempCell);
+
 				}
 
-		// is actually a merchant hoard
-		else {
-			// decrements counter to allow second try
-			--numberOfSpawnedGoldPiles;
+				catch (int i) {
+					// remove the pile added
+					tempCell->setItem(nullptr);
+
+					// decrements counter to allow second try
+					--numberOfSpawnedGoldPiles;
+
+				}
+
+			}
+
+			// not a merchant hoard, not a dragon hoard
+			else if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
+				tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
+			}
+
+			// is actually a merchant hoard
+			else {
+				// decrements counter to allow second try
+				--numberOfSpawnedGoldPiles;
+			}
+
+			++numberOfSpawnedGoldPiles;
 		}
 
-		++numberOfSpawnedGoldPiles;
-	}
+		cout << PERIOD;
 
-	cout << PERIOD;
+		// generates enemies
+		while (numberOfSpawnedNPCs < SPAWN_NUMBER_NPC) {
+			// gets a proper cell
+			tempCell = getValidCell();
 
-	// generates enemies
-	while (numberOfSpawnedNPCs < SPAWN_NUMBER_NPC) {
-		// gets a proper cell
-		tempCell = getValidCell();
+			// gets a random Race
+			tempRace = rng.genNPCRace();
 
-		// gets a random Race
-		tempRace = rng.genNPCRace();
+			// gets a random NPC
+			tempCharacter = createCharacter(tempRace);
 
-		// gets a random NPC
-		tempCharacter = createCharacter(tempRace);
+			// sets NPC in place
+			tempCharacter->setCell(tempCell);
 
-		// sets NPC in place
-		tempCharacter->setCell(tempCell);
+			++numberOfSpawnedNPCs;
+		}
 
-		++numberOfSpawnedNPCs;
 	}
 
 	cout << MSG_LOADING_COMPLETE << endl;
@@ -423,7 +663,7 @@ newFloorStart:
 
 					else {
 						// invalid direction
-						cout << MSG_INVALID_DIRECTION << endl;
+						cerr << ERR_INVALID_DIRECTION << endl;
 
 						// makes sure to wait for player cmd
 						playerHasActed = false;
@@ -444,7 +684,7 @@ newFloorStart:
 						// otherwise pretend it was invalid commmand
 						else {
 							//invalid direction
-							cout << MSG_INVALID_DIRECTION << endl;
+							cerr << ERR_INVALID_DIRECTION << endl;
 
 							// makes sure to wait for player cmd
 							playerHasActed = false;
@@ -504,7 +744,7 @@ newFloorStart:
 
 					else { 
 						// invalid direction
-						cout << MSG_INVALID_DIRECTION << endl;
+						cerr << ERR_INVALID_DIRECTION << endl;
 
 						// makes sure to wait for player cmd
 						playerHasActed = false;
@@ -523,7 +763,7 @@ newFloorStart:
 						// otherwise pretend it was invalid command
 						else {
 							// invalid direction
-							cout << MSG_INVALID_DIRECTION << endl;
+							cerr << ERR_INVALID_DIRECTION << endl;
 
 							// makes sure to wait for player cmd
 							playerHasActed = false;
@@ -550,7 +790,7 @@ newFloorStart:
 
 			else {
 					// invalid command
-					cout << MSG_INVALID_CMD << endl;
+					cerr << ERR_INVALID_CMD << endl;
 
 					// makes sure to wait for player cmd
 					playerHasActed = false;
@@ -565,6 +805,12 @@ newFloorStart:
 
 		// need to update coordinates that main has
 		playerCoords = (player->getInfo()).coordinates;
+
+		// checks for moving to new floor
+		if (playerCoords == stairCoords) {
+			goto newFloorStart;
+		}
+
 
 		// outputs new game state
 		outputGameState();
@@ -647,6 +893,11 @@ newFloorStart:
 		// for DLC purposes (e.g. knockback)
 		playerCoords = (player->getInfo()).coordinates;
 
+		// checks for moving on to new floor
+        if (playerCoords == stairCoords) {
+            goto newFloorStart;
+        }
+
 		// outputs the new game state
 		outputGameState();
 	}
@@ -674,7 +925,7 @@ newFloorStart:
 		}
 
 		else {
-				cout << MSG_INVALID_CMD << endl;
+				cerr << ERR_INVALID_CMD << endl;
 		}
 
 	}

@@ -13,6 +13,7 @@ extern bool NPCMovementPaused;
 extern bool merchantsAngered;
 extern vector<PotionType> usedPotions;
 extern shared_ptr<Character> player;
+extern bool playerHasBeenPlaced;
 extern vector<shared_ptr<Character>> alreadyActed;
 extern bool playerHasActed;
 extern int numberOfSpawnedPotions;
@@ -233,6 +234,8 @@ void reset() {
 	
 	player = nullptr;
 	
+	playerHasBeenPlaced = false;
+
 	alreadyActed.clear();
 	
 	playerHasActed = false;

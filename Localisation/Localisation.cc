@@ -41,15 +41,23 @@ const string MSG_LOADING_COMPLETE = "Done!";
 
 const string MSG_FINAL_SCORE = "Final score";
 
-const string MSG_INVALID_CMD = "Invalid command";
-const string MSG_INVALID_DIRECTION = "Invalid direction";
-
 const string MSG_RACE_SELECTED = "You have selected";
 
 // prompts
 const string PROMPT_RACE_SELECTION = "Please select a race";
 const string PROMPT_REPLAY = "Replay?";
 
+// errors
+const string ERR_INVALID_CMD = "Invalid command"
+const string ERR_INVALID_DIRECTION = "Invalid direction"
+
+const string ERR_USAGE = "Usage: cc3k [filename] [seed]";
+const string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS 
+	= "Invalid number of command line arguments"
+const string ERR_BAD_FILE = "File does not exist or could not be read";
+const string ERR_BAD_SEED = "Seed was not in the correct integer form";
+const string ERR_BAD_CMD_LINE_ARGS = "Invalid command line argument";
+const string ERR_BAD_MAP = "The map read was invalid";
 
 // vocab:
 
@@ -79,7 +87,7 @@ const string NAME_DRAGON = "D";
 const string NAME_DROW = "R";
 const string NAME_DWARF = "W";
 const string NAME_ELF = "E";
-const string NAME_GOBLIN = "G";
+const string NAME_GOBLIN = "B";
 const string NAME_HALFLING = "H";
 const string NAME_HUMAN = "H";
 const string NAME_MERCHANT = "M";
@@ -92,11 +100,19 @@ const string NAME_VAMPIRE = "V";
 
 // Display char:
 
+const char CHAR_VERTICAL_WALL = '|';
+const char CHAR_HORIZONTAL_WALL = '-';
+const char CHAR_FLOOR_TILE = '.';
+const char CHAR_DOOR_WAY = '+';
+const char CHAR_PASSAGE = '#';
+const char CHAR_STAIRS = '\';
+const char CHAR_NULL = ' ';
+
 const char CHAR_DRAGON = 'D';
 const char CHAR_DROW = 'R';
 const char CHAR_DWARF = 'W';
 const char CHAR_ELF = 'E';
-const char CHAR_GOBLIN = 'G';
+const char CHAR_GOBLIN = 'B';
 const char CHAR_HALFLING = 'H';
 const char CHAR_HUMAN = 'H';
 const char CHAR_MERCHANT = 'M';
@@ -105,6 +121,18 @@ const char CHAR_PLAYER = '@';
 const char CHAR_SHADE = 'S';
 const char CHAR_TROLL = 'T';
 const char CHAR_VAMPIRE = 'V';
+
+// characters used in reading floor from file only
+const char CHAR_READ_POTION_RESTORE_HEALTH = '0';
+const char CHAR_READ_POTION_POISON_HEALTH = '1';
+const char CHAR_READ_POTION_BOOST_ATTACK = '2';
+const char CHAR_READ_POTION_BOOST_DEFENCE = '3';
+const char CHAR_READ_POTION_WOUND_ATTACK = '4';
+const char CHAR_READ_POTION_WOUND_DEFENCE= '5';
+const char CHAR_READ_GOLD_PILE_NORMAL = '6';
+const char CHAR_READ_GOLD_PILE_SMALL = '7';
+const char CHAR_READ_GOLD_PILE_MERCHANT_HOARD = '8';
+const char CHAR_READ_GOLD_PILE_DRAGON_HOARD = '9';
 
 
 // Direction names:
