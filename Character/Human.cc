@@ -24,8 +24,8 @@ void Human::deathRoutine() {
 
 
 	for (auto neighbour : neighbourHood) {
-		// if there is no item on a neighbouring cell
-		if (!(neighbour->getItem)) {
+		// if there is no item or character on a neighbouring cell
+		if (!(neighbour->getItem()) && !(neighbour->getOccupant())) {
 			neighbour->setItem
 				(make_shared<GoldPile>(HUMAN_DROPPED_GOLD_PILE_VALUE));
 
