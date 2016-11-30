@@ -10,7 +10,7 @@ class Generator;
 
 
 Orc::Orc(int wallet): Character{ORC_HP_MAX, ORC_HP,
-        ORC_ATTACK_VALUE, ORC_DEFENCE_VALUE, true, Race::Orc, wallet} {}
+	ORC_ATTACK_VALUE, ORC_DEFENCE_VALUE, true, Race::Orc, wallet} {}
 
 
 bool dealDamageTo(Character& defender, int& damage, Generator& rng) {

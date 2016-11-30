@@ -9,7 +9,7 @@ public:
 	Human(int wallet); // ctor
 
 	// overrides to drop two normal GoldPile upon death
-        virtual void deathRoutine() override;
+	virtual void deathRoutine() override;
 
 };
 

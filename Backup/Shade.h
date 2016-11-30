@@ -7,7 +7,7 @@
 class Shade final: public Character {
 private:
 	// overrides to give a 50% score bonus
-        virtual int getScoreBonus() const override;
+	virtual int getScoreBonus() const override;
 
 public:
 	Shade(int wallet);

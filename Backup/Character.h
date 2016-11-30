@@ -11,6 +11,8 @@ class Item;
 class Generator;
 class Potion;
 class Cell;
+class Info;
+
 
 class Character/*: public Subject*/ {
 private:
@@ -31,39 +33,34 @@ private:
 
 	// helpers mutators:
 
-	// used when walking over any item, applies item
-	// to character if character is player
-	// may call applyPotion
-	void applyItem(std::shared_ptr<Item> item);
-
 	// used when walking over potion, applies potion
 	// to character if character is player
 	void applyPotion(std::shared_ptr<Item> potion);
 
-        // runs at turn start
-        // normally does nothing, but overrides implements specific
-        // racial traits
-        virtual void doStartTurnRoutine();
+	// runs at turn start
+	// normally does nothing, but overrides implements specific
+	// racial traits
+	virtual void doStartTurnRoutine(Generator& rng);
 
-        // runs after attack
-        // normally does nothing, but overrides implements specific
-        // racial traits
-        virtual void postAttackRoutine(Character& defender, 
-		bool hit, Generator& rng);
+	// runs after attack
+	// normally does nothing, but overrides implements specific
+	// racial traits
+	virtual void postAttackRoutine(Character& defender, 
+	bool hit, Generator& rng);
 
-        // run upon character death (HP == 0)
-        // normally does nothing, but overrides implements specific
-        // racial traits
-        virtual void deathRoutine();
+	// run upon character death (HP == 0)
+	// normally does nothing, but overrides implements specific
+	// racial traits
+	virtual void deathRoutine();
 
-        // runs at turn end
-        // normally does nothing, but overrides implements specific
-        // racial traits
-        virtual void doEndTurnRoutine();
+	// runs at turn end
+	// normally does nothing, but overrides implements specific
+	// racial traits
+	virtual void doEndTurnRoutine();
 
 	// defends from incoming damage, evasion is
-        // decided here by rng
-        bool defend(Character& attacker, int& incomingDamage, Generator& rng);
+	// decided here by rng
+	bool defend(Character& attacker, int& incomingDamage, Generator& rng);
 
 	// the following two functions are made seperate to differentiate
 	// one-to-many, and many-to-one relationships when it comes
@@ -85,11 +82,11 @@ private:
 	virtual void addHPViaPotion(int amount);
 	
 	// responsible to movement, and calls applyItem
-        // if moved over item
+	// if moved over item
 	virtual void doMove(Direction direction);
 
-        // appends a string action to lastAction
-        void addAction(std::string action);
+	// appends a string action to lastAction
+	void addAction(std::string action);
 
 	// helper accessors:
 
@@ -115,7 +112,7 @@ protected:
 	// helper accessors:
 
 	int getAttackBuffProt() const; // returns attackBuff value for subclasses
-        int getDefenceBuffProt() const; // returns defenceBuff value for subclasses
+	int getDefenceBuffProt() const; // returns defenceBuff value for subclasses
 	int getScoreProt() const; // returns score for subclasses
 
 
@@ -124,13 +121,18 @@ public:
 	Character(int HPMax, int HP, int attackValue, int defenceValue, 
 		bool isHostile, Race race, int wallet);
 
+	// used when walking over gold pile, or called by use command,
+    // applies item to character if character is player
+    // may call applyPotion or addGold
+    void applyItem(std::shared_ptr<Item> item);
+
 	// attack encompasses different parts of a charcter's attack
 	// utilizing postAttackRoutine
 	// may decide hit or miss in future expansion using rng
 	void attack(Character& defender, Generator& rng);
  
 	// wrapper for doStartTurnRoutine, uses NVI idiom
-	void startTurnRoutine();
+	void startTurnRoutine(Generator& rng);
 
 	// wrapper for doEndTurnRoutine, uses NVI idiom
 	void endTurnRoutine();
@@ -158,7 +160,7 @@ public:
 	Cell* getCurrentCell() const; // returns the currentCell
 	std::string getLastAction() const; // returns the lastAction done
 	std::string getName() const; // returns the name of the character
-	char getInfo() const; // returns information for observer
+	Info getInfo() const; // returns information for observer
 
 };
 

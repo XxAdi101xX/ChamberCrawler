@@ -1,5 +1,20 @@
 #include <climits>
 
+// Generation info
+const int NUMBER_OF_FLOORS = 5;
+const int SPAWN_NUMBER_POTION = 10;
+const int SPAWN_NUMBER_GOLD_PILE = 10;
+const int SPAWN_NUMBER_NPC = 20;
+
+
+// Enumerations info
+const int DIRECTION_ENUMERATION = 8;
+const int RACE_ENUMERATION = 12;
+const int ITEM_TYPE_ENUMERATION = 2;
+const int POTION_TYPE_ENUMERATION = 6;
+const int CELL_TYPE_ENUMERATION = 6;
+
+
 // Item info:
 const int POTION_VALUE = 2;
 

@@ -11,9 +11,10 @@ using namespace std;
 class Character;
 
 
+// Dragon does not give gold on death, hence wallet field is set to 0
 Dragon::Dragon(int wallet): Character{DRAGON_HP_MAX, DRAGON_HP, 
 	DRAGON_ATTACK_VALUE, DRAGON_DEFENCE_VALUE, 
-	false, Race::Dragon, wallet} {}
+	false, Race::Dragon, 0} {}
 
 
 void Dragon::doMove(Direction direction) {/* does not move */}
@@ -25,15 +26,9 @@ void Dragon::deathRoutine() {
 }
 
 
-void Dragon::doStartTurnRoutine() {
-	// save on some runtime
-	if (this->getHostileState()) {
-		return;
-	}
-
-	// gets all neighbours
-	vector<Cell*> neighbourhood 
-		= (this->getCurrentCell())->getNeighbours();
+void Dragon::doStartTurnRoutine(Generator& rng) {
+	// gets all neighbours of the dragonHoard
+	vector<Cell*> neighbourhood = (this->dragonHoardCell)->getNeighbours();
 	
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
@@ -41,12 +36,20 @@ void Dragon::doStartTurnRoutine() {
 
 		if (occupant && occupant->getPlayerState()) {
 			this->setHostile();
+
+			// attackes player if they are next to dragon hoard
+			this->attack(*occupant, rng);
+
+			// throws so that the program know the dragon already
+			// attacked
+			throw;
 		}
 
 	}
 
-	// gets all neighbours of the dragonHoard
-	neighbourhood = (this->dragonHoardCell)->getNeighbours();
+
+	// gets all neighbours of dragon
+	neighbourhood = (this->getCurrentCell())->getNeighbours();
 
 	// note that I would not like to repeat this code,
 	// but there's no operator+ for vectors so I have
@@ -56,11 +59,13 @@ void Dragon::doStartTurnRoutine() {
 	for (auto neighbour: neighbourhood) {
 		Character* occupant = neighbour->getOccupant();
 
-        	if (occupant && occupant->getPlayerState()) {
-                	this->setHostile();
-                }
+		if (occupant && occupant->getPlayerState()) {
+			this->setHostile();
+			// don't attack because dragon
+			// will get to attack later
+		}
 
-        }
+	}
 
 }
 

@@ -7,6 +7,7 @@
 class Dwarf final: public Character {
 public:
 	Dwarf(int wallet); // ctor
+
 };
 
 
