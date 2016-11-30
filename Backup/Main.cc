@@ -142,8 +142,6 @@ int main(int argc, char *argv[]) {
 	vector<Cell*> dragonHoardCellStack;
 	vector<shared_ptr<Dragon>> dragonStack;
 
-	shared_ptr<GoldPile> tempGoldPile;
-
 	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
 	Cell* tempCell;
@@ -268,7 +266,15 @@ newFloorStart:
 	if (readFromFile) {
 		readFromFile = false;
 
-		file >> currentFloor;
+		try {
+			file >> currentFloor;
+		}
+
+		// for errors reading the map
+		catch (..) {
+			cerr << ERR_BAD_MAP << endl;
+			return 5;
+		}
 
 		// reinitialize the file to scan for objects on the floor
 		file = ifstream{argv[1]};
@@ -282,7 +288,6 @@ newFloorStart:
 			tempCharacter = nullptr;
 			tempDragon = nullptr;
 			tempItem = nullptr;
-			tempGoldPile = nullptr;
 
 			switch(tempChar) {
 				case CHAR_READ_POTION_RESTORE_HEALTH :
@@ -324,16 +329,16 @@ newFloorStart:
                     break;
 
                 case CHAR_READ_GOLD_PILE_DRAGON_HOARD :
-					tempGoldPile 
+					tempItem 
 						= make_shared<GoldPile>
 						(GOLD_PILE_DRAGON_HOARD_VALUE);
 					
 					// adds dragon hoard cell to stack for linking
-					dragonHoardCellStack.emplace_back(
-						currentFloor.getCell(tempCoords));
+					dragonHoardCellStack.emplace_back(tempCell);
                     break;
 
                 case CHAR_PLAYER :
+					// prevents placing the player twice
 					if (playerHasBeenPlaced) {
 						cerr << ERR_BAD_MAP << endl;
 						return 5;
@@ -384,16 +389,13 @@ newFloorStart:
 				tempCell->setItem(tempItem);
 			}
 
-			// special case due to typing differences
-			else if (tempGoldPile) {
-			}
-
 			// if an Character was read, place the character
 			else if (tempChararacter) {
 				tempCharacter->setCell(tempCell);
 			}
 
 			// special case due to typing differences
+			// MAY FIX LATER WITH CASTING......................................
 			else if (tempDragon) {
 				tempDragon->setCell(tempCell);
 			}
@@ -416,6 +418,18 @@ newFloorStart:
 				dragonStack.pop_back();
 				dragonHoardCellStack.pop_back();
 
+			}
+
+			// advancing the coordinate
+
+			// if at end of line
+			if (tempCoords[2] == floorDimensions[2] - 1) {
+				tempCoords = vector<int>{tempCoords[1] + 1, 0};
+			}
+
+			// normal traversal
+			else {
+				tempCoords = vector<int>{tempCoords[1], tempCoords[2] + 1};
 			}
 
 		}
@@ -509,6 +523,7 @@ newFloorStart:
 
 				}
 
+				// if all neighbours are occupied
 				catch (...) {
 					// remove the pile added
 					tempCell->setItem(nullptr);
@@ -570,6 +585,8 @@ newFloorStart:
 			player->startTurnRoutine(rng);
 		}
 
+		// if the startTurnRoutine forced the character to act
+		// note that normall this doesnt happen
 		catch (...) {
 			playerHasActed = true;
 		}
@@ -836,8 +853,9 @@ newFloorStart:
 						tempCharacter->startTurnRoutine(rng);
 					}
 
+					// if caught dragon attacking because player
+					// was next to dragon hoard
 					catch (...) {
-						// caught dragon attacking
 						alreadyActed.emplace_back(tempCharacter);
 					}
 
@@ -868,6 +886,8 @@ newFloorStart:
 								->move(getValidMove(vector<int>{i,j}));
 						}
 
+						// failure to move because neighbouring cells
+						// are occupied
 						catch (...) {}
 
 						// logs the character 

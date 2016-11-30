@@ -34,8 +34,8 @@ void Merchant::deathRoutine() {
 	int numberOfGoldPilesAlreadyDropped = 0;
 
 	for (auto neighbour : neighbourHood) {
-		// if there is no item on a neighbouring cell
-		if (!(neighbour->getItem)) {
+		// if there is no item or character on a neighbouring cell
+		if (!(neighbour->getItem()) && !(neighbour->getOccupant())) {
 			neighbour->setItem
 			(make_shared<GoldPile>(MERCHANT_DROPPED_GOLD_PILE_VALUE));
 			
