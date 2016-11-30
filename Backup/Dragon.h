@@ -12,7 +12,9 @@ private:
 	// overrides move to do nothing
 	virtual void doMove(Direction direction) override;
 
-	// checks whether or not to turn hostile
+	// checks whether or not to turn hostile, also
+	// attacks player if player is next to gold pile
+	// (then throws to let you know that it already attacked)
 	virtual void doStartTurnRoutine(Generator& rng) override;
 
 	// unbinds the dragon hoard
