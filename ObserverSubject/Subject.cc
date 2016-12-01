@@ -1,11 +1,11 @@
 #include "Subject.h"
 
-bool Subject::attach(Observer *o) {
+bool Subject::attach(std::shared_ptr<Observer> o) {
 	observers.emplace_back(o);
 	return true;
 }
 
-void Subject::detach(Observer *o) {
+void Subject::detach(std::shared_ptr<Observer> o) {
 	observers.erase(o);
 }
 
