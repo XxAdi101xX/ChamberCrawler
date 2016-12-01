@@ -3,12 +3,13 @@
 
 #include "Observer.h"
 #include <vector>
+#include <memory>
 
 class Subject {
-	std::vector<Observer *> observers;
+	std::vector<std::shared_ptr<Observer>> observers;
 public:
-	bool attach(Observer *o);
-	void detach(Observer *o);
+	bool attach(std::shared_ptr<Observer>);
+	void detach(std::shared_ptr<Observer>);
 	void notifyObservers();
 	virtual ~Subject() = 0;
 }
