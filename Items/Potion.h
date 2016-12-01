@@ -2,7 +2,7 @@
 #define _POTION_H_
 
 #include "Item.h"
-#include "PotionType.h"
+#include "../Enumerations/PotionType.h"
 
 class Potion final: public Item {
 	PotionType potionType;

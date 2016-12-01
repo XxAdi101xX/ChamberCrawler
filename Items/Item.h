@@ -1,7 +1,7 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 
-#include "ItemType.h"
+#include "../Enumerations/ItemType.h"
 
 class Item {
 	ItemType itemType;

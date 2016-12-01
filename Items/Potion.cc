@@ -1,5 +1,5 @@
 #include "Potion.h"
-#include "Defines.cc"
+#include "../Defines/Defines.cc"
 using namespace std;
 
 Potion::Potion(PotionType potionType):Item{ItemType::Potion, POTION_VALUE}, 
