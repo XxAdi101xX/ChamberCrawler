@@ -1,5 +1,5 @@
-#include "Item.h"
 #include "GoldPile.h"
+#include "Defines.cc"
 using namespace std;
 
 GoldPile::GoldPile(int value): Item{ItemType::GoldPile, value} {

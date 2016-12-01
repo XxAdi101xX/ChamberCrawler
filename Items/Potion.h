@@ -12,6 +12,6 @@ class Potion final: public Item {
 	~Potion();
 	PotionType getPotionType() const;
 	int getPotency() const;
-}
+};
 
 #endif

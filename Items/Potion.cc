@@ -1,8 +1,9 @@
 #include "Potion.h"
+#include "Defines.cc"
 using namespace std;
 
 Potion::Potion(PotionType potionType):Item{ItemType::Potion, POTION_VALUE}, 
-															potionType{potionType} {
+																			potionType{potionType} {
 	// Different potion potencies layed out in if statements so they can 
 	// easily be changed/added if required
 	if (potionType == PotionType::RestoreHealth) {
@@ -26,7 +27,7 @@ Potion::Potion(PotionType potionType):Item{ItemType::Potion, POTION_VALUE},
 }
 
 // Destructor
-~Potion() {}
+Potion::~Potion() {}
 
 // Return type of potion that affects the player's stats
 PotionType Potion::getPotionType() const {
