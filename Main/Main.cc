@@ -131,8 +131,9 @@ int main(int argc, char *argv[]) {
 
 	vector<int> stairCoords;
 
+
 	// read generation variables and temporaries
-	vector<int> floorDimensions; // for reading a floor from file 
+	vector<int> floorDimensions; // for procedural generation as well
 
 	char tempChar;
 
@@ -444,6 +445,8 @@ newFloorStart:
 
 	else {
 		currentFloor.initialize();
+
+		floorDimensions = currentFloor.getFloorDimensions();
 
 		// generate player location
 		// gets proper coordinates for player	
