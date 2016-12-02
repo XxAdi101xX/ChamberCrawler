@@ -1,5 +1,6 @@
 #include "Cell.h"
 #include "../Localisation/Localisation.cc"
+#include "../Info/Info.h"
 using namespace std;
 
 // constructor
@@ -11,7 +12,7 @@ void Cell::setCellType(CellType type) {
 }
 
 // Sets coordinates of cell   
-void Cell::setCoords(std::vector<Cell*> coords) {
+void Cell::setCoords(std::vector<int> coords) {
 	this->coordinates = coords;
 }
 
@@ -22,12 +23,14 @@ void Cell::addNeighbour(Cell* neighbour) {
   
 // Adds item to cell
 void Cell::setItem(shared_ptr<Item> item) {
-	this->item = item
+	this->item = item;
+	this->notifyObservers();
 }
 
 // Sets occupant of cell to the argument given  
 void Cell::setOccupant(Character* occupant) {
 	this->occupant = occupant;
+	this->notifyObservers();
 }
   
 // Returns cell type
@@ -47,22 +50,36 @@ shared_ptr<Item> Cell::getItem() {
 
 // Returns the cell's neighbours in the specified direction  
 Cell* Cell::getNeighbour(Direction direction) {
-	switch (direction) {
-		// The neighbours are always placed in a particular order in the vector
-		case Direction::North : return (getNeighbours()[0]);
-		case Direction::NorthWest : return (getNeighbours()[1]);
-		case Direction::West : return (getNeighbours()[2]);
-		case Direction::SouthWest : return (getNeighbours()[3]);
-		case Direction::South : return (getNeighbours()[4]);
-		case Direction::SouthEast : return (getNeighbours()[5]);
-		case Direction::East : return (getNeighbours()[6]);
-		case Direction::NorthEast : return (getNeighbours()[7]);	
+	// The neighbours are always placed in a particular order in the vector
+	if (direction == Direction::North) { 
+		return (getNeighbours()[0]); 
+	}
+	else if (direction == Direction::NorthWest) { 
+		return (getNeighbours()[1]); 
+	}
+	else if (direction == Direction::West) { 
+		return (getNeighbours()[2]); 
+	}
+	else if (direction == Direction::SouthWest) {
+		 return (getNeighbours()[3]);
+	}
+	else if (direction == Direction::South) { 
+		return (getNeighbours()[4]);
+	}
+	else if (direction == Direction::SouthEast) { 
+		return (getNeighbours()[5]);
+	}
+	else if (direction == Direction::East) { 
+		return (getNeighbours()[6]);
+	}
+	else {
+		(getNeighbours()[7]); // NorthEast
 	}
 }
                                           
 // Returns a refernce to vector with all neighbouring Cells
 vector<Cell*>& Cell::getNeighbours() {
-	return &neighbours;
+	return neighbours;
 }
   
 // Returns any character object occupying the cell or nullptr otherwise
@@ -80,23 +97,36 @@ Info Cell::getInfo() {
 			cellInfo.displayChar = CHAR_PLAYER;
 		}
 		else {
-			switch(occupant->getName()) {
-				case NAME_HUMAN : cellInfo.displayChar = CHAR_HUMAN;
-				case NAME_DWARF : cellInfo.displayChar = CHAR_DWARF;
-				case NAME_ELF : cellInfo.displayChar = CHAR_ELF;
-				case NAME_ORC : cellInfo.displayChar = CHAR_ORC;
-				case NAME_MERCHANT : cellInfo.displayChar = CHAR_MERCHANT;
-				case NAME_DRAGON : cellInfo.displayChar = CHAR_DRAGON;
-				case NAME_HALFLING : cellInfo.displayChar = CHAR_HALFLING;
+			string name = occupant->getName();
+			if (name == NAME_HUMAN) { 
+				cellInfo.displayChar = CHAR_HUMAN;
+			}
+			else if (name == NAME_DWARF) { 
+				cellInfo.displayChar = CHAR_DWARF;
+			}
+			else if (name ==  NAME_ELF) { 
+				cellInfo.displayChar = CHAR_ELF;
+			}
+			else if (name == NAME_ORC) {
+				 cellInfo.displayChar = CHAR_ORC;
+			}
+			else if (name == NAME_MERCHANT) {
+				 cellInfo.displayChar = CHAR_MERCHANT;
+			}
+			else if (name == NAME_DRAGON) {
+				cellInfo.displayChar = CHAR_DRAGON;
+			}
+			else if (name == NAME_HALFLING) {
+				cellInfo.displayChar = CHAR_HALFLING;
 			}
 		}
 	}
 	// check if cell occupies an item
 	else if (item != nullptr) {
-		if (item->getItemType == ItemType::GoldPile) {
+		if (item->getItemType() == ItemType::GoldPile) {
 			cellInfo.displayChar = CHAR_ITEM_GOLD_PILE;
 		}
-		else if (item->getItemType == ItemType::Potion) {
+		else if (item->getItemType() == ItemType::Potion) {
 			cellInfo.displayChar = CHAR_ITEM_POTION;
 		}
 	}
@@ -116,7 +146,7 @@ Info Cell::getInfo() {
 	else if (getCellType() == CellType::Stairs) {
 		cellInfo.displayChar = CHAR_STAIRS;
 	}
-	else if (getCellType == CellType::Wall) {
+	else if (getCellType() == CellType::Wall) {
 		// check what type of wall is occupied by cell
 		if (((getNeighbour(Direction::West))->getCellType() == CellType::Wall) &&
 				((getNeighbour(Direction::East))->getCellType() == CellType::Wall)) {
@@ -127,10 +157,5 @@ Info Cell::getInfo() {
 		}
 	}
 	return cellInfo;
-}
-
-// Notifying the visual display whenever a change to the cell occurs  
-void Cell::notify(Subject& whoNotified) {
-	this->notifyObservers();
 }
 
