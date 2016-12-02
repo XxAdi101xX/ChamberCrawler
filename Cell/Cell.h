@@ -5,6 +5,7 @@
 #include <vector>
 #include "../Enumerations/CellType.h"
 #include "../Enumerations/Direction.h"
+#include "../Enumerations/ItemType.h"
 #include "../Character/Character.h"
 #include "../ObserverSubject/Subject.h"
 #include "../ObserverSubject/Observer.h"
