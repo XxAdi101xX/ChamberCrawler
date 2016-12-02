@@ -16,16 +16,16 @@ void Floor::initialize() {
     for (int i = 0; i < floorDimensions[0]; ++i) {
         for (int j = 0; j < floorDimensions[1]; ++j) {
             if (i > 0) {
-                floorDimensions[i][j].addNeighbour(floorDimensions[i - 1][j]);
+                theDisplay[i][j].addNeighbour(theDisplay[i - 1][j]);
             }
             if (j > 0) {
-                floorDimensions[i][j].addNeighbour(floorDimensions[i][j - 1]);
+                theDisplay[i][j].addNeighbour(theDisplay[i][j - 1]);
             }
             if (i + 1 < floorDimensions[0]) {
-                floorDimensions[i][j].addNeighbour(floorDimensions[i + 1][j]);
+                theDisplay[i][j].addNeighbour(theDisplay[i + 1][j]);
             }
             if (j + 1 < floorDimensions[1]) {
-                floorDimensions[i][j].addNeighbour(floorDimensions[i][j + 1]);
+                theDisplay[i][j].addNeighbour(theDisplay[i][j + 1]);
             }
             floorDimensions[i][j].attach(theDisplay);
         }

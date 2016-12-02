@@ -25,9 +25,12 @@ const int POTION_POTENCY_WOUND_ATTACK = -5;
 const int POTION_POTENCY_WOUND_DEFENSE = -5;
 
 const int GOLD_PILE_SMALL_VALUE = 1;
+const int GOLD_PILE_SMALL_SPAWN_CHANCE = 5/8;
 const int GOLD_PILE_NORMAL_VALUE = 2;
+const int GOLD_PILE_NORMAL_SPAWN_CHANCE = 1/4;
 const int GOLD_PILE_MERCHANT_HOARD_VALUE = 4;
 const int GOLD_PILE_DRAGON_HOARD_VALUE = 6;
+const int GOLD_PILE_DRAGON_HOARD_SPAWN_CHANCE = 1/8;
 
 
 // Race info:
@@ -113,5 +116,3 @@ const int HALFLING_HP = 100;
 const int HALFLING_ATTACK_VALUE = 15;
 const int HALFLING_DEFENCE_VALUE = 20;
 // const float HALFLING_DODGE_CHANCE = 0.5; // chance for attack to miss halfling
-
-
