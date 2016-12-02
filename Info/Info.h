@@ -3,8 +3,15 @@
 
 #include <string>
 #include <vector>
+#include "Race.h"
 
 struct Info {
+	Race race;
+	int gold;
+	int HP;
+	int attackValue;
+	int defenceValue;
+
 	std::vector<int> coordinates;
 	char displayChar;
 	std::string lastAction;

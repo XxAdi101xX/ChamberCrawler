@@ -443,6 +443,12 @@ Info Character::getInfo() const {
 	Info characterInfo;
 
 	// sets fields with proper info
+	characterInfo.race = this->getRace();
+	characterInfo.gold = this->wallet;
+	characterInfo.HP = this->getHP();
+	characterInfo.attackValue = this->getTotalAttack();
+	characterInfo.defenceValue = this->getTotalDefence();
+
 	characterInfo.coordinates = (this->currentCell)->getCoords();
 	characterInfo.displayChar = this->isPlayer ? CHAR_PLAYER : this->name[1];
 	characterInfo.lastAction = this->lastAction;
