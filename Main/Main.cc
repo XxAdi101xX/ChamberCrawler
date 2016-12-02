@@ -131,8 +131,9 @@ int main(int argc, char *argv[]) {
 
 	vector<int> stairCoords;
 
+
 	// read generation variables and temporaries
-	vector<int> floorDimensions; // for reading a floor from file 
+	vector<int> floorDimensions; // for procedural generation as well
 
 	char tempChar;
 
@@ -444,6 +445,8 @@ newFloorStart:
 
 	else {
 		currentFloor.initialize();
+
+		floorDimensions = currentFloor.getFloorDimensions();
 
 		// generate player location
 		// gets proper coordinates for player	
@@ -865,17 +868,20 @@ newFloorStart:
 							break;
 						}
 
-						tempDefender = neighbour->getOccupant();
+						if (neighbour) {
+							tempDefender = neighbour->getOccupant();
 
-						// if player is beside NPC,// and NPC is hostile
-						if (tempDefender->getPlayerState() 
-							&& tempCharacter->getHostileState()) {
+							// if player is beside NPC,// and NPC is hostile
+							if (tempDefender->getPlayerState() 
+								&& tempCharacter->getHostileState()) {
 
-							tempCharacter->attack(*tempDefender, rng);
+								tempCharacter->attack(*tempDefender, rng);
 
-							// logs the attacker
-							alreadyActed.emplace_back(tempCharacter);
-							break;
+								// logs the attacker
+								alreadyActed.emplace_back(tempCharacter);
+								break;
+							}
+
 						}
 
 					}
@@ -899,7 +905,7 @@ newFloorStart:
 
 					// report updates to theTextDisplay
 					tempCharacter->notifyObservers();
-								}
+				}
 
 				// report updates to theTextDisplay
 				tempCell->notifyObservers();

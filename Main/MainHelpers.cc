@@ -6,6 +6,9 @@ using namespace std;
 extern Generator rng;
 extern Floor currentFloor; // note that floor is cleared at initialization
 extern TextDisplay theTextDisplay;
+extern vector<int> floorDimensions;
+
+
 
 // globals that need to be reset
 extern int floorCount;
@@ -41,7 +44,7 @@ vector<int> getValidCoords() {
 	// safety check no necessary assuming there is enough room for spawning
 
 	do {
-		vector<int> tempCoordinates = rng.genCoordinate();
+		vector<int> tempCoordinates = rng.genCoordinate(floorDimensions);
 
 		// reroll if coordinates are not for a FloorTile
 		// or has an occupant already
@@ -226,6 +229,7 @@ shared_ptr<Character> createCharacter(Race race) {
 // resets all necessary global variables for new game
 void reset() {
 	floorCount = 0;
+	currentFloor->resetFloorNumber();
 
 	NPCMovementPaused = false;
 	merchantsAngered = false;

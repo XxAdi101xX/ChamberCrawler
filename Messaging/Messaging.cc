@@ -69,7 +69,7 @@ map<PotionType, string> potionTypes = {
 
 
 string makeMsg(string subject, string action, string object) {
-	return subject + " " + action + " " + object + PERIOD + " ";
+	return subject + " " + action + " " + object + PERIOD + " " + "\n";
 }
 
 

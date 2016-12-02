@@ -1,24 +1,25 @@
+
+
 #include <string>
-using namespace std;
 
 // commands
-const string CMD_NORTH = "no";
-const string CMD_SOUTH = "so";
-const string CMD_WEST = "ea";
-const string CMD_EAST = "we";
-const string CMD_NORTH_EAST = "ne";
-const string CMD_NORTH_WEST = "nw";
-const string CMD_SOUTH_EAST = "se";
-const string CMD_SOUTH_WEST = "sw";
+const std::string CMD_NORTH = "no";
+const std::string CMD_SOUTH = "so";
+const std::string CMD_WEST = "ea";
+const std::string CMD_EAST = "we";
+const std::string CMD_NORTH_EAST = "ne";
+const std::string CMD_NORTH_WEST = "nw";
+const std::string CMD_SOUTH_EAST = "se";
+const std::string CMD_SOUTH_WEST = "sw";
 
-const string CMD_USE = "u";
-const string CMD_ATTACK = "a";
+const std::string CMD_USE = "u";
+const std::string CMD_ATTACK = "a";
 
-const string CMD_SHADE_SELECT = "s";
-const string CMD_DROW_SELECT = "d";
-const string CMD_VAMPIRE_SELECT = "v";
-const string CMD_GOBLIN_SELECT = "g";
-const string CMD_TROLL_SELECT = "t";
+const std::string CMD_SHADE_SELECT = "s";
+const std::string CMD_DROW_SELECT = "d";
+const std::string CMD_VAMPIRE_SELECT = "v";
+const std::string CMD_GOBLIN_SELECT = "g";
+const std::string CMD_TROLL_SELECT = "t";
 
 const string CMD_STOP = "f";
 const string CMD_RESTART = "r";
