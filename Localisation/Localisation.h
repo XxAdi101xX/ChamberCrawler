@@ -168,7 +168,7 @@ const std::string NAME_POTION_BOOST_DEFENCE = "a BD";
 const std::string NAME_POTION_WOUND_ATTACK = "a WA";
 const std::string NAME_POTION_WOUND_DEFENCE = "a WD";
 
-const string NAME_POTION_UNKNOWN = "an unknown";
+const std::string NAME_POTION_UNKNOWN = "an unknown";
 
 
 // ItemType names:
