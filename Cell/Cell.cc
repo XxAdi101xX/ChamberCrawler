@@ -29,7 +29,7 @@ void Cell::setItem(shared_ptr<Item> item) {
 }
 
 // Sets occupant of cell to the argument given
-void Cell::setOccupant(Character* occupant) {
+void Cell::setOccupant(shared_ptr<Character> occupant) {
 	this->occupant = occupant;
 	this->notifyObservers();
 }
@@ -84,7 +84,7 @@ vector<shared_ptr<Cell>>& Cell::getNeighbours() {
 }
 
 // Returns any character object occupying the cell or nullptr otherwise
-Character* Cell::getOccupant() {
+std::shared_ptr<Character> Cell::getOccupant() {
 	return occupant;
 }
 

@@ -1,5 +1,5 @@
 #include "Generator.h"
-#include <cstdlib.h>
+#include <cstdlib>
 #include "../Defines/Defines.h"
 
 Generator::Generator(int seed):

@@ -1,5 +1,8 @@
-Main/Main.o: Main/Main.cc Main/../Info/Info.h \
-  Main/../Info/../Enumerations/Race.h Main/../Generator/Generator.h \
+Main/Main.o: Main/Main.cc Main/../ObserverSubject/Subject.h \
+  Main/../ObserverSubject/Observer.h \
+  Main/../ObserverSubject/../Info/Info.h \
+  Main/../ObserverSubject/../Info/../Enumerations/Race.h \
+  Main/../Generator/Generator.h \
   Main/../Generator/../Enumerations/PotionType.h \
   Main/../Generator/../Enumerations/Direction.h Main/../Floor/Floor.h \
   Main/../Floor/../Items/Item.h \
@@ -7,8 +10,6 @@ Main/Main.o: Main/Main.cc Main/../Info/Info.h \
   Main/../Floor/../Cell/Cell.h \
   Main/../Floor/../Cell/../Enumerations/CellType.h \
   Main/../Floor/../Cell/../Character/Character.h \
-  Main/../Floor/../Cell/../Character/../ObserverSubject/Subject.h \
-  Main/../Floor/../Cell/../Character/../ObserverSubject/Observer.h \
   Main/../Floor/../TextDisplay/TextDisplay.h Main/../Character/Shade.h \
   Main/../Character/Drow.h Main/../Character/Vampire.h \
   Main/../Character/Troll.h Main/../Character/Goblin.h \

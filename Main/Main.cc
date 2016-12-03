@@ -7,8 +7,8 @@
 #include <ctime>
 
 // Observer/Subject pattern
-//#include "Subject.h"
-//#include "Observer.h"
+#include "../ObserverSubject/Subject.h"
+#include "../ObserverSubject/Observer.h"
 #include "../Info/Info.h"
 
 // basic game elements
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
 	shared_ptr<Cell> tempCell;
-	vector<Cell*> tempNeighbourhood;
+	vector<shared_ptr<Cell>> tempNeighbourhood;
 	shared_ptr<Character> tempCharacter;
 	shared_ptr<Dragon> tempDragon;
 	shared_ptr<Character> tempDefender;
@@ -844,8 +844,8 @@ newFloorStart:
 		outputGameState();
 
 		// NPC turn start
-		for (int i = 0; i < (currentFloor.getFloorDimension())[0]; ++i) {
-			for (int j = 0; j < (currentFloor.getFloorDimension())[1]; ++j) {
+		for (int i = 0; i < (currentFloor.getFloorDimensions())[0]; ++i) {
+			for (int j = 0; j < (currentFloor.getFloorDimensions())[1]; ++j) {
 
 				// gets the all necessary info for this cell
 				tempCell = currentFloor.getCell(vector<int>{i,j});
@@ -922,7 +922,7 @@ newFloorStart:
 		alreadyActed.clear();
 
 		// report updates to observer
-		player->notifyObserver();
+		player->notifyObservers();
 
 		// for DLC purposes (e.g. knockback)
 		playerCoords = (player->getInfo()).coordinates;
