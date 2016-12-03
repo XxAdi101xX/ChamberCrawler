@@ -265,8 +265,6 @@ newFloorStart:
 	cout << MSG_LOADING;
 
 	if (readFromFile) {
-		readFromFile = false;
-
 		try {
 			file >> currentFloor;
 		}
@@ -279,6 +277,10 @@ newFloorStart:
 
 		// reinitialize the file to scan for objects on the floor
 		file = ifstream{argv[1]};
+
+		// skips previous floors in the file
+		file.ignore((floorCount - 1) 
+			* floorDimensions[0] * floorDimensions[1]);
 
 		floorDimensions = currentFloor.getFloorDimensions();
 
