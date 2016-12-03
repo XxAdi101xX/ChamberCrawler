@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 //#include <Subject.h>
-#include "Race.h"
+#include "../Enumerations/Race.h"
 
 enum class Direction;
 class Item;
