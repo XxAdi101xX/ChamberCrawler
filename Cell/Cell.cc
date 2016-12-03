@@ -11,7 +11,7 @@ void Cell::setCellType(CellType type) {
 	this->cellType = type;
 }
 
-// Sets coordinates of cell   
+// Sets coordinates of cell
 void Cell::setCoords(std::vector<int> coords) {
 	this->coordinates = coords;
 }
@@ -20,75 +20,75 @@ void Cell::setCoords(std::vector<int> coords) {
 void Cell::addNeighbour(Cell* neighbour) {
 	neighbours.emplace_back(neighbour);
 }
-  
+
 // Adds item to cell
 void Cell::setItem(shared_ptr<Item> item) {
 	this->item = item;
 	this->notifyObservers();
 }
 
-// Sets occupant of cell to the argument given  
+// Sets occupant of cell to the argument given
 void Cell::setOccupant(Character* occupant) {
 	this->occupant = occupant;
 	this->notifyObservers();
 }
-  
+
 // Returns cell type
 CellType Cell::getCellType() {
 	return cellType;
 }
-  
+
 // Returns the coordinates of the cell
 vector<int> Cell::getCoords() {
 	return coordinates;
 }
-  
+
 // Returns the item on the cell
 shared_ptr<Item> Cell::getItem() {
 	return item;
 }
 
-// Returns the cell's neighbours in the specified direction  
+// Returns the cell's neighbours in the specified direction
 Cell* Cell::getNeighbour(Direction direction) {
 	// The neighbours are always placed in a particular order in the vector
-	if (direction == Direction::North) { 
-		return (getNeighbours()[0]); 
+	if (direction == Direction::North) {
+		return (getNeighbours()[0]);
 	}
-	else if (direction == Direction::NorthWest) { 
-		return (getNeighbours()[1]); 
+	else if (direction == Direction::NorthWest) {
+		return (getNeighbours()[1]);
 	}
-	else if (direction == Direction::West) { 
-		return (getNeighbours()[2]); 
+	else if (direction == Direction::West) {
+		return (getNeighbours()[2]);
 	}
 	else if (direction == Direction::SouthWest) {
 		 return (getNeighbours()[3]);
 	}
-	else if (direction == Direction::South) { 
+	else if (direction == Direction::South) {
 		return (getNeighbours()[4]);
 	}
-	else if (direction == Direction::SouthEast) { 
+	else if (direction == Direction::SouthEast) {
 		return (getNeighbours()[5]);
 	}
-	else if (direction == Direction::East) { 
+	else if (direction == Direction::East) {
 		return (getNeighbours()[6]);
 	}
 	else {
 		(getNeighbours()[7]); // NorthEast
 	}
 }
-                                          
+
 // Returns a refernce to vector with all neighbouring Cells
 vector<Cell*>& Cell::getNeighbours() {
 	return neighbours;
 }
-  
+
 // Returns any character object occupying the cell or nullptr otherwise
 Character* Cell::getOccupant() {
 	return occupant;
 }
 
 // returns an Info struct with information on cell
-Info Cell::getInfo() {
+Info Cell::getInfo() const {
 	Info cellInfo;
 	cellInfo.coordinates = this->coordinates;
 	// check if cell occupies a character
@@ -98,13 +98,13 @@ Info Cell::getInfo() {
 		}
 		else {
 			string name = occupant->getName();
-			if (name == NAME_HUMAN) { 
+			if (name == NAME_HUMAN) {
 				cellInfo.displayChar = CHAR_HUMAN;
 			}
-			else if (name == NAME_DWARF) { 
+			else if (name == NAME_DWARF) {
 				cellInfo.displayChar = CHAR_DWARF;
 			}
-			else if (name ==  NAME_ELF) { 
+			else if (name ==  NAME_ELF) {
 				cellInfo.displayChar = CHAR_ELF;
 			}
 			else if (name == NAME_ORC) {
@@ -158,4 +158,3 @@ Info Cell::getInfo() {
 	}
 	return cellInfo;
 }
-

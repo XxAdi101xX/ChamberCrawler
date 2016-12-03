@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include "../Item/Item.h"
+#include "../Items/Item.h"
 #include "../Cell/Cell.h"
 #include "../TextDisplay/TextDisplay.h"
 
@@ -18,7 +18,7 @@ private:
 
     std::vector<int> floorDimensions;
 
-    bool dfsSearch(std::shared_ptr<std::map<std::string>> travelled, const std::vector<int> curr,
+    bool dfsSearch(std::shared_ptr<std::map<std::string, bool>> travelled, const std::vector<int> curr,
         const std::vector<int> dest);
 
     std::string coordsToString(std::vector<int> coord);

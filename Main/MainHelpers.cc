@@ -1,40 +1,25 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include "MainHelpers.h"
+#include "../Floor/Floor.h"
+#include "../TextDisplay/TextDisplay.h"
+
+#include "../ObserverSubject/Subject.h"
+
 using namespace std;
-
-extern Generator rng;
-extern Floor currentFloor; // note that floor is cleared at initialization
-extern TextDisplay theTextDisplay;
-extern vector<int> floorDimensions;
-
-
-
-// globals that need to be reset
-extern int floorCount;
-extern bool NPCMovementPaused;
-extern bool merchantsAngered;
-extern vector<PotionType> usedPotions;
-extern shared_ptr<Character> player;
-extern bool playerHasBeenPlaced;
-extern vector<shared_ptr<Character>> alreadyActed;
-extern bool playerHasActed;
-extern int numberOfSpawnedPotions;
-extern int numberOfSpawnedGoldPiles;
-extern int numberOfSpawnedNPCs;
-
 
 
 // checks if coordinates given is a FloorTile or not
 bool isValidCoordinates(vector<int> coord) {
-	return (currentFloor.getCell(coord))->getCellType() 
+	return (currentFloor.getCell(coord))->getCellType()
 		== CellType::FloorTile ? true : false;
 }
 
 
 // checks if coordinates given has an Item or Character on it
 bool isOccupied(vector<int> coord) {
-	return (currentFloor.getCell(coord))->getOccupant() 
+	return (currentFloor.getCell(coord))->getOccupant()
 	|| (currentFloor.getCell(coord)->getItem()) ? true : false;
 }
 
@@ -124,7 +109,7 @@ Direction getValidMove(vector<int> base) {
 	do {
 		Cell* tempCell = currentFloor.getCell(base);
 		Direction tempDirection = rng.genDirection();
-		vector<int> tempCoordinates 
+		vector<int> tempCoordinates
 			= (tempCell->getNeighbour(tempDirection))->getCoord();
 
 		bool checked = false;
@@ -157,14 +142,14 @@ Direction getValidMove(vector<int> base) {
 }
 
 
-// wrapper for generator that only produces a small or 
+// wrapper for generator that only produces a small or
 // normal amount of gold as described by defines.cc
 int getNormalOrSmallGoldPile () {
 	do {
 		int tempAmount = rng.genGold();
 
 		// reroll if value is not small or not normal
-	} while (tempAmount != GOLD_PILE_SMALL_VALUE 
+	} while (tempAmount != GOLD_PILE_SMALL_VALUE
 		|| tempAmount != GOLD_PILE_NORMAL_VALUE);
 
 	return tempAmount;
@@ -182,7 +167,7 @@ shared_ptr<Character> createCharacter(Race race) {
 	else if (race == Race::Drow) {
         return make_shared<Drow>(tempWallet);
 	}
-	
+
 	else if	(race == Race::Vampire) {
         return make_shared<Vampire>(tempWallet);
 	}
@@ -202,7 +187,7 @@ shared_ptr<Character> createCharacter(Race race) {
 	else if (race == Race::Dwarf) {
         return make_shared<Dwarf>(tempWallet);
 	}
-	
+
 	else if (race == Race::Elf) {
         return make_shared<Elf>(tempWallet);
 	}
@@ -235,15 +220,15 @@ void reset() {
 	merchantsAngered = false;
 
 	usedPotions.clear();
-	
+
 	player = nullptr;
-	
+
 	playerHasBeenPlaced = false;
 
 	alreadyActed.clear();
-	
+
 	playerHasActed = false;
-	
+
 	numberOfSpawnedPotions = 0;
 	numberOfSpawnedGoldPiles = 0;
 	numberOfSpawnedNPCs = 0;

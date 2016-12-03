@@ -9,47 +9,48 @@
 // Observer/Subject pattern
 //#include "Subject.h"
 //#include "Observer.h"
-#include "Info.h"
+#include "../Info/Info.h"
 
 // basic game elements
-//#include "Generator.h"
-//#include "Floor.h"
-//#include "Cell.h"
+#include "../Generator/Generator.h"
+#include "../Floor/Floor.h"
+#include "../Cell/Cell.h"
 
 // displays
-//#include "TextDisplay.h"
+#include "../TextDisplay/TextDisplay.h"
 
 // Character and subclasses
-#include "Character.h"
-#include "Shade.h"
-#include "Drow.h"
-#include "Vampire.h"
-#include "Troll.h"
-#include "Goblin.h"
-#include "Human.h"
-#include "Dwarf.h"
-#include "Elf.h"
-#include "Orc.h"
-#include "Merchant.h"
-#include "Dragon.h"
-#include "Halfling.h"
+#include "../Character/Character.h"
+#include "../Character/Shade.h"
+#include "../Character/Drow.h"
+#include "../Character/Vampire.h"
+#include "../Character/Troll.h"
+#include "../Character/Goblin.h"
+#include "../Character/Human.h"
+#include "../Character/Dwarf.h"
+#include "../Character/Elf.h"
+#include "../Character/Orc.h"
+#include "../Character/Merchant.h"
+#include "../Character/Dragon.h"
+#include "../Character/Halfling.h"
 
 // Item and subclasses
-//#include "Item.h"
-//#include "GoldPile.h"
-//#include "Potion.h"
+#include "../Items/Item.h"
+#include "../Items/GoldPile.h"
+#include "../Items/Potion.h"
 
 // enumerations
-#include "Direction.h"
-#include "Race.h"
-#include "ItemType.h"
-#include "PotionType.h"
-#include "CellType.h"
+#include "../Enumerations/Direction.h"
+#include "../Enumerations/Race.h"
+#include "../Enumerations/ItemType.h"
+#include "../Enumerations/PotionType.h"
+#include "../Enumerations/CellType.h"
 
-// .cc files
-#include "Defines.cc"
-#include "Localisation.cc"
-#include "MainHelpers.cc"
+
+// Other .h files
+#include "../Defines/Defines.h"
+#include "../Localisation/Localisation.h"
+#include "MainHelpers.h"
 using namespace std;
 
 
@@ -66,9 +67,9 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	else if (argc = 3) {
+	else if (argc == 3) {
 		string test;
-		
+
 		try {
 			file = ifstream{argv[1]};
 			test = file.peek();
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
 
 	}
 
-	else if (argc = 2) {
+	else if (argc == 2) {
 		string test;
 
 	    try {
@@ -117,11 +118,11 @@ int main(int argc, char *argv[]) {
 
 	// game global variables
 	Generator rng = Generator{seed};
-	TextDisplay theTextDisplay = TextDisplay{};
 	int floorCount = 0;
-	Floor currentFloor = Floor{&theTextDisplay};
+	Floor currentFloor = Floor{shared_ptr<TextDisplay>(&theTextDisplay)};
+	TextDisplay theTextDisplay = TextDisplay{currentFloor.getFloorDimensions()};
 
-	bool NPCMovementPaused = false;	
+	bool NPCMovementPaused = false;
 	bool merchantsAngered = false;
 	vector<PotionType> usedPotions;
 
@@ -145,7 +146,7 @@ int main(int argc, char *argv[]) {
 
 	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
-	Cell* tempCell;
+	shared_ptr<Cell> tempCell;
 	vector<Cell*> tempNeighbourhood;
 	shared_ptr<Character> tempCharacter;
 	shared_ptr<Dragon> tempDragon;
@@ -190,7 +191,7 @@ titleScreen:
 
 		else if (cmd == CMD_SHADE_SELECT) {
 			cout << MSG_RACE_SELECTED << " " << NAME_SHADE << endl;
-			player = createCharacter(Race::Shade);			
+			player = createCharacter(Race::Shade);
 		}
 
 		else if (cmd == CMD_DROW_SELECT) {
@@ -212,7 +213,7 @@ titleScreen:
 			cout << MSG_RACE_SELECTED << " " << NAME_TROLL << endl;
 			player = createCharacter(Race::Troll);
 		}
-		
+
 		else if	(cmd == CMD_RESTART) {
 			goto titleScreen;
 		}
@@ -226,7 +227,7 @@ titleScreen:
 
 	// attaches player to display so we can report what
 	// happened to the player
-	player->attach(&theTextDisplay);
+	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&theTextDisplay)));
 
 
 newFloorStart:
@@ -239,7 +240,7 @@ newFloorStart:
 	while (floorCount > NUMBER_OF_FLOORS) {
 		cout << MSG_GAME_CLEAR << endl;
 		cout << MSG_FINAL_SCORE << ": " << player->getScore() << endl;
-		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    " 
+		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    "
 		<< PROMPT_REPLAY << endl;
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || cmd == CMD_NO) {
@@ -248,7 +249,7 @@ newFloorStart:
 		}
 
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
-			cout << MSG_RESETTING << endl;			
+			cout << MSG_RESETTING << endl;
 
 			// clear game data
 			reset();
@@ -270,7 +271,7 @@ newFloorStart:
 		}
 
 		// for errors reading the map
-		catch (..) {
+		catch (...) {
 			cerr << ERR_BAD_MAP << endl;
 			return 5;
 		}
@@ -279,7 +280,7 @@ newFloorStart:
 		file = ifstream{argv[1]};
 
 		// skips previous floors in the file
-		file.ignore((floorCount - 1) 
+		file.ignore((floorCount - 1)
 			* floorDimensions[0] * floorDimensions[1]);
 
 		floorDimensions = currentFloor.getFloorDimensions();
@@ -288,13 +289,14 @@ newFloorStart:
 
 		while (file.get(tempChar)) {
 			tempCell = currentFloor.getCell(tempCoords);
-			tempCharacter = nullptr;
-			tempDragon = nullptr;
-			tempItem = nullptr;
+			tempCharacter.reset();
+			tempDragon.reset();
+			tempItem.reset();
 
 			switch(tempChar) {
 				case CHAR_READ_POTION_RESTORE_HEALTH :
-					tempItem = make_shared<Potion>(PotionType::RestoreHealth);
+					tempItem = new Potion{PotionType::RestoreHealth};
+					//tempItem = make_shared<Potion>(PotionType::RestoreHealth);
 					break;
 
                 case CHAR_READ_POTION_POISON_HEALTH :
@@ -326,16 +328,16 @@ newFloorStart:
                     break;
 
                 case CHAR_READ_GOLD_PILE_MERCHANT_HOARD :
-					tempItem 
+					tempItem
 						= make_shared<GoldPile>
 						(GOLD_PILE_MERCHANT_HOARD_VALUE);
                     break;
 
                 case CHAR_READ_GOLD_PILE_DRAGON_HOARD :
-					tempItem 
+					tempItem
 						= make_shared<GoldPile>
 						(GOLD_PILE_DRAGON_HOARD_VALUE);
-					
+
 					// adds dragon hoard cell to stack for linking
 					dragonHoardCellStack.emplace_back(tempCell);
                     break;
@@ -373,7 +375,7 @@ newFloorStart:
 
                 case CHAR_DRAGON :
 					tempDragon = createCharacter(Race::Dragon);
-					
+
 					// adds dragon to stack for linking
 					dragonStack.emplace_back(tempDragon);
                     break;
@@ -404,7 +406,7 @@ newFloorStart:
 			}
 
 			// handling dragon and dragon hoards
-			if (dragonStack.size() >= 0 
+			if (dragonStack.size() >= 0
 				&& dragonHoardCellStack.size() >= 0) {
 
 				// cell that the dragon hoard is on
@@ -442,7 +444,7 @@ newFloorStart:
 				cerr << ERR_BAD_MAP << endl;
 				return 5;
 		}
-		
+
 	}
 
 	else {
@@ -451,7 +453,7 @@ newFloorStart:
 		floorDimensions = currentFloor.getFloorDimensions();
 
 		// generate player location
-		// gets proper coordinates for player	
+		// gets proper coordinates for player
 		playerCoords = getValidCoords();
 
 		// gets the cell at playerCoords
@@ -495,7 +497,7 @@ newFloorStart:
 
 			++numberOfSpawnedPotions;
 		}
-		
+
 		cout << PERIOD;
 
 		// generates gold
@@ -619,7 +621,7 @@ newFloorStart:
 			else if (cmd == CMD_WEST) {
 				player->move(Direction::West);
 			}
-			
+
 			else if (cmd == CMD_NORTH_EAST) {
 				player->move(Direction::NorthEast);
 			}
@@ -646,7 +648,7 @@ newFloorStart:
 						cout << MSG_GOODBYE << endl;
 						return 0;
 					}
-					
+
 	               	else if (cmd == CMD_NORTH) {
 						tempCell = (currentFloor.getCell(playerCoords))
 							->getNeighbour(Direction::North);
@@ -674,7 +676,7 @@ newFloorStart:
 
 					else if (cmd == CMD_NORTH_WEST) {
 						tempCell = (currentFloor.getCell(playerCoords))
-							->getNeighbour(Direction::NorthWest);	
+							->getNeighbour(Direction::NorthWest);
 					}
 
 					else if (cmd == CMD_SOUTH_EAST) {
@@ -699,7 +701,7 @@ newFloorStart:
 					if (playerHasActed) {
 						// gets the item on cell
 						tempItem = tempCell->getItem();
-				
+
 						// if there is actually an item, use it
 						if (tempItem) {
 							player->applyItem(tempItem);
@@ -768,7 +770,7 @@ newFloorStart:
 							->getNeighbour(Direction::SouthWest);
 					}
 
-					else { 
+					else {
 						// invalid direction
 						cerr << ERR_INVALID_DIRECTION << endl;
 
@@ -874,7 +876,7 @@ newFloorStart:
 							tempDefender = neighbour->getOccupant();
 
 							// if player is beside NPC,// and NPC is hostile
-							if (tempDefender->getPlayerState() 
+							if (tempDefender->getPlayerState()
 								&& tempCharacter->getHostileState()) {
 
 								tempCharacter->attack(*tempDefender, rng);
@@ -898,7 +900,7 @@ newFloorStart:
 						// are occupied
 						catch (...) {}
 
-						// logs the character 
+						// logs the character
 						// than just moved
 						alreadyActed.emplace_back(tempCharacter);
 					}
@@ -939,7 +941,7 @@ newFloorStart:
 	while (player->getHP() <= 0) {
 		cout << MSG_GAME_OVER << endl;
 		cout << MSG_FINAL_SCORE << ": " << player->getScore() << endl;
-		cout << "(" << CMD_YES << "|" << CMD_NO << ")    " 
+		cout << "(" << CMD_YES << "|" << CMD_NO << ")    "
 		<< PROMPT_REPLAY << endl;
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || cmd == CMD_NO) {
@@ -948,7 +950,7 @@ newFloorStart:
 		}
 
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
-			cout << MSG_RESETTING << endl;			
+			cout << MSG_RESETTING << endl;
 
 			// clear game data
 			reset();
@@ -963,6 +965,3 @@ newFloorStart:
 	}
 
 }
-
-
-

@@ -3,18 +3,18 @@
 
 #include <string>
 #include <memory>
-//#include <Subject.h>
-#include "Race.h"
+#include "../ObserverSubject/Subject.h"
+#include "../Enumerations/Race.h"
 
 enum class Direction;
 class Item;
 class Generator;
 class Potion;
 class Cell;
-class Info;
+struct Info;
 
 
-class Character/*: public Subject*/ {
+class Character: public Subject {
 private:
 	int HPMax;
 	int HP;
@@ -45,7 +45,7 @@ private:
 	// runs after attack
 	// normally does nothing, but overrides implements specific
 	// racial traits
-	virtual void postAttackRoutine(Character& defender, 
+	virtual void postAttackRoutine(Character& defender,
 	bool hit, Generator& rng);
 
 	// run upon character death (HP == 0)
@@ -69,18 +69,18 @@ private:
 	// called by attack, modifies the damage value, and hit chance based
 	// on race relationship of attacker with respect to the defender
 	// returns true for hit, false otherwise
-	virtual bool dealDamageTo(Character& defender, 
+	virtual bool dealDamageTo(Character& defender,
 		int& damage, Generator& rng);
 
 	// called by defend, modifies the damage value, and hit chance based
 	// on race relationsip of defender with respect to the attacker
 	// returns true for hit, false otherwise
-	virtual bool takeDamageFrom(Character& attacker, 
+	virtual bool takeDamageFrom(Character& attacker,
 		int& damage, Generator& rng);
-	
+
 	// adds hp using addHP, wrapper to be overriden
 	virtual void addHPViaPotion(int amount);
-	
+
 	// responsible to movement, and calls applyItem
 	// if moved over item
 	virtual void doMove(Direction direction);
@@ -95,10 +95,10 @@ private:
 
 	// returns the bonus to attackBuff, default 0
 	virtual int getAttackBuffBonus() const;
-	
+
 	// returns the bonus to defenceBuff, default 0
 	virtual int getDefenceBuffBonus() const;
-	
+
 	// returns the bonus to score, default 0
 	virtual int getScoreBonus() const;
 
@@ -108,7 +108,7 @@ protected:
 	void setHostile(bool value = true); // sets isHostile to value
 	void addHP(int amount); // adds HP but does not exceed HPMax
 	void addGold(int amount); // adds gold and thus score as well
- 
+
 	// helper accessors:
 
 	int getAttackBuffProt() const; // returns attackBuff value for subclasses
@@ -118,7 +118,7 @@ protected:
 
 public:
 	// ctor
-	Character(int HPMax, int HP, int attackValue, int defenceValue, 
+	Character(int HPMax, int HP, int attackValue, int defenceValue,
 		bool isHostile, Race race, int wallet);
 
 	// used when walking over gold pile, or called by use command,
@@ -130,7 +130,7 @@ public:
 	// utilizing postAttackRoutine
 	// may decide hit or miss in future expansion using rng
 	void attack(Character& defender, Generator& rng);
- 
+
 	// wrapper for doStartTurnRoutine, uses NVI idiom
 	void startTurnRoutine(Generator& rng);
 
@@ -140,7 +140,7 @@ public:
 	// mutators :
 
 	void setPlayer(); // sets isPlayer to true
-	
+
 	void clearBuffs(); // sets buffs to 0, used when entering new floor
 
 	// wrapper for doMove, uses NVI idiom
@@ -166,5 +166,3 @@ public:
 
 
 #endif
-
-

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "Race.h"
+#include "../Enumerations/Race.h"
 
 struct Info {
 	Race race;
@@ -20,5 +20,3 @@ struct Info {
 
 
 #endif
-
-

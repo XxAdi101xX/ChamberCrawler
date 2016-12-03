@@ -4,11 +4,13 @@
 #include "../ObserverSubject/Observer.h"
 #include <vector>
 #include <iostream>
-#include <stringstream>
+#include <sstream>
 
-#include "Race.h"
+#include "../Enumerations/Race.h"
 
-class TextDisplay : Observer {
+class Subject;
+
+class TextDisplay : public Observer {
     std::vector<int> gridSize;
 
     std::vector<std::vector<char>> theDisplay;
@@ -24,7 +26,7 @@ class TextDisplay : Observer {
 public:
     TextDisplay(std::vector<int> size);
 
-    void notify(Subject &notifier);
+    void notify(Subject &whoNotified) override;
 };
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td);

@@ -9,7 +9,8 @@
 #include "../Character/Character.h"
 #include "../ObserverSubject/Subject.h"
 #include "../Items/Item.h"
-class Info;
+
+struct Info;
 
 class Cell final: public Subject {
 	CellType cellType; // type of cell (eg. wall, stairway ...)
@@ -29,11 +30,11 @@ class Cell final: public Subject {
 	CellType getCellType(); // returns cell type
 	std::vector<int> getCoords();
 	std::shared_ptr<Item> getItem();
-	Cell* getNeighbour(Direction direction); // returns neighbour in specified 
+	Cell* getNeighbour(Direction direction); // returns neighbour in specified
 																					 // direction
 	std::vector<Cell*>& getNeighbours(); // returns refernce to vector with Cell*
 	Character* getOccupant(); // return any characters occupying the cell
-	Info getInfo(); // returns an Info struct with information on cell
+	Info getInfo() const; // returns an Info struct with information on cell
 };
 
 #endif
