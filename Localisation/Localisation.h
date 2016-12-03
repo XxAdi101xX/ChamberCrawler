@@ -1,5 +1,3 @@
-
-
 #include <string>
 
 // commands
@@ -21,82 +19,82 @@ const std::string CMD_VAMPIRE_SELECT = "v";
 const std::string CMD_GOBLIN_SELECT = "g";
 const std::string CMD_TROLL_SELECT = "t";
 
-const string CMD_STOP = "f";
-const string CMD_RESTART = "r";
-const string CMD_QUIT = "q";
+const std::string CMD_STOP = "f";
+const std::string CMD_RESTART = "r";
+const std::string CMD_QUIT = "q";
 
-const string CMD_YES = "y";
-const string CMD_NO = "n";
+const std::string CMD_YES = "y";
+const std::string CMD_NO = "n";
 
 // messages
-const string MSG_WELCOME = "Welcome to CC3k!";
-const string MSG_GOODBYE = "Goodbye!";
+const std::string MSG_WELCOME = "Welcome to CC3k!";
+const std::string MSG_GOODBYE = "Goodbye!";
 
-const string MSG_GAME_CLEAR = "Game Cleared!";
-const string MSG_GAME_OVER = "Game Over!";
+const std::string MSG_GAME_CLEAR = "Game Cleared!";
+const std::string MSG_GAME_OVER = "Game Over!";
 
-const string MSG_RESETTING = "Resetting...";
+const std::string MSG_RESETTING = "Resetting...";
 
-const string MSG_LOADING = "Loading";
-const string MSG_LOADING_COMPLETE = "Done!";
+const std::string MSG_LOADING = "Loading";
+const std::string MSG_LOADING_COMPLETE = "Done!";
 
-const string MSG_FINAL_SCORE = "Final score";
+const std::string MSG_FINAL_SCORE = "Final score";
 
-const string MSG_RACE_SELECTED = "You have selected";
+const std::string MSG_RACE_SELECTED = "You have selected";
 
 // prompts
-const string PROMPT_RACE_SELECTION = "Please select a race";
-const string PROMPT_REPLAY = "Replay?";
+const std::string PROMPT_RACE_SELECTION = "Please select a race";
+const std::string PROMPT_REPLAY = "Replay?";
 
 // errors
-const string ERR_INVALID_CMD = "Invalid command";
-const string ERR_INVALID_DIRECTION = "Invalid direction";
+const std::string ERR_INVALID_CMD = "Invalid command";
+const std::string ERR_INVALID_DIRECTION = "Invalid direction";
 
-const string ERR_USAGE = "Usage: cc3k [filename] [seed]";
-const string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS 
+const std::string ERR_USAGE = "Usage: cc3k [filename] [seed]";
+const std::string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS 
 	= "Invalid number of command line arguments";
-const string ERR_BAD_FILE = "File does not exist or could not be read";
-const string ERR_BAD_SEED = "Seed was not in the correct integer form";
-const string ERR_BAD_CMD_LINE_ARG = "Invalid command line argument";
-const string ERR_BAD_MAP = "The map read was invalid";
+const std::string ERR_BAD_FILE = "File does not exist or could not be read";
+const std::string ERR_BAD_SEED = "Seed was not in the correct integer form";
+const std::string ERR_BAD_CMD_LINE_ARG = "Invalid command line argument";
+const std::string ERR_BAD_MAP = "The map read was invalid";
 
 // vocab:
 
-const string WORD_HP_NOUN = "HP";
-const string WORD_ATTACK_NOUN = "attack";
-const string WORD_BY_PREPOSITION = "by";
-const string WORD_DAMAGE_NOUN = "damage";
-const string WORD_DEAL_PAST_TENSE = "dealt";
-const string WORD_DODGE_PAST_TENSE = "dodged";
-const string WORD_FROM_PREPOSITION = "from";
-const string WORD_GAIN_PAST_TENSE = "gained";
-const string WORD_GOLD_NOUN = "gold";
-const string WORD_IS_PAST_TENSE = "was";
-const string WORD_KILL_PAST_TENSE = "killed";
-const string WORD_LOSE_PAST_TENSE = "lost";
-const string WORD_MISS_PAST_TENSE = "missed";
-const string WORD_MOVE_PAST_TENSE = "moved";
-const string WORD_SEE_PAST_TENSE = "saw";
-const string WORD_TAKE_PAST_TENSE = "took";
-const string WORD_TO_PREPOSITION = "to";
-const string WORD_USE_PAST_TENSE = "used";
+const std::string WORD_HP_NOUN = "HP";
+const std::string WORD_ATTACK_NOUN = "attack";
+const std::string WORD_BY_PREPOSITION = "by";
+const std::string WORD_DAMAGE_NOUN = "damage";
+const std::string WORD_DEAL_PAST_TENSE = "dealt";
+const std::string WORD_DODGE_PAST_TENSE = "dodged";
+const std::string WORD_FROM_PREPOSITION = "from";
+const std::string WORD_GAIN_PAST_TENSE = "gained";
+const std::string WORD_GOLD_NOUN = "gold";
+const std::string WORD_IS_PAST_TENSE = "was";
+const std::string WORD_KILL_PAST_TENSE = "killed";
+const std::string WORD_LOSE_PAST_TENSE = "lost";
+const std::string WORD_MISS_PAST_TENSE = "missed";
+const std::string WORD_MOVE_PAST_TENSE = "moved";
+const std::string WORD_SEE_PAST_TENSE = "saw";
+const std::string WORD_TAKE_PAST_TENSE = "took";
+const std::string WORD_TO_PREPOSITION = "to";
+const std::string WORD_USE_PAST_TENSE = "used";
 
 
 // Character names:
 
-const string NAME_DRAGON = "D";
-const string NAME_DROW = "R";
-const string NAME_DWARF = "W";
-const string NAME_ELF = "E";
-const string NAME_GOBLIN = "B";
-const string NAME_HALFLING = "L";
-const string NAME_HUMAN = "H";
-const string NAME_MERCHANT = "M";
-const string NAME_ORC = "O";
-const string NAME_PLAYER = "PC";
-const string NAME_SHADE = "S";
-const string NAME_TROLL = "T";
-const string NAME_VAMPIRE = "V";
+const std::string NAME_DRAGON = "D";
+const std::string NAME_DROW = "R";
+const std::string NAME_DWARF = "W";
+const std::string NAME_ELF = "E";
+const std::string NAME_GOBLIN = "B";
+const std::string NAME_HALFLING = "L";
+const std::string NAME_HUMAN = "H";
+const std::string NAME_MERCHANT = "M";
+const std::string NAME_ORC = "O";
+const std::string NAME_PLAYER = "PC";
+const std::string NAME_SHADE = "S";
+const std::string NAME_TROLL = "T";
+const std::string NAME_VAMPIRE = "V";
 
 
 // Display char:
@@ -125,6 +123,9 @@ const char CHAR_SHADE = 'S';
 const char CHAR_TROLL = 'T';
 const char CHAR_VAMPIRE = 'V';
 
+const char CHAR_ITEM_GOLD_PILE = 'G';
+const char CHAR_ITEM_POTION = 'P';
+
 // characters used in reading floor from file only
 const char CHAR_READ_POTION_RESTORE_HEALTH = '0';
 const char CHAR_READ_POTION_POISON_HEALTH = '1';
@@ -140,41 +141,41 @@ const char CHAR_READ_GOLD_PILE_DRAGON_HOARD = '9';
 
 // Direction names:
 
-const string NAME_NORTH = "North";
-const string NAME_NORTH_WEST = "North West";
-const string NAME_WEST = "West";
-const string NAME_SOUTH_WEST = "South West";
-const string NAME_SOUTH = "South";
-const string NAME_SOUTH_EAST = "South East";
-const string NAME_EAST = "East";
-const string NAME_NORTH_EAST = "North East";
+const std::string NAME_NORTH = "North";
+const std::string NAME_NORTH_WEST = "North West";
+const std::string NAME_WEST = "West";
+const std::string NAME_SOUTH_WEST = "South West";
+const std::string NAME_SOUTH = "South";
+const std::string NAME_SOUTH_EAST = "South East";
+const std::string NAME_EAST = "East";
+const std::string NAME_NORTH_EAST = "North East";
 
 
 // GoldPile names (along with article):
 
-const string NAME_GOLD_PILE_SMALL = "a small gold pile";
-const string NAME_GOLD_PILE_NORMAL = "a normal gold pile";
-const string NAME_GOLD_PILE_MERCHANT_HOARD = "a merchant hoard";
-const string NAME_GOLD_PILE_DRAGON_HOARD = "a dragon hoard";
+const std::string NAME_GOLD_PILE_SMALL = "a small gold pile";
+const std::string NAME_GOLD_PILE_NORMAL = "a normal gold pile";
+const std::string NAME_GOLD_PILE_MERCHANT_HOARD = "a merchant hoard";
+const std::string NAME_GOLD_PILE_DRAGON_HOARD = "a dragon hoard";
 
 
 // PotionType names (along with article):
 
-const string NAME_POTION_RESTORE_HEALTH = "a RH";
-const string NAME_POTION_POISON_HEALTH = "a PH";
-const string NAME_POTION_BOOST_ATTACK = "a BA";
-const string NAME_POTION_BOOST_DEFENCE = "a BD";
-const string NAME_POTION_WOUND_ATTACK = "a WA";
-const string NAME_POTION_WOUND_DEFENCE = "a WD";
+const std::string NAME_POTION_RESTORE_HEALTH = "a RH";
+const std::string NAME_POTION_POISON_HEALTH = "a PH";
+const std::string NAME_POTION_BOOST_ATTACK = "a BA";
+const std::string NAME_POTION_BOOST_DEFENCE = "a BD";
+const std::string NAME_POTION_WOUND_ATTACK = "a WA";
+const std::string NAME_POTION_WOUND_DEFENCE = "a WD";
 
 const string NAME_POTION_UNKNOWN = "an unknown";
 
 
 // ItemType names:
 
-const string NAME_ITEM_POTION = "potion";
+const std::string NAME_ITEM_POTION = "potion";
 
 
 // Miscellaneous:
 
-const string PERIOD = ".";
+const std::string PERIOD = ".";
