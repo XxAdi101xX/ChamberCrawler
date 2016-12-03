@@ -1,5 +1,6 @@
+#include <string>
 #include "Cell.h"
-#include "../Localisation/Localisation.cc"
+#include "../Localisation/Localisation.h"
 #include "../Info/Info.h"
 using namespace std;
 
