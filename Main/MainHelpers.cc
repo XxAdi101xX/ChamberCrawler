@@ -41,7 +41,7 @@ vector<int> getValidCoords() {
 
 
 // wrapper for getValidCoords that turns the coordinate to a Cell *
-Cell* getValidCell() {
+shared_ptr<Cell> getValidCell() {
 	return currentFloor.getCell(getValidCoords());
 }
 

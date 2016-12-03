@@ -32,6 +32,7 @@ extern int numberOfSpawnedPotions;
 extern int numberOfSpawnedGoldPiles;
 extern int numberOfSpawnedNPCs;
 
+shared_ptr<Cell> getValidCell();
 bool isValidCoordinates(vector<int> coord);
 bool isOccupied(vector<int> coord);
 vector<int> getValidCoords();

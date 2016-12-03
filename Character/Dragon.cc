@@ -12,8 +12,8 @@ class Character;
 
 
 // Dragon does not give gold on death, hence wallet field is set to 0
-Dragon::Dragon(int wallet): Character{DRAGON_HP_MAX, DRAGON_HP, 
-	DRAGON_ATTACK_VALUE, DRAGON_DEFENCE_VALUE, 
+Dragon::Dragon(int wallet): Character{DRAGON_HP_MAX, DRAGON_HP,
+	DRAGON_ATTACK_VALUE, DRAGON_DEFENCE_VALUE,
 	false, Race::Dragon, 0} {}
 
 
@@ -29,7 +29,7 @@ void Dragon::deathRoutine() {
 void Dragon::doStartTurnRoutine(Generator& rng) {
 	// gets all neighbours of the dragonHoard
 	vector<Cell*> neighbourhood = (this->dragonHoardCell)->getNeighbours();
-	
+
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
 		Character* occupant = neighbour->getOccupant();
@@ -70,8 +70,6 @@ void Dragon::doStartTurnRoutine(Generator& rng) {
 }
 
 
-void Dragon::setDragonHoardCell(Cell* dragonHoardCell) {
+void Dragon::setDragonHoardCell(std::shared_ptr<Cell> dragonHoardCell) {
 	this->dragonHoardCell = dragonHoardCell;
 }
-
-

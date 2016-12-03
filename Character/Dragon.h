@@ -2,11 +2,12 @@
 #define _DRAGON_H_
 
 #include "Character.h"
+#include <memory>
 
 
 class Dragon final: public Character {
 private:
-	Cell* dragonHoardCell; // the cell with the dragonHoard on it
+	std::shared_ptr<Cell> dragonHoardCell; // the cell with the dragonHoard on it
 	bool alreadyAttacked;
 
 	// overrides move to do nothing
@@ -22,13 +23,11 @@ private:
 
 public:
 	Dragon(int wallet); // ctor
-	
+
 	// sets the dragonHoardCell field
-	void setDragonHoardCell(Cell* dragonHoardCell);
+	void setDragonHoardCell(std::shared_ptr<Cell> dragonHoardCell);
 
 };
 
 
 #endif
-
-

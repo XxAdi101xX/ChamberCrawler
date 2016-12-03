@@ -50,7 +50,7 @@ shared_ptr<Item> Cell::getItem() {
 }
 
 // Returns the cell's neighbours in the specified direction
-Cell* Cell::getNeighbour(Direction direction) {
+shared_ptr<Cell> Cell::getNeighbour(Direction direction) {
 	// The neighbours are always placed in a particular order in the vector
 	if (direction == Direction::North) {
 		return (getNeighbours()[0]);
@@ -79,7 +79,7 @@ Cell* Cell::getNeighbour(Direction direction) {
 }
 
 // Returns a refernce to vector with all neighbouring Cells
-vector<Cell*>& Cell::getNeighbours() {
+vector<shared_ptr<Cell>>& Cell::getNeighbours() {
 	return neighbours;
 }
 

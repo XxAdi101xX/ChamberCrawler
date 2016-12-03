@@ -13,7 +13,7 @@
 #include "Localisation.cc"
 using namespace std;
 
-// note that all string literals for reporting messages are 
+// note that all string literals for reporting messages are
 // stored in Localisation.cc
 
 extern vector<PotionType> usedPotions;
@@ -22,18 +22,18 @@ extern vector<PotionType> usedPotions;
 void Character::applyPotion(shared_ptr<Item> potion) {
 	PotionType type = potion->getType();
 	int potency = potion->getPotency();
-	
+
 	// health based potions
 	if (type == PotionType::RestoreHealth
 		|| type == PotionType::PoisonHealth) {
-		
+
 		this->addHPViaPotion(potency);
 	}
 
 	// attack based potions
-	else if (type == PotionType::BoostAttack 
+	else if (type == PotionType::BoostAttack
 		|| type == PotionType::WoundAttack) {
-		
+
 		this->attackBuff += potency;
 	}
 
@@ -54,9 +54,9 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 void Character::doStartTurnRoutine(Generator& rng) {/* nothing by default */}
 
 
-void Character::postAttackRoutine(Character& defender, 
+void Character::postAttackRoutine(Character& defender,
 	bool hit, Generator& rng) {
-	// nothing by default 
+	// nothing by default
 }
 
 
@@ -66,9 +66,9 @@ void Character::deathRoutine() {/* nothing by default */}
 void Character::doEndTurnRoutine() {/* nothing by default */}
 
 
-bool Character::defend(Character& attacker, 
+bool Character::defend(Character& attacker,
 	int& incomingDamage, Generator& rng) {
-	
+
 	// modifies damage and hit chance if necessary
 	if(this->takeDamageFrom(attacker, incomingDamage, rng)) {
 		// if is attack hits or is not player
@@ -77,8 +77,8 @@ bool Character::defend(Character& attacker,
 		this->HP -= incomingDamage;
 
 		// reports damage taken
-		this->addAction(makeMsg(attacker.getName(), WORD_DEAL_PAST_TENSE + " " 
-		+ to_string(incomingDamage) + " " + WORD_DAMAGE_NOUN + " " 
+		this->addAction(makeMsg(attacker.getName(), WORD_DEAL_PAST_TENSE + " "
+		+ to_string(incomingDamage) + " " + WORD_DAMAGE_NOUN + " "
 		+ WORD_TO_PREPOSITION, this->name));
 
 		return true;
@@ -87,16 +87,16 @@ bool Character::defend(Character& attacker,
 	}
 
 	// reports dodge
-	this->addAction(makeMsg(this->name, WORD_DODGE_PAST_TENSE + " " 
-		+ WORD_ATTACK_NOUN + " (" + to_string(incomingDamage) + " " 
-		+ WORD_DAMAGE_NOUN + ")" + WORD_FROM_PREPOSITION, 
+	this->addAction(makeMsg(this->name, WORD_DODGE_PAST_TENSE + " "
+		+ WORD_ATTACK_NOUN + " (" + to_string(incomingDamage) + " "
+		+ WORD_DAMAGE_NOUN + ")" + WORD_FROM_PREPOSITION,
 		attacker.getName()));
 
 	return false;
 }
 
 
-bool Character::dealDamageTo(Character& defender, int& damage, 
+bool Character::dealDamageTo(Character& defender, int& damage,
 	Generator& rng) {
 
 	// no changes by default
@@ -104,7 +104,7 @@ bool Character::dealDamageTo(Character& defender, int& damage,
 }
 
 
-bool Character::takeDamageFrom(Character& attacker, int& damage, 
+bool Character::takeDamageFrom(Character& attacker, int& damage,
 	Generator& rng) {
 
 	// no changes by default
@@ -140,7 +140,7 @@ void Character::doMove(Direction direction) {
 		}
 
 		// nobody can walk over a potion
-		if (cell->getItem() && (cell->getItem())->getItemType() 
+		if (cell->getItem() && (cell->getItem())->getItemType()
 			== ItemType::Potion) {
 
 			return;
@@ -168,7 +168,7 @@ void Character::doMove(Direction direction) {
 		this->setCell(cell);
 
 		// reports movement
-		this->addAction(makeMsg(this->name, WORD_MOVE_PAST_TENSE, 
+		this->addAction(makeMsg(this->name, WORD_MOVE_PAST_TENSE,
 			directionToText(direction)));
 
 		// gets the neighbourhood
@@ -177,9 +177,9 @@ void Character::doMove(Direction direction) {
 		// reports all item sightings
 		for (auto neighbour: neighbourhood) {
 			shared_ptr<Item> item = neighbour->getItem();
-			
+
 			if (item != nullptr) {
-				this->addAction(makeMsg(this->name, WORD_SEE_PAST_TENSE, 
+				this->addAction(makeMsg(this->name, WORD_SEE_PAST_TENSE,
 					itemToText(item)));
 			}
 
@@ -205,13 +205,13 @@ void Character::addAction(std::string action) {
 
 
 int Character::getTotalAttack() const {
-	return this->attackValue 
+	return this->attackValue
 		+ this->attackBuff + this->getAttackBuffBonus();
 }
 
 
 int Character::getTotalDefence() const {
-	return this->defenceValue 
+	return this->defenceValue
 		+ this->defenceBuff + this->getDefenceBuffBonus();
 }
 
@@ -251,9 +251,9 @@ void Character::addHP(int amount) {
 	this->HP += HPToBeAdded;
 
 	// reports how much HP was gained/lost
-	this->addAction(makeMsg(this->name, HPToBeAdded >= 0 
-		? WORD_GAIN_PAST_TENSE : WORD_LOSE_PAST_TENSE, 
-		to_string(HPToBeAdded >= 0 ? HPToBeAdded : -1 * HPToBeAdded) 
+	this->addAction(makeMsg(this->name, HPToBeAdded >= 0
+		? WORD_GAIN_PAST_TENSE : WORD_LOSE_PAST_TENSE,
+		to_string(HPToBeAdded >= 0 ? HPToBeAdded : -1 * HPToBeAdded)
 		+ " " + WORD_HP_NOUN));
 
 }
@@ -263,7 +263,7 @@ void Character::addGold(int amount) {
 	this->wallet += amount;
 	this->score += amount;
 
-	this->addAction(makeMsg(this->name, WORD_GAIN_PAST_TENSE, to_string(amount) 
+	this->addAction(makeMsg(this->name, WORD_GAIN_PAST_TENSE, to_string(amount)
 		+ " " + WORD_GOLD_NOUN));
 }
 
@@ -284,11 +284,11 @@ int Character::getScoreProt() const {
 
 
 Character::Character(int HPMax, int HP, int attackValue, int defenceValue,
-	bool isHostile, Race race, int wallet): 
-	
-	HPMax{HPMax}, HP{HP}, attackValue{attackValue}, 
-	defenceValue{defenceValue}, isHostile{isHostile}, isPlayer{false}, 
-	race{race}, wallet{wallet}, name{raceToText(race)} 
+	bool isHostile, Race race, int wallet):
+
+	HPMax{HPMax}, HP{HP}, attackValue{attackValue},
+	defenceValue{defenceValue}, isHostile{isHostile}, isPlayer{false},
+	race{race}, wallet{wallet}, name{raceToText(race)}
 
 	{}
 
@@ -315,17 +315,17 @@ void Character::applyItem(shared_ptr<Item> item) {
 
 
 void Character::attack(Character& defender, Generator& rng) {
-	int damage = ceil((100/(100 + defender.getTotalDefence())) 
+	int damage = ceil((100/(100 + defender.getTotalDefence()))
 		* this->getTotalAttack());
-	
+
 	bool firstRollForHit = this->dealDamageTo(defender, damage, rng);
 
 	if (firstRollForHit) {
 		if (defender.defend(*this, damage, rng)) {
 			// reports hit
-			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE 
-				+ to_string(damage) + " " + WORD_DAMAGE_NOUN 
-				+ WORD_TO_PREPOSITION, defender.getName() + " (" 
+			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE
+				+ to_string(damage) + " " + WORD_DAMAGE_NOUN
+				+ WORD_TO_PREPOSITION, defender.getName() + " ("
 				+ to_string(defender.getHP()) + ")"));
 		}
 
@@ -333,8 +333,8 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	else {
 		// reports miss
-		this->addAction(makeMsg(this->name, WORD_MISS_PAST_TENSE +"( " 
-		+ to_string(damage) + " " + WORD_DAMAGE_NOUN + ")", 
+		this->addAction(makeMsg(this->name, WORD_MISS_PAST_TENSE +"( "
+		+ to_string(damage) + " " + WORD_DAMAGE_NOUN + ")",
 		defender.getName()));
 	}
 
@@ -348,8 +348,8 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	this->addAction(
 			makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
-	
-	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE 
+
+	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE
 		+ WORD_KILL_PAST_TENSE + WORD_BY_PREPOSITION, this->name));
 	}
 
@@ -371,20 +371,20 @@ void Character::setPlayer() {
 	this->isHostile = false;
 	this->name = NAME_PLAYER;
 }
-	
+
 
 void Character::clearBuffs() {
 	this->attackBuff = 0;
 	this->defenceBuff = 0;
 }
-	
+
 
 void Character::move(Direction direction) {
 	doMove(direction);
 }
 
 
-void Character::setCell(Cell* cell) {
+void Character::setCell(std::shared_ptr<Cell> cell) {
 	this->currentCell = cell;
 
 	if (cell) {
@@ -455,5 +455,3 @@ Info Character::getInfo() const {
 
 	return characterInfo;
 }
-
-

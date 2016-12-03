@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
 	bool playerHasBeenPlaced = false;
 
 	// two stacks are utilized to link dragon hoards with dragons
-	vector<Cell*> dragonHoardCellStack;
+	vector<shared_ptr<Cell>> dragonHoardCellStack;
 	vector<shared_ptr<Dragon>> dragonStack;
 
 	// procedural generation counters and temporaries
@@ -295,8 +295,8 @@ newFloorStart:
 
 			switch(tempChar) {
 				case CHAR_READ_POTION_RESTORE_HEALTH :
-					tempItem = new Potion{PotionType::RestoreHealth};
-					//tempItem = make_shared<Potion>(PotionType::RestoreHealth);
+					//tempItem.reset(new Potion{PotionType::RestoreHealth});
+					tempItem = make_shared<Potion>(PotionType::RestoreHealth);
 					break;
 
                 case CHAR_READ_POTION_POISON_HEALTH :
@@ -354,7 +354,8 @@ newFloorStart:
                     break;
 
                 case CHAR_HUMAN :
-					tempCharacter = createCharacter(Race::Human);
+				 	tempCharacter = createCharacter(Race::Human);
+					//tempCharacter = createCharacter(Race::Human);
                     break;
 
                 case CHAR_DWARF :
@@ -374,7 +375,7 @@ newFloorStart:
                     break;
 
                 case CHAR_DRAGON :
-					tempDragon = createCharacter(Race::Dragon);
+					tempDragon = static_pointer_cast<Dragon>(createCharacter(Race::Dragon));
 
 					// adds dragon to stack for linking
 					dragonStack.emplace_back(tempDragon);
@@ -395,7 +396,7 @@ newFloorStart:
 			}
 
 			// if an Character was read, place the character
-			else if (tempChararacter) {
+			else if (tempCharacter) {
 				tempCharacter->setCell(tempCell);
 			}
 
@@ -406,8 +407,8 @@ newFloorStart:
 			}
 
 			// handling dragon and dragon hoards
-			if (dragonStack.size() >= 0
-				&& dragonHoardCellStack.size() >= 0) {
+			if (dragonStack.size() > 0
+				&& dragonHoardCellStack.size() > 0) {
 
 				// cell that the dragon hoard is on
 				tempCell = dragonHoardCellStack.back();
@@ -519,7 +520,7 @@ newFloorStart:
 					dragonCoords = getValidNeighbourCoordinates(tempCoords);
 
 					// get a dragon
-					tempDragon = createCharacter(Race::Dragon);
+					tempDragon = static_pointer_cast<Dragon>(createCharacter(Race::Dragon));
 
 					// sets dragon in place
 					tempDragon->setCell(tempCell);
@@ -650,8 +651,7 @@ newFloorStart:
 					}
 
 	               	else if (cmd == CMD_NORTH) {
-						tempCell = (currentFloor.getCell(playerCoords))
-							->getNeighbour(Direction::North);
+						tempCell = (currentFloor.getCell(playerCoords))->getNeighbour(Direction::North);
 					}
 
            	    	else if (cmd == CMD_SOUTH) {

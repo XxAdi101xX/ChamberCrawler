@@ -25,7 +25,7 @@ private:
 	bool isHostile;
 	bool isPlayer;
 	Race race;
-	Cell* currentCell;
+	std::shared_ptr<Cell> currentCell;
 	int wallet; // gold that the character owns
 	int score; // cumulative gold earnings
 	std::string lastAction; // recorded by various methods
@@ -147,7 +147,7 @@ public:
 	void move(Direction direction);
 
 	// used during initialization to set the character's location
-	void setCell(Cell* cell);
+	void setCell(std::shared_ptr<Cell> cell);
 
 	// accessors:
 
