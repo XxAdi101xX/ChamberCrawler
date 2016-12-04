@@ -179,7 +179,11 @@ Info Cell::getInfo() const {
 	}
 	else if (getCellType() == CellType::Wall) {
 		// check what type of wall is occupied by cell
-		if ((getNeighbour(Direction::East))->getCellType() == CellType::Wall) {
+		if (((getNeighbour(Direction::East))->getCellType() == CellType::Wall) ||
+				((getNeighbour(Direction::West))->getCellType() == CellType::Wall) ||
+				((getNeighbour(Direction::West))->getCellType() == CellType::Stairs) ||
+				((getNeighbour(Direction::East))->getCellType() == CellType::Stairs))
+																																						{
 			cellInfo.displayChar = CHAR_HORIZONTAL_WALL;
 		}
 		else {
