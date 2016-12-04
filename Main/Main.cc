@@ -225,6 +225,8 @@ titleScreen:
 
 	}
 
+	player->setPlayer();
+
 	// attaches player to display so we can report what
 	// happened to the player
 	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&theTextDisplay)));
@@ -473,7 +475,7 @@ newFloorStart:
 		player->setCell(tempCell);
 
 		// sets the player character as the player
-		player->setPlayer();
+	//	player->setPlayer();
 
 		playerHasBeenPlaced = true;
 
