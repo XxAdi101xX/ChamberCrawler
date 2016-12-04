@@ -370,6 +370,7 @@ void Character::endTurnRoutine() {
 void Character::setPlayer() {
 	this->isPlayer = true;
 	this->isHostile = false;
+	this->wallet = 0;
 	this->name = NAME_PLAYER;
 }
 
@@ -453,8 +454,6 @@ Info Character::getInfo() const {
 	characterInfo.coordinates = (this->currentCell)->getCoords();
 	characterInfo.displayChar = this->isPlayer ? CHAR_PLAYER : this->name[1];
 	characterInfo.lastAction = this->lastAction;
-
-	std::cout << "HP: " << characterInfo.HP << std::endl;
 
 	return characterInfo;
 }

@@ -26,7 +26,7 @@ using namespace std;
 
 //Temporary rng var, will be set in main on execute
 Generator rng {0};
-TextDisplay theTextDisplay {std::vector<int>{0, 0}};
+TextDisplay theTextDisplay {};
 Floor currentFloor {shared_ptr<TextDisplay>{&theTextDisplay}};
 
 vector<int> floorDimensions;

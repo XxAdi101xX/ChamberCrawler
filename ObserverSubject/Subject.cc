@@ -13,9 +13,7 @@ void Subject::detach(std::shared_ptr<Observer> o) {
 
 void Subject::notifyObservers() {
 	for (auto &ob: observers) {
-		std::cout << "Notifying" << std::endl;
 		ob->notify(*this);
-		std::cout << "end Notify" << std::endl;
 	}
 }
 
