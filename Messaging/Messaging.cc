@@ -98,6 +98,7 @@ string potionToText(const shared_ptr<Potion> potion) {
 			used = true;
 			break;
 		}
+
 	}
 
 	if (used) {
@@ -122,4 +123,5 @@ string itemToText(const shared_ptr<Item> item) {
         return potionToText(static_pointer_cast<Potion>(item));
     }
 
+	return "";
 }

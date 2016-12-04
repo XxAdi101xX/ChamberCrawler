@@ -5,10 +5,7 @@
 #include "../Enumerations/Direction.h"
 
 TextDisplay::TextDisplay(std::vector<int> gridSize):
-    gridSize {gridSize},
-    theDisplay {std::vector<std::vector<char>>()},
-    log {std::stringstream()},
-    info {Info()}
+    gridSize {gridSize}
     {
         for (int i = 0; i < gridSize[0]; ++i) {
             theDisplay.push_back(std::vector<char>());

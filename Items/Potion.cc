@@ -11,7 +11,6 @@ int Potion::potionTypeToPotency(PotionType potionType) {
 	// Different potion potencies layed out in if statements so they can
 	// easily be changed/added if required
 
-	int p;
 	if (potionType == PotionType::RestoreHealth) {
 		return POTION_POTENCY_RESTORE_HEALTH;
 	}

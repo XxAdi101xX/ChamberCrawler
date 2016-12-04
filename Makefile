@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -MMD
+CXXFLAGS = -std=c++14 -Wall -MMD -g
 EXEC = cc3k
 OBJECTS = Main/Main.o Main/MainHelpers.o Cell/Cell.o Character/Character.o\
  		  Character/Dragon.o Character/Drow.o Character/Dwarf.o\
