@@ -58,6 +58,10 @@ int main(int argc, char *argv[]) {
 	// default seed
 	int seed = time(NULL);
 
+	ifstream file;
+
+	string filename;
+
 	bool readFromFile = false;
 
 	if (argc > 3) {
@@ -70,8 +74,9 @@ int main(int argc, char *argv[]) {
 		string test;
 
 		try {
-			ifstream file {argv[1]};
+			file.open(argv[1]);
 			test = file.peek();
+			filename = argv[1];
 			readFromFile = true;
 		}
 
@@ -95,8 +100,9 @@ int main(int argc, char *argv[]) {
 		string test;
 
 	    try {
-            ifstream file {argv[1]};
+			file.open(argv[1]);
             test = file.peek();
+			filename = argv[1];
 			readFromFile = true;
         }
 
@@ -116,10 +122,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	// game global variables
-	rng = Generator{seed};
-	floorCount = 0;
-	currentFloor = Floor{shared_ptr<TextDisplay>(&theTextDisplay)};
-	theTextDisplay = TextDisplay{currentFloor.getFloorDimensions()};
+	Generator rng {seed};
+	int floorCount = 0;
+	Floor currentFloor {shared_ptr<TextDisplay>(&theTextDisplay)};
+	TextDisplay theTextDisplay {};
 
 	bool NPCMovementPaused = false;
 	bool merchantsAngered = false;
@@ -132,8 +138,8 @@ int main(int argc, char *argv[]) {
 	vector<int> stairCoords;
 
 
-	// read generation variables and temporaries
-	vector<int> floorDimensions; // for procedural generation as well
+	// generation variables, counters and temporaries
+	vector<int> floorDimensions {DEFAULT_FLOOR_WIDTH, DEFAULT_FLOOR_LENGTH};
 
 	char tempChar;
 
@@ -143,7 +149,6 @@ int main(int argc, char *argv[]) {
 	vector<shared_ptr<Cell>> dragonHoardCellStack;
 	vector<shared_ptr<Dragon>> dragonStack;
 
-	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
 	shared_ptr<Cell> tempCell;
 	vector<shared_ptr<Cell>> tempNeighbourhood;
@@ -277,7 +282,7 @@ newFloorStart:
 
 		// reinitialize the file to scan for objects on the floor
 		file.close();
-		file.open();
+		file.open(filename);
 
 		// skips previous floors in the file
 		file.ignore((floorCount - 1)
@@ -449,7 +454,7 @@ newFloorStart:
 	}
 
 	else {
-		currentFloor.initialize();
+		currentFloor.initialize(floorDimensions);
 
 		floorDimensions = currentFloor.getFloorDimensions();
 

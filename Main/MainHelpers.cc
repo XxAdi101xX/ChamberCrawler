@@ -25,9 +25,9 @@
 using namespace std;
 
 //Temporary rng var, will be set in main on execute
-Generator rng = Generator{0};
-TextDisplay theTextDisplay = TextDisplay{std::vector<int>{0, 0}};
-Floor currentFloor = Floor{shared_ptr<TextDisplay>{&theTextDisplay}};
+Generator rng {0};
+TextDisplay theTextDisplay {std::vector<int>{0, 0}};
+Floor currentFloor {shared_ptr<TextDisplay>{&theTextDisplay}};
 
 vector<int> floorDimensions;
 
@@ -42,6 +42,7 @@ bool playerHasActed;
 int numberOfSpawnedPotions;
 int numberOfSpawnedGoldPiles;
 int numberOfSpawnedNPCs;
+
 
 // checks if coordinates given is a FloorTile or not
 bool isValidCoordinates(vector<int> coord) {

@@ -6,10 +6,14 @@
 
 TextDisplay::TextDisplay(std::vector<int> gridSize):
     gridSize {gridSize},
-    theDisplay {std::vector<std::vector<char>>()},
-    log {std::stringstream()},
-    info {Info()}
-    {}
+    {
+        for (int i = 0; i < gridSize[0]; ++i) {
+            theDisplay.push_back(std::vector<char>());
+            for (int j = 0; j < gridSize[1]; ++j) {
+                theDisplay[i].push_back(' ');
+            }
+        }
+    }
 
 void TextDisplay::notify(Subject &notifier) {
     info = notifier.getInfo();
