@@ -63,16 +63,16 @@ bool Generator::genHitMiss() {
     return (rand()%2 == 0);
 }
 
-std::vector<int> genCoordinates(std::vector<int> size) {
+std::vector<int> Generator::genCoordinates(std::vector<int> size) {
     return std::vector<int>{rand() % size[0], rand() % size[1]};
 }
 
 
-Direction genDirection() {
+Direction Generator::genDirection() {
     return Direction(rand()%8);
 }
 
-std::vector<int> genNeighbourCoord(std::vector<int> base) {
+std::vector<int> Generator::genNeighbourCoord(std::vector<int> base) {
     Direction d = genDirection();
     switch (d) {
         case Direction::North:

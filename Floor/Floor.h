@@ -41,7 +41,7 @@ public:
     std::shared_ptr<Cell> getCell(const std::vector<int> coords) const;
     std::vector<int> getFloorDimensions() const;
 
-    friend std::istream &operator>>(std::istream &in, const Floor &floor);
+    friend std::istream &operator>>(std::istream &in, Floor &floor);
 
 };
 

@@ -8,7 +8,7 @@
 class Dragon final: public Character {
 private:
 	std::shared_ptr<Cell> dragonHoardCell; // the cell with the dragonHoard on it
-	bool alreadyAttacked;
+	//bool alreadyAttacked;
 
 	// overrides move to do nothing
 	virtual void doMove(Direction direction) override;

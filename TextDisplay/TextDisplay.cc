@@ -1,43 +1,42 @@
 #include "TextDisplay.h"
 #include <string>
+#include "../ObserverSubject/Subject.h"
+#include "../Messaging/Messaging.h"
+#include "../Enumerations/Direction.h"
 
 TextDisplay::TextDisplay(std::vector<int> gridSize):
     gridSize {gridSize},
     theDisplay {std::vector<std::vector<char>>()},
     log {std::stringstream()},
-    r {Race::Shade},
-    gold {0},
-    HP {0},
-    attackValue {0},
-    defenseValue {0}
+    info {Info()}
     {
-        for (int i = 0; i < row; ++i) {
+        for (int i = 0; i < gridSize[0]; ++i) {
             theDisplay.push_back(std::vector<char>());
-            for (int j = 0; j < col; ++j) {
-                theDisplay.push_back(' ');
+            for (int j = 0; j < gridSize[1]; ++j) {
+                theDisplay[i].push_back(' ');
             }
         }
     }
 
 void TextDisplay::notify(Subject &notifier) {
-    std::string info = notifier.getInfo();
-    theDisplay[info.coordinates()[0]][info.coordinates()[1]] = info.displayChar();
-    log << info.lastAction();
+    info = notifier.getInfo();
+    theDisplay[info.coordinates[0]][info.coordinates[1]] = info.displayChar;
+    log << info.lastAction;
 }
 
-std::ostream &operator<<(std::osteram &out, const TextDisplay &td) {
-    for (auto &row: theDisplay) {
+std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
+    for (auto &row: td.theDisplay) {
         for (auto &c: row) {
             out << c;
         }
         out << std::endl;
     }
 
-    out << "Race: " << r << " Gold: " << gold << std::endl;
-    out << "HP: " << HP << std::endl;
-    out << "Atk: " << attackValue << std::endl;
-    out << "Def: " << defenseValue << std::endl;
-    out << "Action: " << log << std::endl;
+    out << "Race: " << raceToText(td.info.race) << " Gold: " << td.info.gold << std::endl;
+    out << "HP: " << td.info.HP << std::endl;
+    out << "Atk: " << td.info.attackValue << std::endl;
+    out << "Def: " << td.info.defenceValue << std::endl;
+    out << "Action: " << td.info.lastAction << std::endl;
 
     return out;
 }

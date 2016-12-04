@@ -17,11 +17,10 @@ class Floor;
 class TextDisplay;
 
 extern Generator rng;
-extern Floor currentFloor; // note that floor is cleared at initialization
 extern TextDisplay theTextDisplay;
+extern Floor currentFloor; // note that floor is cleared at initialization
+
 extern vector<int> floorDimensions;
-
-
 
 // globals that need to be reset
 extern int floorCount;

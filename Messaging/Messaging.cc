@@ -83,13 +83,13 @@ string directionToText(Direction direction) {
 }
 
 
-string goldPileToText(const GoldPile goldPile) {
-	return goldPiles[goldPile.getValue()];
+string goldPileToText(const shared_ptr<GoldPile> goldPile) {
+	return goldPiles[goldPile->getValue()];
 }
 
 
-string potionToText(const Potion potion) {
-	PotionType type = potion.getPotionType();
+string potionToText(const shared_ptr<Potion> potion) {
+	PotionType type = potion->getPotionType();
 	bool used = false;
 
 	// check if player has used potion
@@ -115,11 +115,11 @@ string itemToText(const shared_ptr<Item> item) {
     }
 
     else if (item->getItemType() == ItemType::GoldPile) {
-        return goldPileToText(*item);
+        return goldPileToText(static_pointer_cast<GoldPile>(item));
     }
 
-    else if (item->getType() == ItemType::Potion) {
-        return potionToText(*item);
+    else if (item->getItemType() == ItemType::Potion) {
+        return potionToText(static_pointer_cast<Potion>(item));
     }
 
 }

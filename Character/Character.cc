@@ -21,7 +21,7 @@ using namespace std;
 extern vector<PotionType> usedPotions;
 
 
-void Character::applyPotion(shared_ptr<Potion> potion) {
+void Character::applyPotion(const shared_ptr<Potion> potion) {
 	PotionType type = potion->getPotionType();
 	int potency = potion->getPotency();
 
@@ -49,7 +49,7 @@ void Character::applyPotion(shared_ptr<Potion> potion) {
 	usedPotions.emplace_back(type);
 
 	// reports what potion was used
-	this->addAction(makeMsg(this->name, WORD_USE_PAST_TENSE , potionToText(*potion)));
+	this->addAction(makeMsg(this->name, WORD_USE_PAST_TENSE , potionToText(potion)));
 }
 
 

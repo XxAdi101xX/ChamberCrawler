@@ -119,8 +119,4 @@ const int HALFLING_HP = 100;
 const int HALFLING_ATTACK_VALUE = 15;
 const int HALFLING_DEFENCE_VALUE = 20;
 // const float HALFLING_DODGE_CHANCE = 0.5; // chance for attack to miss halfling
-<<<<<<< HEAD
-=======
-
-#endif 
->>>>>>> f013054d1280ca519594c255a30f1f7ceac8b685
+#endif

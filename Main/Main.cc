@@ -117,13 +117,13 @@ int main(int argc, char *argv[]) {
 	}
 
 	// game global variables
-	Generator rng = Generator{seed};
-	int floorCount = 0;
-	Floor currentFloor = Floor{shared_ptr<TextDisplay>(&theTextDisplay)};
-	TextDisplay theTextDisplay = TextDisplay{currentFloor.getFloorDimensions()};
+	rng = Generator{seed};
+	floorCount = 0;
+	currentFloor = Floor{shared_ptr<TextDisplay>(&theTextDisplay)};
+	theTextDisplay = TextDisplay{currentFloor.getFloorDimensions()};
 
-	bool NPCMovementPaused = false;
-	bool merchantsAngered = false;
+//	bool NPCMovementPaused = false;
+//	bool merchantsAngered = false;
 	vector<PotionType> usedPotions;
 
 	// generation variables

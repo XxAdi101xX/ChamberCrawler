@@ -87,17 +87,16 @@ std::vector<int> Floor::getFloorDimensions() const {
 }
 
 
-std::istream &operator>>(std::istream &in, const Floor &floor) {
+std::istream &operator>>(std::istream &in, Floor &f) {
 
     while (!in.eof()) {
         std::string row;
         in >> row;
 
-        floor.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
-
-        std::shared_ptr<Cell> cell = std::make_shared<Cell>();
+        f.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
 
         for (auto r: row) {
+            std::shared_ptr<Cell> cell = std::make_shared<Cell>();
             switch (r) {
                 case '|':
                     cell->setCellType(CellType::Wall);
@@ -121,9 +120,9 @@ std::istream &operator>>(std::istream &in, const Floor &floor) {
                     break;
             }
 
-            theFloor.back.emplace_back(cell);
+            f.theFloor.back().emplace_back(cell);
         }
     }
-    floorDimensions = std::vector<int>{theFloor.size(), theFloor[0].size()}
+    f.floorDimensions = std::vector<int>{static_cast<int>(f.theFloor.size()), static_cast<int>(f.theFloor[0].size())};
     return in;
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+#include "../Enumerations/Direction.h"
 
 class Item;
 class Potion;
@@ -11,7 +12,7 @@ class GoldPile;
 
 // creates a message given a subject doing the action, an action
 // and the object the action is done on
-std::string makeMsg(std::string subject, 
+std::string makeMsg(std::string subject,
 	std::string action, std::string object);
 
 // converts Race enumeration to text
@@ -28,9 +29,7 @@ std::string itemToText(const std::shared_ptr<Item> item);
 std::string goldPileToText(const GoldPile goldPile);
 
 // converts Potion to text, name revealed if potion had been used
-std::string potionToText(const Potion potion);
+std::string potionToText(const std::shared_ptr<Potion> potion);
 
 
 #endif
-
-

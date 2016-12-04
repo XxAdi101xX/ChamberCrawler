@@ -35,7 +35,7 @@ private:
 
 	// used when walking over potion, applies potion
 	// to character if character is player
-	void applyPotion(std::shared_ptr<Potion> potion);
+	void applyPotion(const std::shared_ptr<Potion> potion);
 
 	// runs at turn start
 	// normally does nothing, but overrides implements specific
@@ -120,6 +120,7 @@ public:
 	// ctor
 	Character(int HPMax, int HP, int attackValue, int defenceValue,
 		bool isHostile, Race race, int wallet);
+	~Character(){}
 
 	// used when walking over gold pile, or called by use command,
     // applies item to character if character is player
