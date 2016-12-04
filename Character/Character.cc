@@ -370,6 +370,7 @@ void Character::endTurnRoutine() {
 void Character::setPlayer() {
 	this->isPlayer = true;
 	this->isHostile = false;
+	this->wallet = 0;
 	this->name = NAME_PLAYER;
 }
 
