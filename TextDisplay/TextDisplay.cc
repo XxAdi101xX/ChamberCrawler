@@ -37,18 +37,13 @@ void TextDisplay::notify(Subject &notifier) {
         theDisplay[info.coordinates[0]][info.coordinates[1]] = info.displayChar;
     }
     else {
-        std::cout << "Cell Info" << std::endl;
-        std::cout << i.HP << std::endl;
-        std::cout << i.isCellInfo << std::endl;
-
         info.lastAction = i.lastAction;
         info.race = i.race;
         info.gold = i.gold;
         info.HP = i.HP;
         info.attackValue = i.attackValue;
+
     }
-    std::cout << this << std::endl;
-    log << info.lastAction;
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {

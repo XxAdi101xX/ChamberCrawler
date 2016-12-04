@@ -122,16 +122,14 @@ int main(int argc, char *argv[]) {
 	}
 
 	// game global variables
-	Generator rng {seed};
-	int floorCount = 0;
-	Floor currentFloor {shared_ptr<TextDisplay>(&theTextDisplay)};
-	TextDisplay theTextDisplay {};
+	rng = Generator{seed};
+	floorCount = 0;
 
 	NPCMovementPaused = false;
 	merchantsAngered = false;
 
 	// generation variables
-	shared_ptr<Character> player = nullptr;
+	player = nullptr;
 	vector<int> playerCoords;
 
 	vector<int> stairCoords;
@@ -271,7 +269,6 @@ newFloorStart:
 	if (readFromFile) {
 		try {
 			file >> currentFloor;
-			std::cout << "Is it done" << std::endl;
 		}
 		// for errors reading the map
 		catch (...) {
@@ -589,12 +586,14 @@ newFloorStart:
 
 	}
 
-	//player->notifyObservers();
+	player->notifyObservers();
 
 	cout << MSG_LOADING_COMPLETE << endl;
 
+	std::cout << theTextDisplay << std::endl;
+
 	// outputs game state
-	outputGameState();
+	//outputGameState();
 
 	// game start
 

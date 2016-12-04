@@ -10,7 +10,9 @@ Floor::Floor(std::shared_ptr<TextDisplay> td):
     theDisplay {td},
     floorDimensions {std::vector<int>()},
     floorNumber {1}
-    {}
+    {
+        std::cout << "OK HERE" << std::endl;
+    }
 
 void Floor::initialize() {
     clearFloor();
