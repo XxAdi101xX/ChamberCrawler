@@ -37,6 +37,7 @@ void TextDisplay::notify(Subject &notifier) {
         theDisplay[info.coordinates[0]][info.coordinates[1]] = info.displayChar;
     }
     else {
+
         info.lastAction = i.lastAction;
         info.race = i.race;
         info.gold = i.gold;
