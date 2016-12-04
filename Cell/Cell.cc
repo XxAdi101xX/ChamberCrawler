@@ -5,11 +5,14 @@
 using namespace std;
 
 // constructor
-Cell::Cell(){}
+Cell::Cell():
+	neighbours {std::vector<shared_ptr<Cell>>(8)}
+	{}
 
 // Sets the Cell's type
 void Cell::setCellType(CellType type) {
 	this->cellType = type;
+	this->notifyObservers();
 }
 
 // Sets coordinates of cell
@@ -19,7 +22,31 @@ void Cell::setCoords(std::vector<int> coords) {
 
 // Adds neighbour to cell's neighbours vector
 void Cell::addNeighbour(std::shared_ptr<Cell> neighbour) {
-	neighbours.emplace_back(neighbour);
+	std::vector<int> coords = neighbour->getCoords();
+	if (coords[0] < coordinates[0] && coords[1] < coordinates[1]) {
+		neighbours[1] = neighbour;
+	}
+	else if (coords[0] < coordinates[0] && coords[1] > coordinates[1]) {
+		neighbours[7] = neighbour;
+	}
+	else if (coords[0] < coordinates[0]) {
+		neighbours[0] = neighbour;
+	}
+	else if (coords[0] > coordinates[0] && coords[1] < coordinates[1]) {
+		neighbours[3] = neighbour;
+	}
+	else if (coords[0] > coordinates[0] && coords[1] > coordinates[1]) {
+		neighbours[5] = neighbour;
+	}
+	else if (coords[0] > coordinates[0]) {
+		neighbours[4] = neighbour;
+	}
+	else if (coords[1] > coordinates[1]) {
+		neighbours[6] = neighbour;
+	}
+	else {
+		neighbours[2] = neighbour;
+	}
 }
 
 // Adds item to cell
@@ -36,6 +63,7 @@ void Cell::setOccupant(shared_ptr<Character> occupant) {
 
 // Returns cell type
 CellType Cell::getCellType() const {
+	if (this == nullptr) return CellType::Null;
 	return cellType;
 }
 
@@ -151,13 +179,15 @@ Info Cell::getInfo() const {
 	}
 	else if (getCellType() == CellType::Wall) {
 		// check what type of wall is occupied by cell
-		if (((getNeighbour(Direction::West))->getCellType() == CellType::Wall) &&
-				((getNeighbour(Direction::East))->getCellType() == CellType::Wall)) {
+		if ((getNeighbour(Direction::East))->getCellType() == CellType::Wall) {
 			cellInfo.displayChar = CHAR_HORIZONTAL_WALL;
 		}
 		else {
 			cellInfo.displayChar = CHAR_VERTICAL_WALL;
 		}
 	}
+
+	cellInfo.isCellInfo = true;
+
 	return cellInfo;
 }

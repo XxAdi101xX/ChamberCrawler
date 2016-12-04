@@ -271,6 +271,7 @@ newFloorStart:
 	if (readFromFile) {
 		try {
 			file >> currentFloor;
+			std::cout << "Is it done" << std::endl;
 		}
 		// for errors reading the map
 		catch (...) {
@@ -587,6 +588,8 @@ newFloorStart:
 		}
 
 	}
+
+	player->notifyObservers();
 
 	cout << MSG_LOADING_COMPLETE << endl;
 

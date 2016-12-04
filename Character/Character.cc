@@ -454,5 +454,7 @@ Info Character::getInfo() const {
 	characterInfo.displayChar = this->isPlayer ? CHAR_PLAYER : this->name[1];
 	characterInfo.lastAction = this->lastAction;
 
+	std::cout << "HP: " << characterInfo.HP << std::endl;
+
 	return characterInfo;
 }

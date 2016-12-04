@@ -21,7 +21,6 @@ void Floor::initialize() {
 
     for (int i = 0; i < floorDimensions[0]; ++i) {
         for (int j = 0; j < floorDimensions[1]; ++j) {
-            theFloor[i][j]->setCoords(std::vector<int>{i, j});
             if (i > 0) {
                 theFloor[i][j]->addNeighbour(theFloor[i - 1][j]);
             }
@@ -34,7 +33,22 @@ void Floor::initialize() {
             if (j + 1 < floorDimensions[1]) {
                 theFloor[i][j]->addNeighbour(theFloor[i][j + 1]);
             }
+            if (i > 0 && j > 0) {
+                theFloor[i][j]->addNeighbour(theFloor[i- 1][j - 1]);
+            }
+            if (i > 0 && j + 1 < floorDimensions[1]) {
+                theFloor[i][j]->addNeighbour(theFloor[i - 1][j + 1]);
+            }
+            if (i + 1 < floorDimensions[0] && j > 0) {
+                theFloor[i][j]->addNeighbour(theFloor[i + 1][j - 1]);
+            }
+            if (i + 1 < floorDimensions[0] && j + 1 < floorDimensions[1]) {
+                theFloor[i][j]->addNeighbour(theFloor[i + 1][j + 1]);
+            }
             theFloor[i][j]->attach(theDisplay);
+
+            //Just so it triggers neighbor events
+            theFloor[i][j]->setCellType(theFloor[i][j]->getCellType());
         }
     }
 
@@ -52,8 +66,10 @@ void Floor::clearFloor() {
     for (auto &row: theFloor) {
         for (auto &c: row) {
             CellType type = c->getCellType();
+            std::vector<int> coords = c->getCoords();
 //LOOK BACK
             c = std::make_shared<Cell>();
+            c->setCoords(coords);
             c->setCellType(type);
         }
     }

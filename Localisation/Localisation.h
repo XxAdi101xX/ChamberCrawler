@@ -51,7 +51,7 @@ const std::string ERR_INVALID_CMD = "Invalid command";
 const std::string ERR_INVALID_DIRECTION = "Invalid direction";
 
 const std::string ERR_USAGE = "Usage: cc3k [filename] [seed]";
-const std::string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS 
+const std::string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS
 	= "Invalid number of command line arguments";
 const std::string ERR_BAD_FILE = "File does not exist or could not be read";
 const std::string ERR_BAD_SEED = "Seed was not in the correct integer form";
@@ -106,7 +106,7 @@ const char CHAR_DOOR_WAY = '+';
 const char CHAR_PASSAGE = '#';
 
 // 92 == '\', compiler won't let me enter the literal
-const char CHAR_STAIRS = 92;
+const char CHAR_STAIRS = '\\';
 const char CHAR_NULL = ' ';
 
 const char CHAR_DRAGON = 'D';

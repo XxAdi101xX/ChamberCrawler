@@ -16,6 +16,7 @@ struct Info {
 	char displayChar;
 	std::string lastAction;
 
+	bool isCellInfo = false;
 };
 
 
