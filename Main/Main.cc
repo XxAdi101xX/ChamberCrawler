@@ -294,12 +294,7 @@ newFloorStart:
 		while (file.get(tempChar)) {
 			if (tempChar == '\n') continue;
 
-			std::cout << "Temp Char: " << tempChar << endl;
-			std::cout << "Coords: " << tempCoords[0] << " " << tempCoords[1] << endl;
-
-			std::cout << "IIII" << endl;
 			tempCell = currentFloor.getCell(tempCoords);
-			std::cout << "oooo" << endl;
 			tempCharacter.reset();
 			tempDragon.reset();
 			tempItem.reset();
@@ -463,6 +458,7 @@ newFloorStart:
 	}
 
 	else {
+		std::cout << "INItialize" << std::endl;
 		currentFloor.initialize();
 
 		floorDimensions = currentFloor.getFloorDimensions();

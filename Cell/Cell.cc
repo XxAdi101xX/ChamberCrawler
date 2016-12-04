@@ -90,7 +90,9 @@ std::shared_ptr<Character> Cell::getOccupant() const {
 
 // returns an Info struct with information on cell
 Info Cell::getInfo() const {
+
 	Info cellInfo;
+
 	cellInfo.coordinates = this->coordinates;
 	// check if cell occupies a character
 	if (getOccupant() != nullptr) {

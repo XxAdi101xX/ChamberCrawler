@@ -24,6 +24,8 @@ public:
     TextDisplay();
     TextDisplay(std::vector<int> size);
 
+    void setGridSize(std::vector<int> size);
+
     void notify(Subject &whoNotified) override;
 
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);

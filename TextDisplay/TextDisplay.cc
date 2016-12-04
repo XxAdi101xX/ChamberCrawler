@@ -18,9 +18,21 @@ TextDisplay::TextDisplay(std::vector<int> gridSize):
         }
     }
 
+
+void TextDisplay::setGridSize(std::vector<int> size) {
+    gridSize = size;
+    for (int i = 0; i < gridSize[0]; ++i) {
+        theDisplay.push_back(std::vector<char>());
+        for (int j = 0; j < gridSize[1]; ++j) {
+            theDisplay[i].push_back(' ');
+        }
+    }
+}
+
 void TextDisplay::notify(Subject &notifier) {
     info = notifier.getInfo();
     theDisplay[info.coordinates[0]][info.coordinates[1]] = info.displayChar;
+    std::cout << info.coordinates[0] << " " << info.coordinates[1] << " " << info.displayChar << std::endl;
     log << info.lastAction;
 }
 

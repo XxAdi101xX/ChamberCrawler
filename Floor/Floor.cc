@@ -15,10 +15,13 @@ Floor::Floor(std::shared_ptr<TextDisplay> td):
 void Floor::initialize() {
     clearFloor();
 
-    theDisplay = std::make_shared<TextDisplay>(floorDimensions);
+    //theDisplay = std::make_shared<TextDisplay>(floorDimensions);
+    theDisplay->setGridSize(floorDimensions);
+
 
     for (int i = 0; i < floorDimensions[0]; ++i) {
         for (int j = 0; j < floorDimensions[1]; ++j) {
+            theFloor[i][j]->setCoords(std::vector<int>{i, j});
             if (i > 0) {
                 theFloor[i][j]->addNeighbour(theFloor[i - 1][j]);
             }
@@ -34,6 +37,7 @@ void Floor::initialize() {
             theFloor[i][j]->attach(theDisplay);
         }
     }
+
 }
 
 void Floor::resetFloorNumber() {
@@ -95,11 +99,13 @@ std::istream &operator>>(std::istream &in, Floor &f) {
     while (!in.eof()) {
         std::string row;
         std::getline(in, row);
+        if (row == "") break;
 
         f.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
 
         for (auto r: row) {
             std::shared_ptr<Cell> cell = std::make_shared<Cell>();
+            cell->setCoords(std::vector<int>{static_cast<int>(f.theFloor.size()) - 1, static_cast<int>(f.theFloor.back().size())});
             switch (r) {
                 case '|':
                     cell->setCellType(CellType::Wall);
@@ -121,21 +127,23 @@ std::istream &operator>>(std::istream &in, Floor &f) {
                     break;
             }
 
-            f.theFloor.back().push_back(cell);
+            f.theFloor.back().push_back(std::move(cell));
         }
     }
-
-    std::cout << "Size: " << f.theFloor.size() << endl;
 
     f.floorDimensions = std::vector<int>{static_cast<int>(f.theFloor.size()), static_cast<int>(f.theFloor[0].size())};
-    /*
+
+/*
     for (int i = 0; i < f.floorDimensions[0]; ++i) {
-        for (int j = 0; j < f.theFloor[i].size(); ++j) {
-            std::cout << i << " " << j << std::endl;
-            std::cout << f.theFloor[i][j]->getCoords().size() << endl;
-        }
+            std::cout << "Size: " << i << " " << f.theFloor[i].size() << endl;
+            for (int j = 0; j < f.floorDimensions[1]; ++j) {
+                std::cout << f.theFloor[i][j]->getCoords().size() << endl;
+                std::cout << f.theFloor[i][j].use_count() << endl;
+            }
     }
     */
-    std::cout << "Dimensions: " << f.floorDimensions[0] << " " << f.floorDimensions[1] << std::endl;
+    f.initialize();
+
+
     return in;
 }
