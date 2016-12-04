@@ -127,9 +127,8 @@ int main(int argc, char *argv[]) {
 	Floor currentFloor {shared_ptr<TextDisplay>(&theTextDisplay)};
 	TextDisplay theTextDisplay {};
 
-	bool NPCMovementPaused = false;
-	bool merchantsAngered = false;
-	vector<PotionType> usedPotions;
+	NPCMovementPaused = false;
+	merchantsAngered = false;
 
 	// generation variables
 	shared_ptr<Character> player = nullptr;
@@ -228,7 +227,6 @@ titleScreen:
 
 	}
 
-
 	// attaches player to display so we can report what
 	// happened to the player
 	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&theTextDisplay)));
@@ -240,6 +238,7 @@ newFloorStart:
 
 	player->clearBuffs();
 
+
 	// checks for win
 	while (floorCount > NUMBER_OF_FLOORS) {
 		cout << MSG_GAME_CLEAR << endl;
@@ -247,11 +246,11 @@ newFloorStart:
 		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    "
 		<< PROMPT_REPLAY << endl;
 
+
 		if (!(cin >> cmd) || cmd == CMD_QUIT || cmd == CMD_NO) {
 			cout << MSG_GOODBYE << endl;
 			return 0;
 		}
-
 		else if (cmd == CMD_YES || cmd == CMD_RESTART) {
 			cout << MSG_RESETTING << endl;
 
@@ -267,13 +266,12 @@ newFloorStart:
 
 	}
 
-	cout << MSG_LOADING;
+	cout << MSG_LOADING << endl;
 
 	if (readFromFile) {
 		try {
 			file >> currentFloor;
 		}
-
 		// for errors reading the map
 		catch (...) {
 			cerr << ERR_BAD_MAP << endl;
@@ -292,8 +290,16 @@ newFloorStart:
 
 		tempCoords = vector<int>{0,0};
 
+
 		while (file.get(tempChar)) {
+			if (tempChar == '\n') continue;
+
+			std::cout << "Temp Char: " << tempChar << endl;
+			std::cout << "Coords: " << tempCoords[0] << " " << tempCoords[1] << endl;
+
+			std::cout << "IIII" << endl;
 			tempCell = currentFloor.getCell(tempCoords);
+			std::cout << "oooo" << endl;
 			tempCharacter.reset();
 			tempDragon.reset();
 			tempItem.reset();
@@ -395,6 +401,7 @@ newFloorStart:
 
 			}
 
+
 			// if an Item was read, place the item
 			if (tempItem) {
 				tempCell->setItem(tempItem);
@@ -434,16 +441,18 @@ newFloorStart:
 			// advancing the coordinate
 
 			// if at end of line
-			if (tempCoords[2] == floorDimensions[2] - 1) {
-				tempCoords = vector<int>{tempCoords[1] + 1, 0};
+			if (tempCoords[1] == floorDimensions[1] - 1) {
+				tempCoords = vector<int>{tempCoords[0] + 1, 0};
 			}
 
 			// normal traversal
 			else {
-				tempCoords = vector<int>{tempCoords[1], tempCoords[2] + 1};
+				tempCoords = vector<int>{tempCoords[0], tempCoords[1] + 1};
 			}
-
 		}
+
+
+//FIXED UP TO HERE
 
 		// if we have unlinked dragons or dragon hoard cells
 		if (dragonStack.size() != 0 || dragonHoardCellStack.size() != 0) {
@@ -454,7 +463,7 @@ newFloorStart:
 	}
 
 	else {
-		currentFloor.initialize(floorDimensions);
+		currentFloor.initialize();
 
 		floorDimensions = currentFloor.getFloorDimensions();
 

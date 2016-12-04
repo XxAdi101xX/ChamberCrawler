@@ -4,8 +4,11 @@
 #include "../Messaging/Messaging.h"
 #include "../Enumerations/Direction.h"
 
+TextDisplay::TextDisplay() {
+}
+
 TextDisplay::TextDisplay(std::vector<int> gridSize):
-    gridSize {gridSize},
+    gridSize {gridSize}
     {
         for (int i = 0; i < gridSize[0]; ++i) {
             theDisplay.push_back(std::vector<char>());

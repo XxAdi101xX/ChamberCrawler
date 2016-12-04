@@ -21,6 +21,7 @@ class TextDisplay : public Observer {
 
 
 public:
+    TextDisplay();
     TextDisplay(std::vector<int> size);
 
     void notify(Subject &whoNotified) override;

@@ -1,6 +1,7 @@
 #include "Floor.h"
 #include <string>
 #include <map>
+#include <utility>
 #include "../Cell/Cell.h"
 #include "../Enumerations/CellType.h"
 
@@ -13,6 +14,8 @@ Floor::Floor(std::shared_ptr<TextDisplay> td):
 
 void Floor::initialize() {
     clearFloor();
+
+    theDisplay = std::make_shared<TextDisplay>(floorDimensions);
 
     for (int i = 0; i < floorDimensions[0]; ++i) {
         for (int j = 0; j < floorDimensions[1]; ++j) {
@@ -91,7 +94,7 @@ std::istream &operator>>(std::istream &in, Floor &f) {
 
     while (!in.eof()) {
         std::string row;
-        in >> row;
+        std::getline(in, row);
 
         f.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
 
@@ -110,19 +113,29 @@ std::istream &operator>>(std::istream &in, Floor &f) {
                 case '#':
                     cell->setCellType(CellType::Passage);
                     break;
-                case '.':
-                    cell->setCellType(CellType::FloorTile);
-                    break;
                 case ' ':
                     cell->setCellType(CellType::Null);
                     break;
                 default:
+                    cell->setCellType(CellType::FloorTile);
                     break;
             }
 
-            f.theFloor.back().emplace_back(cell);
+            f.theFloor.back().push_back(cell);
         }
     }
+
+    std::cout << "Size: " << f.theFloor.size() << endl;
+
     f.floorDimensions = std::vector<int>{static_cast<int>(f.theFloor.size()), static_cast<int>(f.theFloor[0].size())};
+    /*
+    for (int i = 0; i < f.floorDimensions[0]; ++i) {
+        for (int j = 0; j < f.theFloor[i].size(); ++j) {
+            std::cout << i << " " << j << std::endl;
+            std::cout << f.theFloor[i][j]->getCoords().size() << endl;
+        }
+    }
+    */
+    std::cout << "Dimensions: " << f.floorDimensions[0] << " " << f.floorDimensions[1] << std::endl;
     return in;
 }

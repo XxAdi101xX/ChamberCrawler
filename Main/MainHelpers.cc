@@ -188,7 +188,7 @@ int getNormalOrSmallGoldPile () {
 
 		// reroll if value is not small or not normal
 	} while (tempAmount != GOLD_PILE_SMALL_VALUE
-		|| tempAmount != GOLD_PILE_NORMAL_VALUE);
+		&& tempAmount != GOLD_PILE_NORMAL_VALUE);
 
 	return tempAmount;
 }
