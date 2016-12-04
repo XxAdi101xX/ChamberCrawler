@@ -1,5 +1,5 @@
 #include "Item.h"
-#include "../Defines/Defines.cc"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // Constructor

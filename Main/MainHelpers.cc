@@ -4,6 +4,21 @@
 #include "MainHelpers.h"
 #include "../Floor/Floor.h"
 #include "../TextDisplay/TextDisplay.h"
+#include "../Generator/Generator.h"
+#include "../Defines/Defines.h"
+#include "../Character/Character.h"
+#include "../Character/Dragon.h"
+#include "../Character/Drow.h"
+#include "../Character/Dwarf.h"
+#include "../Character/Elf.h"
+#include "../Character/Goblin.h"
+#include "../Character/Halfling.h"
+#include "../Character/Human.h"
+#include "../Character/Merchant.h"
+#include "../Character/Orc.h"
+#include "../Character/Shade.h"
+#include "../Character/Troll.h"
+#include "../Character/Vampire.h"
 
 #include "../ObserverSubject/Subject.h"
 
@@ -27,9 +42,9 @@ bool isOccupied(vector<int> coord) {
 // wrapper for generator that only returns a valid coordinate
 vector<int> getValidCoords() {
 	// safety check no necessary assuming there is enough room for spawning
-
+	vector<int> tempCoordinates;
 	do {
-		vector<int> tempCoordinates = rng.genCoordinate(floorDimensions);
+		tempCoordinates = rng.genCoordinates(floorDimensions);
 
 		// reroll if coordinates are not for a FloorTile
 		// or has an occupant already
@@ -52,9 +67,10 @@ shared_ptr<Cell> getValidCell() {
 vector<int> getValidNeighbourCoordinates(vector<int> base) {
 	// safety check
 	vector<vector<int>> checkedCoordinates;
+	vector<int> tempCoordinates;
 
 	do {
-		vector<int> tempCoordinates = rng.genNeighbourCoord(base);
+		tempCoordinates = rng.genNeighbourCoord(base);
 
 		bool checked = false;
 
@@ -105,12 +121,14 @@ bool hasActed(shared_ptr<Character> character) {
 Direction getValidMove(vector<int> base) {
 	// safety check
 	vector<Direction>  checkedDirections;
+	vector<int> tempCoordinates;
+	Direction tempDirection = Direction(0);
 
 	do {
-		Cell* tempCell = currentFloor.getCell(base);
+		shared_ptr<Cell> tempCell = currentFloor.getCell(base);
 		Direction tempDirection = rng.genDirection();
-		vector<int> tempCoordinates
-			= (tempCell->getNeighbour(tempDirection))->getCoord();
+		tempCoordinates
+			= (tempCell->getNeighbour(tempDirection))->getCoords();
 
 		bool checked = false;
 
@@ -145,8 +163,9 @@ Direction getValidMove(vector<int> base) {
 // wrapper for generator that only produces a small or
 // normal amount of gold as described by defines.cc
 int getNormalOrSmallGoldPile () {
+	int tempAmount = 0;
 	do {
-		int tempAmount = rng.genGold();
+		tempAmount = rng.genGold();
 
 		// reroll if value is not small or not normal
 	} while (tempAmount != GOLD_PILE_SMALL_VALUE
@@ -208,13 +227,15 @@ shared_ptr<Character> createCharacter(Race race) {
         return make_shared<Halfling>(tempWallet);
 	}
 
+	return nullptr;
+
 }
 
 
 // resets all necessary global variables for new game
 void reset() {
 	floorCount = 0;
-	currentFloor->resetFloorNumber();
+	currentFloor.resetFloorNumber();
 
 	NPCMovementPaused = false;
 	merchantsAngered = false;

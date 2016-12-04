@@ -69,7 +69,7 @@ std::vector<int> genCoordinates(std::vector<int> size) {
 
 
 Direction genDirection() {
-    return Direction(rand()%8)
+    return Direction(rand()%8);
 }
 
 std::vector<int> genNeighbourCoord(std::vector<int> base) {

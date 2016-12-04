@@ -1,6 +1,6 @@
 #include "Drow.h"
-#include "Race.h"
-#include "Defines.cc"
+#include "../Enumerations/Race.h"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -9,7 +9,7 @@ using namespace std;
 class Potion;
 
 
-Drow::Drow(int wallet): Character{DROW_HP_MAX, DROW_HP, 
+Drow::Drow(int wallet): Character{DROW_HP_MAX, DROW_HP,
 	DROW_ATTACK_VALUE, DROW_DEFENCE_VALUE, true, Race::Drow, wallet} {}
 
 
@@ -26,5 +26,3 @@ int Drow::getAttackBuffBonus() const {
 int Drow::getDefenceBuffBonus() const {
 		return DROW_POTION_BONUS * this->getDefenceBuffProt();
 }
-
-

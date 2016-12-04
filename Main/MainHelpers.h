@@ -4,10 +4,14 @@
 #include <vector>
 #include <iostream>
 #include <memory>
-
+#include "../Enumerations/PotionType.h"
+#include "../Enumerations/Race.h"
 
 using namespace std;
 
+class Character;
+class Cell;
+enum class Direction;
 class Generator;
 class Floor;
 class TextDisplay;

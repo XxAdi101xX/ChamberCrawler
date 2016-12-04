@@ -14,7 +14,7 @@ class Cell;
 struct Info;
 
 
-class Character: public Subject {
+class Character: public Subject, public std::enable_shared_from_this<Character> {
 private:
 	int HPMax;
 	int HP;
@@ -35,7 +35,7 @@ private:
 
 	// used when walking over potion, applies potion
 	// to character if character is player
-	void applyPotion(std::shared_ptr<Item> potion);
+	void applyPotion(std::shared_ptr<Potion> potion);
 
 	// runs at turn start
 	// normally does nothing, but overrides implements specific
@@ -157,7 +157,7 @@ public:
 	Race getRace() const; // returns race
 	bool getPlayerState() const; // returns isPlayer
 	bool getHostileState() const; // returns isHostile
-	Cell* getCurrentCell() const; // returns the currentCell
+	std::shared_ptr<Cell> getCurrentCell() const; // returns the currentCell
 	std::string getLastAction() const; // returns the lastAction done
 	std::string getName() const; // returns the name of the character
 	Info getInfo() const; // returns information for observer

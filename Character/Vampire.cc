@@ -1,5 +1,5 @@
 #include "Vampire.h"
-#include "Defines.cc"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -14,7 +14,7 @@ Vampire::Vampire(int wallet): Character{VAMPIRE_HP_MAX, VAMPIRE_HP,
 
 void Vampire::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	// calculates potential HP gain/loss
-	int HPToBeAdded = defender.getRace() == Race::Dwarf 
+	int HPToBeAdded = defender.getRace() == Race::Dwarf
 		? -1 * VAMPIRE_ON_HIT_HEAL : VAMPIRE_ON_HIT_HEAL;
 
 	// only add if actually hit enemy
@@ -23,5 +23,3 @@ void Vampire::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	}
 
 }
-
-

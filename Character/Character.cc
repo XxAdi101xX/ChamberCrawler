@@ -2,15 +2,17 @@
 #include <cmath>
 #include <vector>
 #include "Character.h"
-//#include "Potion.h"
-//#include "Generator.h"
-#include "PotionType.h"
-#include "Direction.h"
-#include "ItemType.h"
-#include "CellType.h"
-#include "Messaging.h"
-#include "Info.h"
-#include "Localisation.cc"
+#include "../Items/Potion.h"
+#include "../Items/GoldPile.h"
+#include "../Cell/Cell.h"
+#include "../Generator/Generator.h"
+#include "../Enumerations/PotionType.h"
+#include "../Enumerations/Direction.h"
+#include "../Enumerations/ItemType.h"
+#include "../Enumerations/CellType.h"
+#include "../Messaging/Messaging.h"
+#include "../Info/Info.h"
+#include "../Localisation/Localisation.h"
 using namespace std;
 
 // note that all string literals for reporting messages are
@@ -19,8 +21,8 @@ using namespace std;
 extern vector<PotionType> usedPotions;
 
 
-void Character::applyPotion(shared_ptr<Item> potion) {
-	PotionType type = potion->getType();
+void Character::applyPotion(shared_ptr<Potion> potion) {
+	PotionType type = potion->getPotionType();
 	int potency = potion->getPotency();
 
 	// health based potions
@@ -47,7 +49,7 @@ void Character::applyPotion(shared_ptr<Item> potion) {
 	usedPotions.emplace_back(type);
 
 	// reports what potion was used
-	this->addAction(makeMsg(this->name, WORD_USE_PAST_TENSE , potionToText(potion)));
+	this->addAction(makeMsg(this->name, WORD_USE_PAST_TENSE , potionToText(*potion)));
 }
 
 
@@ -118,7 +120,7 @@ void Character::addHPViaPotion(int amount) {
 
 
 void Character::doMove(Direction direction) {
-	Cell* cell = (this->currentCell)->getNeighbour(direction);
+	shared_ptr<Cell> cell = (this->currentCell)->getNeighbour(direction);
 	if (cell != nullptr) {
 		// type of cell attempting to move to
 		CellType cellType = cell->getCellType();
@@ -134,7 +136,7 @@ void Character::doMove(Direction direction) {
 
 		// NPCs cannot leave their chamber
 		if (!(this->isPlayer) && (cellType != CellType::FloorTile)
-			&& (cellType != CellType::Stairs)); {
+			&& (cellType != CellType::Stairs)) {
 
 			return;
 		}
@@ -153,8 +155,7 @@ void Character::doMove(Direction direction) {
 		}
 
 		// two characters cannot be on the same cell
-		if (cell->getOccupant) {
-
+		if (cell->getOccupant()) {
 			return;
 		}
 
@@ -172,7 +173,7 @@ void Character::doMove(Direction direction) {
 			directionToText(direction)));
 
 		// gets the neighbourhood
-		vector<Cell*> neighbourhood = (this->currentCell)->getNeighbours();
+		vector<shared_ptr<Cell>> neighbourhood = (this->currentCell)->getNeighbours();
 
 		// reports all item sightings
 		for (auto neighbour: neighbourhood) {
@@ -300,7 +301,7 @@ void Character::applyItem(shared_ptr<Item> item) {
     // if item is GoldPile
     if (itemType == ItemType::GoldPile) {
         // if GoldPile is not bound
-        if (!(item->getBoundState)) {
+        if (!(static_pointer_cast<GoldPile>(item)->getBoundState())) {
                 this->addGold(item->getValue());
         }
 
@@ -308,7 +309,7 @@ void Character::applyItem(shared_ptr<Item> item) {
 
     // if item is Potion
     else if (itemType == ItemType::Potion) {
-        this->applyPotion(item);
+        this->applyPotion(static_pointer_cast<Potion>(item));
     }
 
 }
@@ -388,7 +389,7 @@ void Character::setCell(std::shared_ptr<Cell> cell) {
 	this->currentCell = cell;
 
 	if (cell) {
-		cell->setOccupant(this);
+		cell->setOccupant(shared_from_this());
 	}
 
 }
@@ -424,7 +425,7 @@ bool Character::getHostileState() const {
 }
 
 
-Cell* Character::getCurrentCell() const {
+shared_ptr<Cell> Character::getCurrentCell() const {
 	return this->currentCell;
 }
 

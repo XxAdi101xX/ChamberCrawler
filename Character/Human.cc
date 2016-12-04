@@ -1,7 +1,8 @@
 #include <vector>
 #include "Human.h"
-//#include "GoldPile.h"
-#include "Defines.cc"
+#include "../Items/GoldPile.h"
+#include "../Defines/Defines.h"
+#include "../Cell/Cell.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -12,12 +13,12 @@ class GoldPile;
 
 
 // Human does not give gold on death, hence wallet field is set to 0
-Human::Human(int wallet): Character{HUMAN_HP_MAX, HUMAN_HP, 
+Human::Human(int wallet): Character{HUMAN_HP_MAX, HUMAN_HP,
 	HUMAN_ATTACK_VALUE, HUMAN_DEFENCE_VALUE, true, Race::Human, 0} {}
 
 
 void Human::deathRoutine() {
-	vector<Cell*> neighbourHood 
+	vector<shared_ptr<Cell>> neighbourHood
 		= (this->getCurrentCell())->getNeighbours();
 
 	int numberOfGoldPilesAlreadyDropped = 0;
@@ -32,14 +33,12 @@ void Human::deathRoutine() {
 			++numberOfGoldPilesAlreadyDropped;
 		}
 
-		if (numberOfGoldPilesAlreadyDropped 
+		if (numberOfGoldPilesAlreadyDropped
 			== HUMAN_NUMBER_OF_GOLD_PILES_DROPPED) {
-			
+
 			return;
 		}
 
 	}
 
 }
-
-

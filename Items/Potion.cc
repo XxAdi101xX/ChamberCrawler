@@ -1,29 +1,36 @@
 #include "Potion.h"
-#include "../Defines/Defines.cc"
+#include "../Defines/Defines.h"
 using namespace std;
 
-Potion::Potion(PotionType potionType):Item{ItemType::Potion, POTION_VALUE}, 
-																			potionType{potionType} {
-	// Different potion potencies layed out in if statements so they can 
+Potion::Potion(PotionType potionType):Item{ItemType::Potion, POTION_VALUE},
+									  potionType{potionType},
+									  potency{potionTypeToPotency(potionType)}
+									  {}
+
+int Potion::potionTypeToPotency(PotionType potionType) {
+	// Different potion potencies layed out in if statements so they can
 	// easily be changed/added if required
+
+	int p;
 	if (potionType == PotionType::RestoreHealth) {
-		potency = POTION_POTENCY_RESTORE_HEALTH;
+		return POTION_POTENCY_RESTORE_HEALTH;
 	}
 	else if (potionType == PotionType::PoisonHealth) {
-    potency = POTION_POTENCY_POISON_HEALTH;
-  }
+    	return POTION_POTENCY_POISON_HEALTH;
+  	}
 	else if (potionType == PotionType::BoostAttack) {
-    potency = POTION_POTENCY_BOOST_ATTACK;
-  }
-	else if (potionType == PotionType::BoostDefense) {
-    potency = POTION_POTENCY_BOOST_DEFENSE;
-  }
+    	return POTION_POTENCY_BOOST_ATTACK;
+  	}
+	else if (potionType == PotionType::BoostDefence) {
+    	return POTION_POTENCY_BOOST_DEFENSE;
+  	}
 	else if (potionType == PotionType::WoundAttack) {
-    potency = POTION_POTENCY_WOUND_ATTACK;
-  }
-	else if (potionType == PotionType::WoundDefense) {
-    potency = POTION_POTENCY_WOUND_DEFENSE;
-  }
+    	return POTION_POTENCY_WOUND_ATTACK;
+  	}
+	else if (potionType == PotionType::WoundDefence) {
+    	return POTION_POTENCY_WOUND_DEFENSE;
+  	}
+	return 0;
 }
 
 // Destructor

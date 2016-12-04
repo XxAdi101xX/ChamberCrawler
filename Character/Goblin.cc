@@ -1,6 +1,6 @@
 #include "Goblin.h"
-#include "Race.h"
-#include "Defines.cc"
+#include "../Enumerations/Race.h"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -9,8 +9,8 @@ using namespace std;
 class Character;
 
 
-Goblin::Goblin(int wallet): Character{GOBLIN_HP_MAX, GOBLIN_HP, 
-	GOBLIN_ATTACK_VALUE, GOBLIN_DEFENCE_VALUE, 
+Goblin::Goblin(int wallet): Character{GOBLIN_HP_MAX, GOBLIN_HP,
+	GOBLIN_ATTACK_VALUE, GOBLIN_DEFENCE_VALUE,
 	true, Race::Goblin, wallet} {}
 
 
@@ -21,5 +21,3 @@ void Goblin::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	}
 
 }
-
-

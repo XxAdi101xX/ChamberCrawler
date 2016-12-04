@@ -18,7 +18,7 @@ void Cell::setCoords(std::vector<int> coords) {
 }
 
 // Adds neighbour to cell's neighbours vector
-void Cell::addNeighbour(Cell* neighbour) {
+void Cell::addNeighbour(std::shared_ptr<Cell> neighbour) {
 	neighbours.emplace_back(neighbour);
 }
 
@@ -35,22 +35,22 @@ void Cell::setOccupant(shared_ptr<Character> occupant) {
 }
 
 // Returns cell type
-CellType Cell::getCellType() {
+CellType Cell::getCellType() const {
 	return cellType;
 }
 
 // Returns the coordinates of the cell
-vector<int> Cell::getCoords() {
+vector<int> Cell::getCoords() const {
 	return coordinates;
 }
 
 // Returns the item on the cell
-shared_ptr<Item> Cell::getItem() {
+shared_ptr<Item> Cell::getItem() const {
 	return item;
 }
 
 // Returns the cell's neighbours in the specified direction
-shared_ptr<Cell> Cell::getNeighbour(Direction direction) {
+shared_ptr<Cell> Cell::getNeighbour(Direction direction) const {
 	// The neighbours are always placed in a particular order in the vector
 	if (direction == Direction::North) {
 		return (getNeighbours()[0]);
@@ -74,17 +74,17 @@ shared_ptr<Cell> Cell::getNeighbour(Direction direction) {
 		return (getNeighbours()[6]);
 	}
 	else {
-		(getNeighbours()[7]); // NorthEast
+		return (getNeighbours()[7]); // NorthEast
 	}
 }
 
 // Returns a refernce to vector with all neighbouring Cells
-vector<shared_ptr<Cell>>& Cell::getNeighbours() {
+vector<shared_ptr<Cell>> Cell::getNeighbours() const {
 	return neighbours;
 }
 
 // Returns any character object occupying the cell or nullptr otherwise
-std::shared_ptr<Character> Cell::getOccupant() {
+std::shared_ptr<Character> Cell::getOccupant() const {
 	return occupant;
 }
 

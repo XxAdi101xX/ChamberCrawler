@@ -1,7 +1,13 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -MMD
-EXEC = a4q3a
-OBJECTS = Main/Main.o Generator/Generator.o
+EXEC = cc3k
+OBJECTS = Main/Main.o Main/MainHelpers.o Cell/Cell.o Character/Character.o\
+ 		  Character/Dragon.o Character/Drow.o Character/Dwarf.o\
+		  Character/Elf.o Character/Goblin.o Character/Halfling.o\
+		  Character/Human.o Character/Merchant.o Character/Orc.o\
+		  Character/Shade.o Character/Troll.o Character/Vampire.o\
+		  Items/GoldPile.o Items/Item.o Items/Potion.o Generator/Generator.o\
+		  Messaging/Messaging.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

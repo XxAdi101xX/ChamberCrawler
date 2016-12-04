@@ -1,6 +1,6 @@
 #include "Elf.h"
-#include "Race.h"
-#include "Defines.cc"
+#include "../Enumerations/Race.h"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -10,10 +10,9 @@ class Character;
 class Generator;
 
 
-Elf::Elf(int wallet): Character{ELF_HP_MAX, ELF_HP, 
-	ELF_ATTACK_VALUE, ELF_DEFENCE_VALUE, true, Race::Elf, wallet}, 
+Elf::Elf(int wallet): Character{ELF_HP_MAX, ELF_HP,
+	ELF_ATTACK_VALUE, ELF_DEFENCE_VALUE, true, Race::Elf, wallet},
 	extraAttacks{ELF_NUMBER_OF_EXTRA_ATTACKS} {}
-
 
 void Elf::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	// not attacking again if already attacked or target is Drow
@@ -23,12 +22,10 @@ void Elf::postAttackRoutine(Character& defender, bool hit, Generator& rng) {
 	}
 
 	--(this->extraAttacks);
-	
+
 	// recursive call to attack, attack will
 	// call postAttackRoutine again, but
 	// will get stopped by base case
 	this->attack(defender, rng);
 
 }
-
-

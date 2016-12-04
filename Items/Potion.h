@@ -7,6 +7,8 @@
 class Potion final: public Item {
 	PotionType potionType;
 	const int potency;
+
+	int potionTypeToPotency(PotionType potionType);
  public:
 	Potion(PotionType potionType);
 	~Potion();

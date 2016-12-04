@@ -18,10 +18,12 @@ private:
 
     std::vector<int> floorDimensions;
 
-    bool dfsSearch(std::shared_ptr<std::map<std::string, bool>> travelled, const std::vector<int> curr,
-        const std::vector<int> dest);
+    bool dfsSearch(std::map<std::string, bool> travelled, const std::vector<int> curr,
+        const std::vector<int> dest) const;
 
-    std::string coordsToString(std::vector<int> coord);
+    std::string coordsToString(std::vector<int> coord) const;
+
+    int floorNumber;
 
 public:
 
@@ -30,13 +32,17 @@ public:
     void initialize();
     void clearFloor();
 
+    void resetFloorNumber();
+
+    int getFloorNumber();
+
     bool sameChamber(const std::vector<int> coords1, const std::vector<int> coords2) const;
 
     std::shared_ptr<Cell> getCell(const std::vector<int> coords) const;
     std::vector<int> getFloorDimensions() const;
 
-};
+    friend std::istream &operator>>(std::istream &in, const Floor &floor);
 
-std::istream &operator>>(std::istream &in, const Floor &floor);
+};
 
 #endif

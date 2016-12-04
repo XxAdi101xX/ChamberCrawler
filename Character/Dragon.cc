@@ -1,8 +1,10 @@
 #include <vector>
 #include "Dragon.h"
-#include "Messaging.h"
-#include "Race.h"
-#include "Defines.cc"
+#include "../Messaging/Messaging.h"
+#include "../Enumerations/Race.h"
+#include "../Defines/Defines.h"
+#include "../Items/GoldPile.h"
+#include "../Cell/Cell.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -22,17 +24,17 @@ void Dragon::doMove(Direction direction) {/* does not move */}
 
 void Dragon::deathRoutine() {
 	// unbinds dragon hoard
-	((this->dragonHoardCell)->getItem())->unbind();
+	static_pointer_cast<GoldPile>((this->dragonHoardCell)->getItem())->unbind();
 }
 
 
 void Dragon::doStartTurnRoutine(Generator& rng) {
 	// gets all neighbours of the dragonHoard
-	vector<Cell*> neighbourhood = (this->dragonHoardCell)->getNeighbours();
+	vector<shared_ptr<Cell>> neighbourhood = (this->dragonHoardCell)->getNeighbours();
 
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
-		Character* occupant = neighbour->getOccupant();
+		shared_ptr<Character> occupant = neighbour->getOccupant();
 
 		if (occupant && occupant->getPlayerState()) {
 			this->setHostile();
@@ -57,7 +59,7 @@ void Dragon::doStartTurnRoutine(Generator& rng) {
 
 	// check if they have a player on them
 	for (auto neighbour: neighbourhood) {
-		Character* occupant = neighbour->getOccupant();
+		shared_ptr<Character> occupant = neighbour->getOccupant();
 
 		if (occupant && occupant->getPlayerState()) {
 			this->setHostile();

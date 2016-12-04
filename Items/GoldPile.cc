@@ -1,10 +1,10 @@
 #include "GoldPile.h"
-#include "../Defines/Defines.cc"
+#include "../Defines/Defines.h"
 using namespace std;
 
 GoldPile::GoldPile(int value): Item{ItemType::GoldPile, value} {
 	if (value != GOLD_PILE_DRAGON_HOARD_VALUE) {
-		unbind();	
+		unbind();
 	}
 }
 
@@ -12,7 +12,7 @@ GoldPile::~GoldPile() {}
 
 // unbinds the gold to allow player to pick it up
 void GoldPile::unbind() {
-	isBound = false;	
+	isBound = false;
 }
 
 // checks if the gold is bound by a dragon

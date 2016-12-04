@@ -1,14 +1,16 @@
 #include <vector>
 #include "Merchant.h"
-//#include "GoldPile.h"
-#include "Defines.cc"
+#include "../Items/GoldPile.h"
+#include "../Defines/Defines.h"
+#include "Character.h"
+#include "../Items/GoldPile.h"
+#include "../Cell/Cell.h"
+
 using namespace std;
 
 // many literal values have been converted to variables,
 // and stored in Defines.cc
 
-class Character;
-class GoldPile;
 
 extern bool merchantsAngered;
 
@@ -24,12 +26,12 @@ void Merchant::doStartTurnRoutine(Generator& rng) {
 	if (merchantsAngered) {
 		this->setHostile();
 	}
-	
+
 }
 
 
 void Merchant::deathRoutine() {
-	vector<Cell*> neighbourHood = (this->getCurrentCell())->getNeighbours();
+	vector<shared_ptr<Cell>> neighbourHood = (this->getCurrentCell())->getNeighbours();
 
 	int numberOfGoldPilesAlreadyDropped = 0;
 
@@ -38,13 +40,13 @@ void Merchant::deathRoutine() {
 		if (!(neighbour->getItem()) && !(neighbour->getOccupant())) {
 			neighbour->setItem
 			(make_shared<GoldPile>(MERCHANT_DROPPED_GOLD_PILE_VALUE));
-			
+
 			++numberOfGoldPilesAlreadyDropped;
 		}
 
-		if (numberOfGoldPilesAlreadyDropped 
+		if (numberOfGoldPilesAlreadyDropped
 			== MERCHANT_NUMBER_OF_GOLD_PILES_DROPPED) {
-			
+
 			return;
 		}
 
@@ -52,5 +54,3 @@ void Merchant::deathRoutine() {
 
 	merchantsAngered = true;
 }
-
-

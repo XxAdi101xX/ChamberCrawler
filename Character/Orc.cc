@@ -1,5 +1,5 @@
 #include "Orc.h"
-#include "Defines.cc"
+#include "../Defines/Defines.h"
 using namespace std;
 
 // many literal values have been converted to variables,
@@ -21,4 +21,3 @@ bool dealDamageTo(Character& defender, int& damage, Generator& rng) {
 
 	return true;
 }
-
