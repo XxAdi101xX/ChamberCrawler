@@ -58,7 +58,6 @@ int main(int argc, char *argv[]) {
 	// default seed
 	int seed = time(NULL);
 
-	ifstream file;
 	bool readFromFile = false;
 
 	if (argc > 3) {
@@ -71,7 +70,7 @@ int main(int argc, char *argv[]) {
 		string test;
 
 		try {
-			file = ifstream{argv[1]};
+			ifstream file {argv[1]};
 			test = file.peek();
 			readFromFile = true;
 		}
@@ -96,7 +95,7 @@ int main(int argc, char *argv[]) {
 		string test;
 
 	    try {
-            file = ifstream{argv[1]};
+            ifstream file {argv[1]};
             test = file.peek();
 			readFromFile = true;
         }
@@ -122,8 +121,8 @@ int main(int argc, char *argv[]) {
 	currentFloor = Floor{shared_ptr<TextDisplay>(&theTextDisplay)};
 	theTextDisplay = TextDisplay{currentFloor.getFloorDimensions()};
 
-//	bool NPCMovementPaused = false;
-//	bool merchantsAngered = false;
+	bool NPCMovementPaused = false;
+	bool merchantsAngered = false;
 	vector<PotionType> usedPotions;
 
 	// generation variables
@@ -277,7 +276,8 @@ newFloorStart:
 		}
 
 		// reinitialize the file to scan for objects on the floor
-		file = ifstream{argv[1]};
+		file.close();
+		file.open();
 
 		// skips previous floors in the file
 		file.ignore((floorCount - 1)
