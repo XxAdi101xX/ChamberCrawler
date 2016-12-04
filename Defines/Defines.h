@@ -8,6 +8,8 @@ const int NUMBER_OF_FLOORS = 5;
 const int SPAWN_NUMBER_POTION = 10;
 const int SPAWN_NUMBER_GOLD_PILE = 10;
 const int SPAWN_NUMBER_NPC = 20;
+const int DEFAULT_FLOOR_LENGTH = 79;
+const int DEFAULT_FLOOR_WIDTH = 25;
 
 
 // Enumerations info

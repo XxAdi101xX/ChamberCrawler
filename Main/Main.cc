@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 	Generator rng {seed};
 	int floorCount = 0;
 	Floor currentFloor {shared_ptr<TextDisplay>(&theTextDisplay)};
-	TextDisplay theTextDisplay {currentFloor.getFloorDimensions()};
+	TextDisplay theTextDisplay {};
 
 	bool NPCMovementPaused = false;
 	bool merchantsAngered = false;
@@ -138,8 +138,8 @@ int main(int argc, char *argv[]) {
 	vector<int> stairCoords;
 
 
-	// read generation variables and temporaries
-	vector<int> floorDimensions; // for procedural generation as well
+	// generation variables, counters and temporaries
+	vector<int> floorDimensions {DEFAULT_FLOOR_WIDTH, DEFAULT_FLOOR_LENGTH};
 
 	char tempChar;
 
@@ -149,7 +149,6 @@ int main(int argc, char *argv[]) {
 	vector<shared_ptr<Cell>> dragonHoardCellStack;
 	vector<shared_ptr<Dragon>> dragonStack;
 
-	// procedural generation counters and temporaries
 	vector<shared_ptr<Character>> alreadyActed;
 	shared_ptr<Cell> tempCell;
 	vector<shared_ptr<Cell>> tempNeighbourhood;
@@ -455,7 +454,7 @@ newFloorStart:
 	}
 
 	else {
-		currentFloor.initialize();
+		currentFloor.initialize(floorDimensions);
 
 		floorDimensions = currentFloor.getFloorDimensions();
 
