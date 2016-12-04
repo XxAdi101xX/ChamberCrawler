@@ -589,7 +589,7 @@ newFloorStart:
 
 	}
 
-	player->notifyObservers();
+	//player->notifyObservers();
 
 	cout << MSG_LOADING_COMPLETE << endl;
 

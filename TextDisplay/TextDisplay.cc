@@ -31,14 +31,16 @@ void TextDisplay::setGridSize(std::vector<int> size) {
 
 void TextDisplay::notify(Subject &notifier) {
     Info i = notifier.getInfo();
-    std::cout << i.HP << std::endl;
-    std::cout << i.isCellInfo << std::endl;
     if (i.isCellInfo) {
         info.coordinates = i.coordinates;
         info.displayChar = i.displayChar;
         theDisplay[info.coordinates[0]][info.coordinates[1]] = info.displayChar;
     }
     else {
+        std::cout << "Cell Info" << std::endl;
+        std::cout << i.HP << std::endl;
+        std::cout << i.isCellInfo << std::endl;
+
         info.lastAction = i.lastAction;
         info.race = i.race;
         info.gold = i.gold;
@@ -50,8 +52,6 @@ void TextDisplay::notify(Subject &notifier) {
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
-
-    std::cout << td << std::endl;
 
     for (auto &row: td.theDisplay) {
         for (auto &c: row) {
