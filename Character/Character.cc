@@ -29,6 +29,10 @@ void Character::applyPotion(const shared_ptr<Potion> potion) {
 	if (type == PotionType::RestoreHealth
 		|| type == PotionType::PoisonHealth) {
 
+		if (this->getHP() + potency <= 0) {
+			potency = -(this->getHP() - 1);
+		}
+
 		this->addHPViaPotion(potency);
 	}
 
@@ -462,7 +466,59 @@ Info Character::getInfo() const {
 	characterInfo.defenceValue = this->getTotalDefence();
 
 	characterInfo.coordinates = (this->currentCell)->getCoords();
-	characterInfo.displayChar = this->isPlayer ? CHAR_PLAYER : this->name[1];
+
+	if (this->getRace() == Race::Dragon) {
+		characterInfo.displayChar = CHAR_DRAGON;
+	}
+
+	else if (this->getRace() == Race::Drow) {
+		characterInfo.displayChar = CHAR_DROW;
+	}
+
+    else if (this->getRace() == Race::Dwarf) {
+        characterInfo.displayChar = CHAR_DWARF;
+    }
+
+    else if (this->getRace() == Race::Elf) {
+        characterInfo.displayChar = CHAR_ELF;
+    }
+
+    else if (this->getRace() == Race::Goblin) {
+        characterInfo.displayChar = CHAR_GOBLIN;
+    }
+
+    else if (this->getRace() == Race::Halfling) {
+        characterInfo.displayChar = CHAR_HALFLING;
+    }
+
+    else if (this->getRace() == Race::Human) {
+        characterInfo.displayChar = CHAR_HUMAN;
+    }
+
+    else if (this->getRace() == Race::Merchant) {
+        characterInfo.displayChar = CHAR_MERCHANT;
+    }
+
+    else if (this->getRace() == Race::Orc) {
+        characterInfo.displayChar = CHAR_ORC;
+    }
+
+    else if (this->getRace() == Race::Shade) {
+        characterInfo.displayChar = CHAR_SHADE;
+    }
+
+    else if (this->getRace() == Race::Troll) {
+        characterInfo.displayChar = CHAR_TROLL;
+    }
+    
+	else if (this->getRace() == Race::Vampire) {
+        characterInfo.displayChar = CHAR_VAMPIRE;
+    }
+
+    else {
+        characterInfo.displayChar = CHAR_PLAYER;
+    }
+
 	characterInfo.lastAction = this->lastAction;
 
 	return characterInfo;

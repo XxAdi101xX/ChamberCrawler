@@ -182,11 +182,11 @@ titleScreen:
 	cout << MSG_WELCOME << endl;
 	cout << PROMPT_RACE_SELECTION << endl;
 
-	cout << "(" << CMD_SHADE_SELECT << ")    " << NAME_SHADE_SELECT << endl;
-	cout << "(" << CMD_DROW_SELECT << ")    " << NAME_DROW_SELECT << endl;
-	cout << "(" << CMD_VAMPIRE_SELECT << ")    " << NAME_VAMPIRE_SELECT << endl;
-	cout << "(" << CMD_GOBLIN_SELECT << ")    " << NAME_GOBLIN_SELECT << endl;
-	cout << "(" << CMD_TROLL_SELECT << ")    " << NAME_TROLL_SELECT << endl;
+	cout << "(" << CMD_SHADE_SELECT << ")    " << NAME_SHADE << endl;
+	cout << "(" << CMD_DROW_SELECT << ")    " << NAME_DROW << endl;
+	cout << "(" << CMD_VAMPIRE_SELECT << ")    " << NAME_VAMPIRE << endl;
+	cout << "(" << CMD_GOBLIN_SELECT << ")    " << NAME_GOBLIN << endl;
+	cout << "(" << CMD_TROLL_SELECT << ")    " << NAME_TROLL << endl;
 
 	// while player is not yet set
 	while (!player) {
@@ -196,27 +196,27 @@ titleScreen:
 		}
 
 		else if (cmd == CMD_SHADE_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_SHADE_SELECT << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_SHADE << endl;
 			player = createCharacter(Race::Shade);
 		}
 
 		else if (cmd == CMD_DROW_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_DROW_SELECT << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_DROW << endl;
 			player = createCharacter(Race::Drow);
 		}
 
 		else if (cmd == CMD_VAMPIRE_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_VAMPIRE_SELECT << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_VAMPIRE << endl;
 			player = createCharacter(Race::Vampire);
 		}
 
 		else if (cmd == CMD_GOBLIN_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_GOBLIN_SELECT << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_GOBLIN << endl;
 			player = createCharacter(Race::Goblin);
 		}
 
 		else if (cmd == CMD_TROLL_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_TROLL_SELECT << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_TROLL << endl;
 			player = createCharacter(Race::Troll);
 		}
 
