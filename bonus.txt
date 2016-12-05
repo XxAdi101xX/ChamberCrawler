@@ -1,0 +1,2 @@
+Extra Credit Features
+We only used smart pointers for heap allocated memory in our implementation hence did not use new/delete at all. 

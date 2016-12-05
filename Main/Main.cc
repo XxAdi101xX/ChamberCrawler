@@ -159,7 +159,6 @@ int main(int argc, char *argv[]) {
 
 
 titleScreen:
-
 	cout << MSG_WELCOME << endl;
 	cout << PROMPT_RACE_SELECTION << endl;
 
@@ -259,7 +258,7 @@ newFloorStart:
 
 	}
 
-	cout << MSG_LOADING << endl;
+	cout << MSG_LOADING;
 
 	if (readFromFile) {
 		try {
