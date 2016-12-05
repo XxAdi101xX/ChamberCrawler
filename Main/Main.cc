@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 	merchantsAngered = false;
 
 	// generation variables
-	stringstream defaultFloor {DEFAULT_MAP};
+	stringstream defaultFloor {DEFAULT_FLOOR};
 
 	player = nullptr;
 	vector<int> playerCoords;
