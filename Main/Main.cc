@@ -472,8 +472,7 @@ newFloorStart:
 	}
 
 	else {
-		std::cout << "INItialize" << std::endl;
-
+		defaultFloor = std::stringstream{DEFAULT_FLOOR};
 		defaultFloor >> currentFloor;
 
 		floorDimensions = currentFloor.getFloorDimensions();
