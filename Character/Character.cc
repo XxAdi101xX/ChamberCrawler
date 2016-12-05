@@ -77,7 +77,9 @@ bool Character::defend(Character& attacker,
 		if (rng.genHitMiss() || !(this->getPlayerState())) {
 		// deduct HP
 		this->HP -= incomingDamage;
-
+		if (this->HP < 0) {
+			this->HP = 0;	
+		}
 		// reports damage taken
 		this->addAction(makeMsg(attacker.getName(), WORD_DEAL_PAST_TENSE + " "
 		+ to_string(incomingDamage) + " " + WORD_DAMAGE_NOUN + " "
