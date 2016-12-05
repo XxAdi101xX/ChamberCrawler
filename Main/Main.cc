@@ -64,62 +64,44 @@ int main(int argc, char *argv[]) {
 
 	bool readFromFile = false;
 
-	if (argc > 3) {
+	if (argc > 2) {
 		cerr << ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS << endl;
 		cerr << ERR_USAGE << endl;
 		return 1;
 	}
 
-	else if (argc == 3) {
-		string test;
-
-		try {
-			file.close();
-			file.open(argv[1]);
-			test = file.peek();
-			filename = argv[1];
-			readFromFile = true;
-		}
-
-		catch (...) {
-			cerr << ERR_BAD_FILE << endl;
-			return 2;
-		}
-
-		try {
-			seed = stoi(argv[2]);
-		}
-
-		catch (...) {
-			cerr << ERR_BAD_SEED << endl;
-			return 3;
-		}
-
-	}
-
 	else if (argc == 2) {
-		string test;
+		string test = argv[1];
+		bool isSeed = true;
 
-	    try {
-			file.close();
-			file.open(argv[1]);
-            test = file.peek();
-			filename = argv[1];
+		file.close();
+		file.open(argv[1]);
+
+		for (auto letter : test) {
+			// if any char is not a number
+			if (!(letter >= 48 && letter <= 57)) {
+				isSeed = false;
+				break;
+			}
+
+		}
+
+		if (file.is_open()) {
 			readFromFile = true;
-        }
+		}
 
-        catch (...) {
-        	try {
-            	seed = stoi(argv[1]);
-        	}
+		else if (isSeed) {
+			seed = stoi(argv[1]);
+		}
 
-        	catch (invalid_argument a) {
-            	cerr << ERR_BAD_CMD_LINE_ARG << endl;
-            	return 4;
-        	}
+		else {
+			file.close();
 
-        }
+			cerr << ERR_BAD_FILE << " " + WORD_OR_CONJUNCTION 
+				+ " " << ERR_BAD_SEED << endl;
+			return 2;
 
+		}
 
 	}
 
@@ -240,6 +222,11 @@ newFloorStart:
 	// updates floor count since this is a new floor
 
 	++floorCount;
+	theTextDisplay.setFloorNumber(floorCount);
+
+	numberOfSpawnedPotions = 0;
+    numberOfSpawnedGoldPiles = 0;
+    numberOfSpawnedNPCs = 0;
 
 	playerHasBeenPlaced = false;
 	player->clearBuffs();
@@ -292,10 +279,8 @@ newFloorStart:
 		// for errors reading the map
 		catch (...) {
 			cerr << ERR_BAD_MAP << endl;
-			return 5;
+			return 3;
 		}
-
-		theTextDisplay.setFloorNumber(floorCount);
 
 		// reinitialize the file to scan for objects on the floor
 		file.close();
@@ -369,7 +354,7 @@ newFloorStart:
 					// prevents placing the player twice
 					if (playerHasBeenPlaced) {
 						cerr << ERR_BAD_MAP << endl;
-						return 5;
+						return 3;
 					}
 
 					tempCharacter = player;
@@ -465,7 +450,7 @@ newFloorStart:
 		// if we have unlinked dragons or dragon hoard cells
 		if (dragonStack.size() != 0 || dragonHoardCellStack.size() != 0) {
 				cerr << ERR_BAD_MAP << endl;
-				return 5;
+				return 3;
 		}
 
 	}
@@ -537,6 +522,17 @@ newFloorStart:
 			// gets a random GoldPile value
 			tempGoldPileValue = rng.genGold();
 
+			// not a merchant hoard
+            if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
+                tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
+            }
+
+			// is actually a merchant hoard
+            else  {
+                // decrements counter to allow second try
+                --numberOfSpawnedGoldPiles;
+            }
+
 			// if the gold spawned was a dragon hoard
 			if (tempGoldPileValue == GOLD_PILE_DRAGON_HOARD_VALUE) {
 				try {
@@ -547,11 +543,10 @@ newFloorStart:
 					tempDragon = static_pointer_cast<Dragon>(createCharacter(Race::Dragon));
 
 					// sets dragon in place
-					tempDragon->setCell(tempCell);
+					tempDragon->setCell(currentFloor.getCell(dragonCoords));
 
 					// gives it it's cell
-					tempDragon
-						->setDragonHoardCell(tempCell);
+					tempDragon->setDragonHoardCell(tempCell);
 
 				}
 
@@ -560,22 +555,14 @@ newFloorStart:
 					// remove the pile added
 					tempCell->setItem(nullptr);
 
+					// remove the dragon added
+					(tempDragon->getCurrentCell())->setOccupant(nullptr);
+
 					// decrements counter to allow second try
 					--numberOfSpawnedGoldPiles;
 
 				}
 
-			}
-
-			// not a merchant hoard, not a dragon hoard
-			else if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
-				tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
-			}
-
-			// is actually a merchant hoard
-			else {
-				// decrements counter to allow second try
-				--numberOfSpawnedGoldPiles;
 			}
 
 			++numberOfSpawnedGoldPiles;
