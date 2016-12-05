@@ -316,7 +316,7 @@ void Character::applyItem(shared_ptr<Item> item) {
 
 
 void Character::attack(Character& defender, Generator& rng) {
-	int damage = ceil((100/(100 + defender.getTotalDefence()))
+	int damage = ceil((100.0/(100.0 + defender.getTotalDefence()))
 		* this->getTotalAttack());
 
 	bool firstRollForHit = this->dealDamageTo(defender, damage, rng);

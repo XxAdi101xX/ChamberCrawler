@@ -43,7 +43,7 @@ void TextDisplay::notify(Subject &notifier) {
         info.gold = i.gold;
         info.HP = i.HP;
         info.attackValue = i.attackValue;
-
+        info.defenceValue = i.defenceValue;
     }
 }
 

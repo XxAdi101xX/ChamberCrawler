@@ -855,7 +855,6 @@ newFloorStart:
 
 
 		// outputs new game state
-		outputGameState();
 
 		// NPC turn start
 		for (int i = 0; i < (currentFloor.getFloorDimensions())[0]; ++i) {
