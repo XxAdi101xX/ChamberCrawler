@@ -825,7 +825,7 @@ newFloorStart:
 			}
 
 			else if (cmd == CMD_STOP) {
-				NPCMovementPaused = true;
+				NPCMovementPaused = !NPCMovementPaused;
 			}
 
 			else if (cmd == CMD_RESTART) {
