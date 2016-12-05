@@ -7,7 +7,6 @@
 #include "../Enumerations/PotionType.h"
 #include "../Enumerations/Race.h"
 
-using namespace std;
 
 class Character;
 class Cell;
@@ -20,30 +19,30 @@ extern Generator rng;
 extern TextDisplay theTextDisplay;
 extern Floor currentFloor; // note that floor is cleared at initialization
 
-extern vector<int> floorDimensions;
+extern std::vector<int> floorDimensions;
 
 // globals that need to be reset
 extern int floorCount;
 extern bool NPCMovementPaused;
 extern bool merchantsAngered;
-extern vector<PotionType> usedPotions;
-extern shared_ptr<Character> player;
+extern std::vector<PotionType> usedPotions;
+extern std::shared_ptr<Character> player;
 extern bool playerHasBeenPlaced;
-extern vector<shared_ptr<Character>> alreadyActed;
+extern std::vector<std::shared_ptr<Character>> alreadyActed;
 extern bool playerHasActed;
 extern int numberOfSpawnedPotions;
 extern int numberOfSpawnedGoldPiles;
 extern int numberOfSpawnedNPCs;
 
-shared_ptr<Cell> getValidCell();
-bool isValidCoordinates(vector<int> coord);
-bool isOccupied(vector<int> coord);
-vector<int> getValidCoords();
-vector<int> getValidNeighbourCoordinates(vector<int> base);
-bool hasActed(shared_ptr<Character> character);
-Direction getValidMove(vector<int> base);
+std::shared_ptr<Cell> getValidCell();
+bool isValidCoordinates(std::vector<int> coord);
+bool isOccupied(std::vector<int> coord);
+std::vector<int> getValidCoords();
+std::vector<int> getValidNeighbourCoordinates(std::vector<int> base);
+bool hasActed(std::shared_ptr<Character> character);
+Direction getValidMove(std::vector<int> base);
 int getNormalOrSmallGoldPile ();
-shared_ptr<Character> createCharacter(Race race);
+std::shared_ptr<Character> createCharacter(Race race);
 void reset();
 void outputGameState();
 

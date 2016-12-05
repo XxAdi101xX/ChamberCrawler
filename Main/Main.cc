@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 	// default seed
 	int seed = time(NULL);
 
-	ifstream file;
+	ifstream file {""};
 
 	string filename;
 
@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
 		string test;
 
 		try {
+			file.close();
 			file.open(argv[1]);
 			test = file.peek();
 			filename = argv[1];
@@ -100,6 +101,7 @@ int main(int argc, char *argv[]) {
 		string test;
 
 	    try {
+			file.close();
 			file.open(argv[1]);
             test = file.peek();
 			filename = argv[1];
@@ -863,7 +865,10 @@ newFloorStart:
 				tempCharacter = tempCell->getOccupant();
 				tempNeighbourhood = tempCell->getNeighbours();
 
-				if (tempCharacter != nullptr && !(tempCharacter->getPlayerState())) {
+
+				if (tempCharacter != nullptr 
+					&& !(tempCharacter->getPlayerState())
+					&& !hasActed(tempCharacter)) {
 					try {
 						// dragon may attack player during startTurnRoutine
 						// if they are next to dragon hoard
@@ -878,12 +883,8 @@ newFloorStart:
 					}
 
 					for (auto neighbour: tempNeighbourhood) {
-						// checks if already acked
-						if (hasActed(tempCharacter)) {
-							break;
-						}
-
-						if (neighbour) {
+						// checks if already acted and neighbour exists
+						if (neighbour && !(hasActed(tempCharacter))) {
 							tempDefender = neighbour->getOccupant();
 
 							// if player is beside NPC,// and NPC is hostile
@@ -901,7 +902,7 @@ newFloorStart:
 
 					}
 
-					if (!(hasActed(tempCharacter) && !NPCMovementPaused)) {
+					if (!hasActed(tempCharacter) && !NPCMovementPaused) {
 						try {
 							tempCharacter
 								->move(getValidMove(vector<int>{i,j}));

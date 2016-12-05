@@ -5,7 +5,6 @@
 #include "../Floor/Floor.h"
 #include "../TextDisplay/TextDisplay.h"
 #include "../Generator/Generator.h"
-#include "../Messaging/Messaging.h"
 #include "../Defines/Defines.h"
 #include "../Character/Character.h"
 #include "../Character/Dragon.h"
