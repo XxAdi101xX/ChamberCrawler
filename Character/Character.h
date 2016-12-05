@@ -150,6 +150,8 @@ public:
 	// used during initialization to set the character's location
 	void setCell(std::shared_ptr<Cell> cell);
 
+	void clearLastAction(); // clears log of last action
+
 	// accessors:
 
 	int getWallet() const; // returns wallet

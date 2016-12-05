@@ -200,7 +200,7 @@ void Character::doMove(Direction direction) {
 }
 
 
-void Character::addAction(std::string action) {
+void Character::addAction(string action) {
 	this->lastAction += action;
 }
 
@@ -393,6 +393,11 @@ void Character::setCell(std::shared_ptr<Cell> cell) {
 		cell->setOccupant(shared_from_this());
 	}
 
+}
+
+
+void Character::clearLastAction() {
+    this->lastAction = "";
 }
 
 

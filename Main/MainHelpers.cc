@@ -280,4 +280,5 @@ void reset() {
 // allows adding new displays easily
 void outputGameState() {
 	cout << theTextDisplay << endl;
+	player->clearLastAction();
 }
