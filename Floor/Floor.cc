@@ -128,12 +128,16 @@ std::istream &operator>>(std::istream &in, Floor &f) {
 
     f.theFloor = std::vector<std::vector<std::shared_ptr<Cell>>>();
 
+    bool endFloor = false;
+
     while (!in.eof()) {
         std::string row;
         std::getline(in, row);
         if (row == "") break;
 
         f.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
+        int horizontalWallCount = 0;
+        std::cout << row << std::endl;
         for (auto r: row) {
             std::shared_ptr<Cell> cell = std::make_shared<Cell>();
             cell->setCoords(std::vector<int>{static_cast<int>(f.theFloor.size()) - 1, static_cast<int>(f.theFloor.back().size())});
@@ -142,6 +146,7 @@ std::istream &operator>>(std::istream &in, Floor &f) {
                     cell->setCellType(CellType::Wall);
                     break;
                 case '-':
+                    horizontalWallCount++;
                     cell->setCellType(CellType::Wall);
                     break;
                 case '+':
@@ -163,9 +168,18 @@ std::istream &operator>>(std::istream &in, Floor &f) {
 
             f.theFloor.back().push_back(std::move(cell));
         }
+
+        if (horizontalWallCount == row.size() - 2 && endFloor == false) {
+            endFloor = true;
+        }
+        else if (horizontalWallCount == row.size() - 2 && endFloor == true) {
+            break;
+        }
     }
 
     f.floorDimensions = std::vector<int>{static_cast<int>(f.theFloor.size()), static_cast<int>(f.theFloor[0].size())};
+
+    std::cout << "Floor Dimension: " << f.floorDimensions[0] << " " << f.floorDimensions[1] << std::endl;
 
 /*
     for (int i = 0; i < f.floorDimensions[0]; ++i) {

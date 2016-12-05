@@ -177,7 +177,6 @@ int main(int argc, char *argv[]) {
 
 
 titleScreen:
-	playerHasBeenPlaced = false;
 
 	cout << MSG_WELCOME << endl;
 	cout << PROMPT_RACE_SELECTION << endl;
@@ -239,8 +238,10 @@ titleScreen:
 
 newFloorStart:
 	// updates floor count since this is a new floor
+
 	++floorCount;
 
+	playerHasBeenPlaced = false;
 	player->clearBuffs();
 
 
@@ -279,8 +280,9 @@ newFloorStart:
 			file.open(argv[1]);
 
 			// skips previous floors in the file
+
         	file.ignore((floorCount - 1)
-            	* floorDimensions[0] * floorDimensions[1]);
+            	* floorDimensions[0] * (floorDimensions[1] + 1));
 
 			file >> currentFloor;
 
@@ -301,12 +303,12 @@ newFloorStart:
 
 		// skips previous floors in the file
 		file.ignore((floorCount - 1)
-			* floorDimensions[0] * floorDimensions[1]);
+			* floorDimensions[0] * (floorDimensions[1] + 1));
 
 		tempCoords = vector<int>{0,0};
 
 
-		while (file.get(tempChar)) {
+		while (file.get(tempChar) && tempCoords[0] < floorDimensions[0]) {
 			if (tempChar == '\n') continue;
 
 			tempCell = currentFloor.getCell(tempCoords);
