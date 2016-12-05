@@ -345,15 +345,18 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	// checks for defender's death
 	if (defender.getHP() <= 0) {
-	this->addGold(defender.getWallet());
+		this->addGold(defender.getWallet());
 
-	defender.deathRoutine();
+		defender.deathRoutine();
 
-	this->addAction(
-			makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
+		// removes character from floor
+		(defender.getCurrentCell())>setOccupant(nullptr);
 
-	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE + " "
-		+ WORD_KILL_PAST_TENSE + " " + WORD_BY_PREPOSITION, this->name));
+		this->addAction(
+				makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
+
+		defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE + " "
+			+ WORD_KILL_PAST_TENSE + " " + WORD_BY_PREPOSITION, this->name));
 	}
 
 }
