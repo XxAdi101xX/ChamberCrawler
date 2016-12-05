@@ -361,7 +361,6 @@ newFloorStart:
 
                 case CHAR_HUMAN :
 				 	tempCharacter = createCharacter(Race::Human);
-					//tempCharacter = createCharacter(Race::Human);
                     break;
 
                 case CHAR_DWARF :
@@ -475,7 +474,6 @@ newFloorStart:
 		player->setCell(tempCell);
 
 		// sets the player character as the player
-	//	player->setPlayer();
 
 		playerHasBeenPlaced = true;
 
