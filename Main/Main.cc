@@ -182,11 +182,11 @@ titleScreen:
 	cout << MSG_WELCOME << endl;
 	cout << PROMPT_RACE_SELECTION << endl;
 
-	cout << "(" << CMD_SHADE_SELECT << ")    " << NAME_SHADE << endl;
-	cout << "(" << CMD_DROW_SELECT << ")    " << NAME_DROW << endl;
-	cout << "(" << CMD_VAMPIRE_SELECT << ")    " << NAME_VAMPIRE << endl;
-	cout << "(" << CMD_GOBLIN_SELECT << ")    " << NAME_GOBLIN << endl;
-	cout << "(" << CMD_TROLL_SELECT << ")    " << NAME_TROLL << endl;
+	cout << "(" << CMD_SHADE_SELECT << ")    " << NAME_SHADE_SELECT << endl;
+	cout << "(" << CMD_DROW_SELECT << ")    " << NAME_DROW_SELECT << endl;
+	cout << "(" << CMD_VAMPIRE_SELECT << ")    " << NAME_VAMPIRE_SELECT << endl;
+	cout << "(" << CMD_GOBLIN_SELECT << ")    " << NAME_GOBLIN_SELECT << endl;
+	cout << "(" << CMD_TROLL_SELECT << ")    " << NAME_TROLL_SELECT << endl;
 
 	// while player is not yet set
 	while (!player) {
@@ -196,27 +196,27 @@ titleScreen:
 		}
 
 		else if (cmd == CMD_SHADE_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_SHADE << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_SHADE_SELECT << endl;
 			player = createCharacter(Race::Shade);
 		}
 
 		else if (cmd == CMD_DROW_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_DROW << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_DROW_SELECT << endl;
 			player = createCharacter(Race::Drow);
 		}
 
 		else if (cmd == CMD_VAMPIRE_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_VAMPIRE << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_VAMPIRE_SELECT << endl;
 			player = createCharacter(Race::Vampire);
 		}
 
 		else if (cmd == CMD_GOBLIN_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_GOBLIN << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_GOBLIN_SELECT << endl;
 			player = createCharacter(Race::Goblin);
 		}
 
 		else if (cmd == CMD_TROLL_SELECT) {
-			cout << MSG_RACE_SELECTED << " " << NAME_TROLL << endl;
+			cout << MSG_RACE_SELECTED << " " << NAME_TROLL_SELECT << endl;
 			player = createCharacter(Race::Troll);
 		}
 
@@ -277,7 +277,13 @@ newFloorStart:
 		try {
 			file.close();
 			file.open(argv[1]);
+        	
+			// skips previous floors in the file
+        	file.ignore((floorCount - 1)
+            	* floorDimensions[0] * floorDimensions[1]);
+			
 			file >> currentFloor;
+			
 			floorDimensions = currentFloor.getFloorDimensions();
 			stairCoords = currentFloor.getStairCoords();
 		}

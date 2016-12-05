@@ -83,6 +83,20 @@ const std::string WORD_USE_PAST_TENSE = "used";
 
 // Character names:
 
+const std::string NAME_DRAGON_SELECT = "Dragon";
+const std::string NAME_DROW_SELECT = "Drow";
+const std::string NAME_DWARF_SELECT = "Dwarf";
+const std::string NAME_ELF_SELECT = "Elf";
+const std::string NAME_GOBLIN_SELECT = "Goblin";
+const std::string NAME_HALFLING_SELECT = "Halfling";
+const std::string NAME_HUMAN_SELECT = "Human";
+const std::string NAME_MERCHANT_SELECT = "Merchant";
+const std::string NAME_ORC_SELECT = "Orc";
+const std::string NAME_SHADE_SELECT = "Shade";
+const std::string NAME_TROLL_SELECT = "Troll";
+const std::string NAME_VAMPIRE_SELECT = "Vampire";
+
+
 const std::string NAME_DRAGON = "D";
 const std::string NAME_DROW = "R";
 const std::string NAME_DWARF = "W";
