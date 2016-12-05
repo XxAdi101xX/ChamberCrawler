@@ -48,6 +48,10 @@ void TextDisplay::notify(Subject &notifier) {
     }
 }
 
+void TextDisplay::setFloorNumber(int floorNum) {
+	floorNumber = floorNum;
+}
+
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
 
     for (auto &row: td.theDisplay) {
@@ -56,8 +60,9 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
         }
         out << std::endl;
     }
-
-    out << "Race: " << raceToText(td.info.race) << " Gold: " << td.info.gold << std::endl;
+		std::string spaces(55, ' ');
+    out << "Race: " << raceToText(td.info.race) << " Gold: " << td.info.gold
+				<< spaces << "Floor " << td.floorNumber << std::endl;
     out << "HP: " << td.info.HP << std::endl;
     out << "Atk: " << td.info.attackValue << std::endl;
     out << "Def: " << td.info.defenceValue << std::endl;

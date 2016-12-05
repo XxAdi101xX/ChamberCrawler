@@ -18,7 +18,7 @@ class TextDisplay : public Observer {
     std::stringstream log;
 
     Info info;
-
+		int floorNumber = 1;
 
 public:
     TextDisplay();
@@ -27,6 +27,8 @@ public:
     void setGridSize(std::vector<int> size);
 
     void notify(Subject &whoNotified) override;
+		
+		void setFloorNumber(int floorNum);
 
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
