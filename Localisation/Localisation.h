@@ -83,33 +83,19 @@ const std::string WORD_USE_PAST_TENSE = "used";
 
 // Character names:
 
-const std::string NAME_DRAGON_SELECT = "Dragon";
-const std::string NAME_DROW_SELECT = "Drow";
-const std::string NAME_DWARF_SELECT = "Dwarf";
-const std::string NAME_ELF_SELECT = "Elf";
-const std::string NAME_GOBLIN_SELECT = "Goblin";
-const std::string NAME_HALFLING_SELECT = "Halfling";
-const std::string NAME_HUMAN_SELECT = "Human";
-const std::string NAME_MERCHANT_SELECT = "Merchant";
-const std::string NAME_ORC_SELECT = "Orc";
-const std::string NAME_SHADE_SELECT = "Shade";
-const std::string NAME_TROLL_SELECT = "Troll";
-const std::string NAME_VAMPIRE_SELECT = "Vampire";
-
-
-const std::string NAME_DRAGON = "D";
-const std::string NAME_DROW = "R";
-const std::string NAME_DWARF = "W";
-const std::string NAME_ELF = "E";
-const std::string NAME_GOBLIN = "B";
-const std::string NAME_HALFLING = "L";
-const std::string NAME_HUMAN = "H";
-const std::string NAME_MERCHANT = "M";
-const std::string NAME_ORC = "O";
+const std::string NAME_DRAGON = "Dragon";
+const std::string NAME_DROW = "Drow";
+const std::string NAME_DWARF = "Dwarf";
+const std::string NAME_ELF = "Elf";
+const std::string NAME_GOBLIN = "Goblin";
+const std::string NAME_HALFLING = "Halfling";
+const std::string NAME_HUMAN = "Human";
+const std::string NAME_MERCHANT = "Merchant";
+const std::string NAME_ORC = "Orc";
+const std::string NAME_SHADE = "Shade";
 const std::string NAME_PLAYER = "PC";
-const std::string NAME_SHADE = "S";
-const std::string NAME_TROLL = "T";
-const std::string NAME_VAMPIRE = "V";
+const std::string NAME_TROLL = "Troll";
+const std::string NAME_VAMPIRE = "Vampire";
 
 
 // Display char:
@@ -119,9 +105,7 @@ const char CHAR_HORIZONTAL_WALL = '-';
 const char CHAR_FLOOR_TILE = '.';
 const char CHAR_DOOR_WAY = '+';
 const char CHAR_PASSAGE = '#';
-
-// 92 == '\', compiler won't let me enter the literal
-const char CHAR_STAIRS = '\\';
+const char CHAR_STAIRS = '\\'; // '\'
 const char CHAR_NULL = ' ';
 
 const char CHAR_DRAGON = 'D';
