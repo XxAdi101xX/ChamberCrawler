@@ -89,7 +89,6 @@ void Floor::clearFloor() {
 }
 
 bool Floor::sameChamber(const std::vector<int> coords1, const std::vector<int> coords2) const {
-    std::cout << "Check same Chamber: " << coords1[0] << ","  << coords1[1] << " " << coords2[0] << "," << coords2[1] << std::endl;
     std::map<std::string, bool> travelledMap;
     return dfsSearch(travelledMap, coords1, coords2);
 }
@@ -97,7 +96,6 @@ bool Floor::sameChamber(const std::vector<int> coords1, const std::vector<int> c
 //LOOK BACK
 bool Floor::dfsSearch(std::map<std::string, bool>& travelled, const std::vector<int> curr, const std::vector<int> dest) const {
     std::vector<std::shared_ptr<Cell>> neighbourCells = theFloor[curr[0]][curr[1]]->getNeighbours();
-    std::cout << "Current: " << curr[0] << "," << curr[1] << std::endl;
 
     if (curr.size() != 2 && dest.size() != 2) return false;
 

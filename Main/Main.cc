@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 		else {
 			file.close();
 
-			cerr << ERR_BAD_FILE << " " + WORD_OR_CONJUNCTION 
+			cerr << ERR_BAD_FILE << " " + WORD_OR_CONJUNCTION
 				+ " " << ERR_BAD_SEED << endl;
 			return 2;
 
@@ -293,6 +293,8 @@ newFloorStart:
 
 
 		while (file.get(tempChar) && tempCoords[0] < floorDimensions[0]) {
+
+
 			if (tempChar == '\n') continue;
 
 			tempCell = currentFloor.getCell(tempCoords);
@@ -442,7 +444,7 @@ newFloorStart:
 
 			// normal traversal
 			else {
-
+				tempCoords = vector<int>{tempCoords[0], tempCoords[1] + 1};
 			}
 
 		}
