@@ -44,7 +44,7 @@ void Dragon::doStartTurnRoutine(Generator& rng) {
 
 			// throws so that the program know the dragon already
 			// attacked
-			throw;
+			throw 1;
 		}
 
 	}
