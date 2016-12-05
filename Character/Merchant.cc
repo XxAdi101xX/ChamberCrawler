@@ -27,17 +27,25 @@ void Merchant::doStartTurnRoutine(Generator& rng) {
 		this->setHostile();
 	}
 
+	if (this->getHP() != MERCHANT_HP_MAX) {
+		merchantsAngered = true;
+		this->setHostile();
+	}
+
 }
 
 
 void Merchant::deathRoutine() {
-	vector<shared_ptr<Cell>> neighbourHood = (this->getCurrentCell())->getNeighbours();
+	vector<shared_ptr<Cell>> neighbourHood 
+		= (this->getCurrentCell())->getNeighbours();
 
 	int numberOfGoldPilesAlreadyDropped = 0;
 
 	for (auto neighbour : neighbourHood) {
 		// if there is no item or character on a neighbouring cell
-		if (!(neighbour->getItem()) && !(neighbour->getOccupant())) {
+		if (neighbour && !(neighbour->getItem()) && !(neighbour->getOccupant())
+			&& neighbour->getCellType() == CellType::FloorTile) {
+
 			neighbour->setItem
 			(make_shared<GoldPile>(MERCHANT_DROPPED_GOLD_PILE_VALUE));
 
