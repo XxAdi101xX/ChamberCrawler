@@ -66,7 +66,8 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     out << "HP: " << td.info.HP << std::endl;
     out << "Atk: " << td.info.attackValue << std::endl;
     out << "Def: " << td.info.defenceValue << std::endl;
-    out << "Action: " << td.info.lastAction << std::endl;
+    out << "Action: " << std::endl;
+	out << td.info.lastAction << std::endl;
 
     return out;
 }
