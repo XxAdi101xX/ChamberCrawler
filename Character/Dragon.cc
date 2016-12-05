@@ -41,10 +41,6 @@ void Dragon::doStartTurnRoutine(Generator& rng) {
 
 			// attackes player if they are next to dragon hoard
 			this->attack(*occupant, rng);
-
-			// throws so that the program know the dragon already
-			// attacked
-			throw 1;
 		}
 
 	}
