@@ -140,6 +140,9 @@ std::istream &operator>>(std::istream &in, Floor &f) {
                 case ' ':
                     cell->setCellType(CellType::Null);
                     break;
+								case '\\':
+                    cell->setCellType(CellType::Stairs);
+                    break;
                 default:
                     cell->setCellType(CellType::FloorTile);
                     break;
