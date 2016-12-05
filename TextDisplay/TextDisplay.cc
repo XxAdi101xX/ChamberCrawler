@@ -21,6 +21,7 @@ TextDisplay::TextDisplay(std::vector<int> gridSize):
 
 void TextDisplay::setGridSize(std::vector<int> size) {
     gridSize = size;
+    theDisplay = std::vector<std::vector<char>>();
     for (int i = 0; i < gridSize[0]; ++i) {
         theDisplay.push_back(std::vector<char>());
         for (int j = 0; j < gridSize[1]; ++j) {

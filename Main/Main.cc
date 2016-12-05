@@ -174,6 +174,8 @@ int main(int argc, char *argv[]) {
 
 
 titleScreen:
+	playerHasBeenPlaced = false;
+
 	cout << MSG_WELCOME << endl;
 	cout << PROMPT_RACE_SELECTION << endl;
 
@@ -270,6 +272,8 @@ newFloorStart:
 
 	if (readFromFile) {
 		try {
+			file.close();
+			file.open(argv[1]);
 			file >> currentFloor;
 		}
 		// for errors reading the map
@@ -458,7 +462,6 @@ newFloorStart:
 	}
 
 	else {
-		std::cout << "INItialize" << std::endl;
 		currentFloor.initialize();
 
 		floorDimensions = currentFloor.getFloorDimensions();

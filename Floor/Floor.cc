@@ -11,7 +11,6 @@ Floor::Floor(std::shared_ptr<TextDisplay> td):
     floorDimensions {std::vector<int>()},
     floorNumber {1}
     {
-        std::cout << "OK HERE" << std::endl;
     }
 
 void Floor::initialize() {
@@ -53,7 +52,6 @@ void Floor::initialize() {
             theFloor[i][j]->setCellType(theFloor[i][j]->getCellType());
         }
     }
-
 }
 
 void Floor::resetFloorNumber() {
@@ -114,13 +112,14 @@ std::vector<int> Floor::getFloorDimensions() const {
 
 std::istream &operator>>(std::istream &in, Floor &f) {
 
+    f.theFloor = std::vector<std::vector<std::shared_ptr<Cell>>>();
+
     while (!in.eof()) {
         std::string row;
         std::getline(in, row);
         if (row == "") break;
 
         f.theFloor.push_back(std::vector<std::shared_ptr<Cell>>());
-
         for (auto r: row) {
             std::shared_ptr<Cell> cell = std::make_shared<Cell>();
             cell->setCoords(std::vector<int>{static_cast<int>(f.theFloor.size()) - 1, static_cast<int>(f.theFloor.back().size())});
@@ -140,7 +139,7 @@ std::istream &operator>>(std::istream &in, Floor &f) {
                 case ' ':
                     cell->setCellType(CellType::Null);
                     break;
-								case '\\':
+				case '\\':
                     cell->setCellType(CellType::Stairs);
                     break;
                 default:
