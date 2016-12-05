@@ -240,6 +240,7 @@ titleScreen:
 newFloorStart:
 	// updates floor count since this is a new floor
 	++floorCount;
+	theTextDisplay.setFloorNumber(floorCount);
 
 	player->clearBuffs();
 
@@ -292,8 +293,6 @@ newFloorStart:
 			cerr << ERR_BAD_MAP << endl;
 			return 5;
 		}
-
-		theTextDisplay.setFloorNumber(floorCount);
 
 		// reinitialize the file to scan for objects on the floor
 		file.close();
