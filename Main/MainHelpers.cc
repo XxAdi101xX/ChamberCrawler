@@ -140,12 +140,13 @@ bool hasActed(shared_ptr<Character> character) {
 Direction getValidMove(vector<int> base) {
 	// safety check
 	vector<Direction>  checkedDirections;
-	vector<int> tempCoordinates;
-	Direction tempDirection = Direction(0);
+	vector <int> tempCoordinates;
+	Direction tempDirection;
 
 	do {
 		shared_ptr<Cell> tempCell = currentFloor.getCell(base);
-		Direction tempDirection = rng.genDirection();
+		tempDirection = rng.genDirection();
+
 		tempCoordinates
 			= (tempCell->getNeighbour(tempDirection))->getCoords();
 
