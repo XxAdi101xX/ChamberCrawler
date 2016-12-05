@@ -131,6 +131,8 @@ int main(int argc, char *argv[]) {
 	merchantsAngered = false;
 
 	// generation variables
+	stringstream defaultFloor {DEFAULT_MAP};
+
 	player = nullptr;
 	vector<int> playerCoords;
 
@@ -460,7 +462,8 @@ newFloorStart:
 
 	else {
 		std::cout << "INItialize" << std::endl;
-		currentFloor.initialize();
+		
+		defaultFloor >> currentFloor;
 
 		floorDimensions = currentFloor.getFloorDimensions();
 
