@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
 
 
 	// generation variables, counters and temporaries
-	vector<int> floorDimensions {DEFAULT_FLOOR_WIDTH, DEFAULT_FLOOR_LENGTH};
+	floorDimensions = std::vector<int>{DEFAULT_FLOOR_WIDTH, DEFAULT_FLOOR_LENGTH};
 
 	char tempChar;
 
@@ -277,13 +277,13 @@ newFloorStart:
 		try {
 			file.close();
 			file.open(argv[1]);
-        	
+
 			// skips previous floors in the file
         	file.ignore((floorCount - 1)
             	* floorDimensions[0] * floorDimensions[1]);
-			
+
 			file >> currentFloor;
-			
+
 			floorDimensions = currentFloor.getFloorDimensions();
 			stairCoords = currentFloor.getStairCoords();
 		}

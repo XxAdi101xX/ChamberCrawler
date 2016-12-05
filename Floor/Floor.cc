@@ -52,6 +52,8 @@ void Floor::initialize() {
             theFloor[i][j]->setCellType(theFloor[i][j]->getCellType());
         }
     }
+
+    std::cout << floorDimensions[0] << " " << floorDimensions[1] << std::endl;
 }
 
 void Floor::resetFloorNumber() {
