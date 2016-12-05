@@ -88,6 +88,7 @@ int main(int argc, char *argv[]) {
 
 		if (file.is_open()) {
 			readFromFile = true;
+			filename = argv[1];
 		}
 
 		else if (isSeed) {
@@ -230,14 +231,12 @@ newFloorStart:
 	playerHasBeenPlaced = false;
 	player->clearBuffs();
 
-
 	// checks for win
 	while (floorCount > NUMBER_OF_FLOORS) {
 		cout << MSG_GAME_CLEAR << endl;
 		cout << MSG_FINAL_SCORE << ": " << player->getScore() << endl;
 		cout <<	"(" << CMD_YES << "|" << CMD_NO << ")    "
 		<< PROMPT_REPLAY << endl;
-
 
 		if (!(cin >> cmd) || cmd == CMD_QUIT || cmd == CMD_NO) {
 			cout << MSG_GOODBYE << endl;
@@ -263,7 +262,7 @@ newFloorStart:
 	if (readFromFile) {
 		try {
 			file.close();
-			file.open(argv[1]);
+			file.open(filename);
 
 			// skips previous floors in the file
 
@@ -280,6 +279,8 @@ newFloorStart:
 			cerr << ERR_BAD_MAP << endl;
 			return 3;
 		}
+
+		cout << PERIOD;
 
 		// reinitialize the file to scan for objects on the floor
 		file.close();
@@ -442,8 +443,9 @@ newFloorStart:
 
 			// normal traversal
 			else {
-				tempCoords = vector<int>{tempCoords[0], tempCoords[1] + 1};
+
 			}
+
 		}
 
 		// if we have unlinked dragons or dragon hoard cells
