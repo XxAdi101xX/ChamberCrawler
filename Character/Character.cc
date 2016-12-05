@@ -29,6 +29,10 @@ void Character::applyPotion(const shared_ptr<Potion> potion) {
 	if (type == PotionType::RestoreHealth
 		|| type == PotionType::PoisonHealth) {
 
+		if (this->getHP() + potency <= 0) {
+			potency = -(this->getHP() - 1);
+		}
+
 		this->addHPViaPotion(potency);
 	}
 
