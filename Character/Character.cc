@@ -168,7 +168,7 @@ void Character::doMove(Direction direction) {
 		// otherwise move as normal
 
 		// removes character from currentCell
-		(this->currentCell)->setOccupant(nullptr);
+		(this->getCurrentCell())->setOccupant(nullptr);
 
 		// changes currentCell to the new one
 		// setOccupant is done in setCell
@@ -179,7 +179,8 @@ void Character::doMove(Direction direction) {
 			directionToText(direction)));
 
 		// gets the neighbourhood
-		vector<shared_ptr<Cell>> neighbourhood = (this->currentCell)->getNeighbours();
+		vector<shared_ptr<Cell>> neighbourhood 
+			= (this->currentCell)->getNeighbours();
 
 		// reports all item sightings
 		for (auto neighbour: neighbourhood) {
@@ -195,12 +196,20 @@ void Character::doMove(Direction direction) {
 	}
 
 	// if is player, and there's an item on the new cell (not potion);
-	if (this->isPlayer && currentCell->getItem()) {
-		// uses the item
-		this->applyItem(currentCell->getItem());
+	shared_ptr<Item> tempItem = currentCell->getItem();
 
-		// remove the item from the cell
-		currentCell->setItem(nullptr);
+	if (this->isPlayer && tempItem) {
+		// uses the item
+		// wont do anything if its a dragon hoard
+		this->applyItem(tempItem);
+
+		// remove the item from the cell (only if it isnt a dragon hoard)
+		if (tempItem->getItemType() != ItemType::GoldPile 
+			|| !(static_pointer_cast<GoldPile>(tempItem)->getBoundState())) {
+			
+			currentCell->setItem(nullptr);
+		}
+
 	}
 
 }
