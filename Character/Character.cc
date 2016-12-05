@@ -350,7 +350,7 @@ void Character::attack(Character& defender, Generator& rng) {
 		defender.deathRoutine();
 
 		// removes character from floor
-		(defender.getCurrentCell())>setOccupant(nullptr);
+		(defender.getCurrentCell())->setOccupant(nullptr);
 
 		this->addAction(
 				makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
