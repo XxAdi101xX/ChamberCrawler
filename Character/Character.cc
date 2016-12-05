@@ -336,14 +336,12 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	bool firstRollForHit = this->dealDamageTo(defender, damage, rng);
 
-	if (firstRollForHit) {
-		if (defender.defend(*this, damage, rng)) {
-			// reports hit
-			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE + " "
-				+ to_string(damage) + " " + WORD_DAMAGE_NOUN + " "
-				+ WORD_TO_PREPOSITION, defender.getName() + " ("
-				+ to_string(defender.getHP()) + ")"));
-		}
+	if (firstRollForHit && defender.defend(*this, damage, rng)) {
+		// reports hit
+		this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE + " "
+			+ to_string(damage) + " " + WORD_DAMAGE_NOUN + " "
+			+ WORD_TO_PREPOSITION, defender.getName() + " ("
+			+ to_string(defender.getHP()) + ")"));
 
 	}
 

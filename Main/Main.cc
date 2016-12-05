@@ -242,6 +242,10 @@ newFloorStart:
 	++floorCount;
 	theTextDisplay.setFloorNumber(floorCount);
 
+	numberOfSpawnedPotions = 0;
+    numberOfSpawnedGoldPiles = 0;
+    numberOfSpawnedNPCs = 0;
+
 	player->clearBuffs();
 
 
@@ -534,6 +538,17 @@ newFloorStart:
 			// gets a random GoldPile value
 			tempGoldPileValue = rng.genGold();
 
+			// not a merchant hoard
+            if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
+                tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
+            }
+
+			// is actually a merchant hoard
+            else  {
+                // decrements counter to allow second try
+                --numberOfSpawnedGoldPiles;
+            }
+
 			// if the gold spawned was a dragon hoard
 			if (tempGoldPileValue == GOLD_PILE_DRAGON_HOARD_VALUE) {
 				try {
@@ -544,11 +559,10 @@ newFloorStart:
 					tempDragon = static_pointer_cast<Dragon>(createCharacter(Race::Dragon));
 
 					// sets dragon in place
-					tempDragon->setCell(tempCell);
+					tempDragon->setCell(currentFloor.getCell(dragonCoords));
 
 					// gives it it's cell
-					tempDragon
-						->setDragonHoardCell(tempCell);
+					tempDragon->setDragonHoardCell(tempCell);
 
 				}
 
@@ -557,22 +571,14 @@ newFloorStart:
 					// remove the pile added
 					tempCell->setItem(nullptr);
 
+					// remove the dragon added
+					(tempDragon->getCurrentCell())->setOccupant(nullptr);
+
 					// decrements counter to allow second try
 					--numberOfSpawnedGoldPiles;
 
 				}
 
-			}
-
-			// not a merchant hoard, not a dragon hoard
-			else if (tempGoldPileValue != GOLD_PILE_MERCHANT_HOARD_VALUE) {
-				tempCell->setItem(make_shared<GoldPile>(tempGoldPileValue));
-			}
-
-			// is actually a merchant hoard
-			else {
-				// decrements counter to allow second try
-				--numberOfSpawnedGoldPiles;
 			}
 
 			++numberOfSpawnedGoldPiles;
