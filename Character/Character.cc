@@ -91,7 +91,7 @@ bool Character::defend(Character& attacker,
 	// reports dodge
 	this->addAction(makeMsg(this->name, WORD_DODGE_PAST_TENSE + " "
 		+ WORD_ATTACK_NOUN + " (" + to_string(incomingDamage) + " "
-		+ WORD_DAMAGE_NOUN + ")" + WORD_FROM_PREPOSITION,
+		+ WORD_DAMAGE_NOUN + ") " + WORD_FROM_PREPOSITION,
 		attacker.getName()));
 
 	return false;
@@ -324,8 +324,8 @@ void Character::attack(Character& defender, Generator& rng) {
 	if (firstRollForHit) {
 		if (defender.defend(*this, damage, rng)) {
 			// reports hit
-			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE
-				+ to_string(damage) + " " + WORD_DAMAGE_NOUN
+			this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE + " "
+				+ to_string(damage) + " " + WORD_DAMAGE_NOUN + " "
 				+ WORD_TO_PREPOSITION, defender.getName() + " ("
 				+ to_string(defender.getHP()) + ")"));
 		}
@@ -334,7 +334,7 @@ void Character::attack(Character& defender, Generator& rng) {
 
 	else {
 		// reports miss
-		this->addAction(makeMsg(this->name, WORD_MISS_PAST_TENSE +"( "
+		this->addAction(makeMsg(this->name, WORD_MISS_PAST_TENSE + " ("
 		+ to_string(damage) + " " + WORD_DAMAGE_NOUN + ")",
 		defender.getName()));
 	}
@@ -350,8 +350,8 @@ void Character::attack(Character& defender, Generator& rng) {
 	this->addAction(
 			makeMsg(this->name, WORD_KILL_PAST_TENSE, defender.getName()));
 
-	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE
-		+ WORD_KILL_PAST_TENSE + WORD_BY_PREPOSITION, this->name));
+	defender.addAction(makeMsg(defender.getName(), WORD_IS_PAST_TENSE + " "
+		+ WORD_KILL_PAST_TENSE + " " + WORD_BY_PREPOSITION, this->name));
 	}
 
 }
