@@ -606,6 +606,8 @@ newFloorStart:
 
 	// game start
 
+	playerCoords = (player->getInfo()).coordinates;
+
 	while (player->getHP() > 0) {
 		// player turn start
 		playerHasActed = false;
@@ -748,7 +750,7 @@ newFloorStart:
 			else if (cmd == CMD_ATTACK) {
 				playerHasActed = false;
 
-				while (!playerHasActed && cin >> cmd) {
+				if (!playerHasActed && cin >> cmd) {
 					playerHasActed = true; // default result
 
 					if (cmd == CMD_NORTH) {
@@ -821,7 +823,6 @@ newFloorStart:
 					}
 
 				}
-
 			}
 
 			else if (cmd == CMD_STOP) {
