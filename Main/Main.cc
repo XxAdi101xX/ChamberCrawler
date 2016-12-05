@@ -827,6 +827,7 @@ newFloorStart:
 
 			else if (cmd == CMD_STOP) {
 				NPCMovementPaused = !NPCMovementPaused;
+				playerHasActed = false;
 			}
 
 			else if (cmd == CMD_RESTART) {
