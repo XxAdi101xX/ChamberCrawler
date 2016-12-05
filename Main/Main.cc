@@ -215,14 +215,14 @@ titleScreen:
 
 	// attaches player to display so we can report what
 	// happened to the player
-	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&theTextDisplay)));
+	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&(*theTextDisplay))));
 
 
 newFloorStart:
 	// updates floor count since this is a new floor
 
 	++floorCount;
-	theTextDisplay.setFloorNumber(floorCount);
+	theTextDisplay->setFloorNumber(floorCount);
 
 	numberOfSpawnedPotions = 0;
     numberOfSpawnedGoldPiles = 0;
@@ -265,7 +265,6 @@ newFloorStart:
 			file.open(filename);
 
 			// skips previous floors in the file
-
         	file.ignore((floorCount - 1)
             	* floorDimensions[0] * (floorDimensions[1] + 1));
 
@@ -594,7 +593,7 @@ newFloorStart:
 
 	cout << MSG_LOADING_COMPLETE << endl;
 
-	std::cout << theTextDisplay << std::endl;
+	outputGameState();
 
 	// outputs game state
 	//outputGameState();

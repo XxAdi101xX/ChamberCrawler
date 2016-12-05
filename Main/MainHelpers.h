@@ -16,7 +16,7 @@ class Floor;
 class TextDisplay;
 
 extern Generator rng;
-extern TextDisplay theTextDisplay;
+extern std::shared_ptr<TextDisplay> theTextDisplay;
 extern Floor currentFloor; // note that floor is cleared at initialization
 
 extern std::vector<int> floorDimensions;
