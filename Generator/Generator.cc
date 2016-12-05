@@ -1,5 +1,6 @@
 #include "Generator.h"
 #include <cstdlib>
+#include <iostream>
 #include "../Defines/Defines.h"
 
 Generator::Generator(int seed):
@@ -11,30 +12,33 @@ Generator::Generator(int seed):
 Race Generator::genNPCRace() {
     float r = (float)rand()/INT_MAX;
 
+
     r -= HUMAN_SPAWN_CHANCE;
-    if (r > 0) {
+    if (r < 0) {
         return Race::Human;
     }
 
     r-= DWARF_SPAWN_CHANCE;
-    if (r > 0) {
+    if (r < 0) {
         return Race::Dwarf;
     }
 
     r-= HALFLING_SPAWN_CHANCE;
-    if (r > 0) {
+    if (r < 0) {
         return Race::Halfling;
     }
 
     r -= ELF_SPAWN_CHANCE;
-    if (r > 0) {
+    if (r < 0) {
         return Race::Elf;
     }
 
     r-= ORC_SPAWN_CHANCE;
-    if (r > 0) {
+    if (r < 0) {
         return Race::Orc;
     }
+
+
 
     return Race::Merchant;
 }
@@ -48,12 +52,12 @@ int Generator::genGold() {
 
     r -= GOLD_PILE_SMALL_SPAWN_CHANCE;
 
-    if (r > 0)
+    if (r < 0)
         return GOLD_PILE_SMALL_VALUE;
 
     r -= GOLD_PILE_NORMAL_SPAWN_CHANCE;
 
-    if (r > 0)
+    if (r < 0)
         return GOLD_PILE_NORMAL_VALUE;
 
     return GOLD_PILE_DRAGON_HOARD_VALUE;
