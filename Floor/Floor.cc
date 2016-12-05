@@ -62,6 +62,18 @@ int Floor::getFloorNumber() {
     return floorNumber;
 }
 
+vector<int> Floor::getStairCoords() {
+    for (int i = 0; i < floorDimensions[0]; ++i) {
+        for (int j = 0; j < floorDimensions[1]; ++j) {
+			shared_ptr<Cell> tempCell = theFloor[i][j];
+			if (tempCell && tempCell->getCellType() == CellType::Stairs) {
+				return vector<int>{i,j};
+			}
+        }
+    }
+	throw 1;
+}
+
 void Floor::clearFloor() {
     for (auto &row: theFloor) {
         for (auto &c: row) {

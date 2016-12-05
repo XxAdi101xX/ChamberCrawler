@@ -109,7 +109,7 @@ vector<int> getValidNeighbourCoordinates(vector<int> base) {
 		// checks if all neighbours were tried
 		if (checkedCoordinates.size() == DIRECTION_ENUMERATION) {
 			// no valid neighbour
-			throw;
+			throw 1;
 		}
 
 		// reroll if coordinates are not for a FloorTile
@@ -168,7 +168,7 @@ Direction getValidMove(vector<int> base) {
 		// checks if all directions were tried
 		if (checkedDirections.size() == DIRECTION_ENUMERATION) {
 			// no valid move
-			throw;
+			throw 1;
 		}
 
 		// reroll if cell in direction is not a FloorTile

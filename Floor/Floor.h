@@ -35,6 +35,7 @@ public:
     void resetFloorNumber();
 
     int getFloorNumber();
+	vector<int> getStairCoords();
 
     bool sameChamber(const std::vector<int> coords1, const std::vector<int> coords2) const;
 

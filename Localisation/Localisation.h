@@ -58,6 +58,7 @@ const std::string ERR_BAD_SEED = "Seed was not in the correct integer form";
 const std::string ERR_BAD_CMD_LINE_ARG = "Invalid command line argument";
 const std::string ERR_BAD_MAP = "The map read was invalid";
 
+
 // vocab:
 
 const std::string WORD_HP_NOUN = "HP";

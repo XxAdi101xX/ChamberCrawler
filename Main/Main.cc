@@ -278,6 +278,8 @@ newFloorStart:
 			file.close();
 			file.open(argv[1]);
 			file >> currentFloor;
+			floorDimensions = currentFloor.getFloorDimensions();
+			stairCoords = currentFloor.getStairCoords();
 		}
 		// for errors reading the map
 		catch (...) {
@@ -292,8 +294,6 @@ newFloorStart:
 		// skips previous floors in the file
 		file.ignore((floorCount - 1)
 			* floorDimensions[0] * floorDimensions[1]);
-
-		floorDimensions = currentFloor.getFloorDimensions();
 
 		tempCoords = vector<int>{0,0};
 
@@ -826,6 +826,7 @@ newFloorStart:
 
 			else if (cmd == CMD_STOP) {
 				NPCMovementPaused = !NPCMovementPaused;
+				playerHasActed = false;
 			}
 
 			else if (cmd == CMD_RESTART) {
