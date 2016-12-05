@@ -423,7 +423,7 @@ int Character::getWallet() const {
 
 
 int Character::getScore() const {
-	return this->score;
+	return this->score + this->getScoreBonus();
 }
 
 
