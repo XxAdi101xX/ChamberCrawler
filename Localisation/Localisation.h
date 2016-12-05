@@ -50,7 +50,7 @@ const std::string PROMPT_REPLAY = "Replay?";
 const std::string ERR_INVALID_CMD = "Invalid command";
 const std::string ERR_INVALID_DIRECTION = "Invalid direction";
 
-const std::string ERR_USAGE = "Usage: cc3k [filename] [seed]";
+const std::string ERR_USAGE = "Usage: cc3k [filename/seed]";
 const std::string ERR_INVALID_NUMBER_OF_CMD_LINE_ARGS
 	= "Invalid number of command line arguments";
 const std::string ERR_BAD_FILE = "File does not exist or could not be read";
@@ -79,7 +79,7 @@ const std::string WORD_SEE_PAST_TENSE = "saw";
 const std::string WORD_TAKE_PAST_TENSE = "took";
 const std::string WORD_TO_PREPOSITION = "to";
 const std::string WORD_USE_PAST_TENSE = "used";
-
+const std::string WORD_OR_CONJUNCTION = "or";
 
 // Character names:
 
