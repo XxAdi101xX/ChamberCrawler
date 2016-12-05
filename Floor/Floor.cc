@@ -89,19 +89,22 @@ void Floor::clearFloor() {
 }
 
 bool Floor::sameChamber(const std::vector<int> coords1, const std::vector<int> coords2) const {
-    return dfsSearch(std::map<std::string, bool>(), coords1, coords2);
+    std::cout << "Check same Chamber: " << coords1[0] << ","  << coords1[1] << " " << coords2[0] << "," << coords2[1] << std::endl;
+    std::map<std::string, bool> travelledMap;
+    return dfsSearch(travelledMap, coords1, coords2);
 }
 
 //LOOK BACK
-bool Floor::dfsSearch(std::map<std::string, bool> travelled, const std::vector<int> curr, const std::vector<int> dest) const {
+bool Floor::dfsSearch(std::map<std::string, bool>& travelled, const std::vector<int> curr, const std::vector<int> dest) const {
     std::vector<std::shared_ptr<Cell>> neighbourCells = theFloor[curr[0]][curr[1]]->getNeighbours();
+    std::cout << "Current: " << curr[0] << "," << curr[1] << std::endl;
 
     if (curr.size() != 2 && dest.size() != 2) return false;
 
     if (curr[0] == dest[0] && curr[1] == dest[1]) return true;
 
     for (auto &c: neighbourCells) {
-        if (travelled.count(coordsToString(c->getCoords()))) {
+        if (c->getCellType() == CellType::FloorTile && travelled.count(coordsToString(c->getCoords())) == 0) {
             travelled[coordsToString(c->getCoords())] = true;
             if (dfsSearch(travelled, c->getCoords(), dest)) return true;
         }
@@ -170,14 +173,12 @@ std::istream &operator>>(std::istream &in, Floor &f) {
         if (horizontalWallCount == static_cast<int>(row.size()) - 2 && endFloor == false) {
             endFloor = true;
         }
-        else if (horizontalWallCount == row.size() - 2 && endFloor == true) {
+        else if (horizontalWallCount == static_cast<int>(row.size()) - 2 && endFloor == true) {
             break;
         }
     }
 
     f.floorDimensions = std::vector<int>{static_cast<int>(f.theFloor.size()), static_cast<int>(f.theFloor[0].size())};
-
-
 /*
     for (int i = 0; i < f.floorDimensions[0]; ++i) {
             std::cout << "Size: " << i << " " << f.theFloor[i].size() << endl;
@@ -188,7 +189,6 @@ std::istream &operator>>(std::istream &in, Floor &f) {
     }
     */
     f.initialize();
-
 
     return in;
 }
