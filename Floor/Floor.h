@@ -14,7 +14,7 @@
 class Floor {
 private:
     std::vector<std::vector<std::shared_ptr<Cell>>> theFloor;
-    std::shared_ptr<TextDisplay> theDisplay;
+    TextDisplay* theDisplay;
 
     std::vector<int> floorDimensions;
 
@@ -27,7 +27,7 @@ private:
 
 public:
 
-    Floor(std::shared_ptr<TextDisplay>);
+    Floor(TextDisplay* td);
 
     void initialize();
     void clearFloor();

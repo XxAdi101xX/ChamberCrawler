@@ -2,12 +2,12 @@
 #include <algorithm>
 #include <iostream>
 
-bool Subject::attach(std::shared_ptr<Observer> o) {
+bool Subject::attach(Observer* o) {
 	observers.emplace_back(o);
 	return true;
 }
 
-void Subject::detach(std::shared_ptr<Observer> o) {
+void Subject::detach(Observer* o) {
 	observers.erase(std::find(observers.begin(), observers.end(), o));
 }
 

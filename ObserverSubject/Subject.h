@@ -7,10 +7,10 @@
 #include <memory>
 
 class Subject {
-	std::vector<std::shared_ptr<Observer>> observers;
+	std::vector<Observer*> observers;
 public:
-	bool attach(std::shared_ptr<Observer>);
-	void detach(std::shared_ptr<Observer>);
+	bool attach(Observer*);
+	void detach(Observer*);
 	virtual Info getInfo() const = 0;
 	void notifyObservers();
 	virtual ~Subject() = 0;

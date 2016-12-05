@@ -26,8 +26,8 @@ using namespace std;
 
 //Temporary rng var, will be set in main on execute
 Generator rng {0};
-shared_ptr<TextDisplay> theTextDisplay = make_shared<TextDisplay>();
-Floor currentFloor {theTextDisplay};
+TextDisplay theTextDisplay {};
+Floor currentFloor {&theTextDisplay};
 
 vector<int> floorDimensions;
 
@@ -255,7 +255,7 @@ shared_ptr<Character> createCharacter(Race race) {
 // resets all necessary global variables for new game
 void reset() {
 	floorCount = 0;
-	theTextDisplay->setFloorNumber(0);
+	theTextDisplay.setFloorNumber(0);
 	currentFloor.resetFloorNumber();
 
 	NPCMovementPaused = false;
@@ -281,6 +281,6 @@ void reset() {
 // outputs the game state stored
 // allows adding new displays easily
 void outputGameState() {
-	cout << *theTextDisplay << endl;
+	cout << theTextDisplay << endl;
 	player->clearLastAction();
 }

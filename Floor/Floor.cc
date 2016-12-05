@@ -5,7 +5,7 @@
 #include "../Cell/Cell.h"
 #include "../Enumerations/CellType.h"
 
-Floor::Floor(std::shared_ptr<TextDisplay> td):
+Floor::Floor(TextDisplay* td):
     theFloor {std::vector<std::vector<std::shared_ptr<Cell>>>()},
     theDisplay {td},
     floorDimensions {std::vector<int>()},

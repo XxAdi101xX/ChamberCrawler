@@ -215,14 +215,14 @@ titleScreen:
 
 	// attaches player to display so we can report what
 	// happened to the player
-	player->attach(shared_ptr<Observer>(static_cast<Observer *>(&(*theTextDisplay))));
+	player->attach(&theTextDisplay);
 
 
 newFloorStart:
 	// updates floor count since this is a new floor
 
 	++floorCount;
-	theTextDisplay->setFloorNumber(floorCount);
+	theTextDisplay.setFloorNumber(floorCount);
 
 	numberOfSpawnedPotions = 0;
     numberOfSpawnedGoldPiles = 0;
