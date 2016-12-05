@@ -150,7 +150,6 @@ int main(int argc, char *argv[]) {
 	vector<shared_ptr<Cell>> dragonHoardCellStack;
 	vector<shared_ptr<Dragon>> dragonStack;
 
-	vector<shared_ptr<Character>> alreadyActed;
 	shared_ptr<Cell> tempCell;
 	vector<shared_ptr<Cell>> tempNeighbourhood;
 	shared_ptr<Character> tempCharacter;
@@ -163,13 +162,13 @@ int main(int argc, char *argv[]) {
 
 	bool playerHasActed = false;
 
-	int numberOfSpawnedPotions = 0;
+	numberOfSpawnedPotions = 0;
 	PotionType tempPotionType;
 
-	int numberOfSpawnedGoldPiles = 0;
+	numberOfSpawnedGoldPiles = 0;
 	int tempGoldPileValue;
 
-	int numberOfSpawnedNPCs = 0;
+	numberOfSpawnedNPCs = 0;
 	Race tempRace;
 
 	shared_ptr<Item> tempItem;
@@ -903,6 +902,7 @@ newFloorStart:
 
 								// logs the attacker
 								alreadyActed.emplace_back(tempCharacter);
+
 								break;
 							}
 
