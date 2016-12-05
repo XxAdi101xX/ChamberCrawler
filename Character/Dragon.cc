@@ -68,6 +68,6 @@ void Dragon::doStartTurnRoutine(Generator& rng) {
 }
 
 
-void Dragon::setDragonHoardCell(std::shared_ptr<Cell> dragonHoardCell) {
+void Dragon::setDragonHoardCell(shared_ptr<Cell> dragonHoardCell) {
 	this->dragonHoardCell = dragonHoardCell;
 }

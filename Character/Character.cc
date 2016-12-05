@@ -302,9 +302,9 @@ int Character::getScoreProt() const {
 Character::Character(int HPMax, int HP, int attackValue, int defenceValue,
 	bool isHostile, Race race, int wallet):
 
-	HPMax{HPMax}, HP{HP}, attackValue{attackValue},
-	defenceValue{defenceValue}, isHostile{isHostile}, isPlayer{false},
-	race{race}, wallet{wallet}, name{raceToText(race)}
+	HPMax{HPMax}, HP{HP}, attackValue{attackValue}, attackBuff{0},
+	defenceValue{defenceValue}, defenceBuff{0}, isHostile{isHostile}, isPlayer{false},
+	race{race}, wallet{wallet}, score{0}, name{raceToText(race)}
 
 	{}
 
