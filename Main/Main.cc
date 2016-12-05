@@ -672,19 +672,14 @@ newFloorStart:
 			else if	(cmd == CMD_USE) {
 				playerHasActed = false;
 
-				while (!playerHasActed) {
+				if (!playerHasActed && cin >> cmd) {
 					playerHasActed = true; // default result
 
-					if (!(cin >> cmd) || cmd == CMD_QUIT) {
-						cout << MSG_GOODBYE << endl;
-						return 0;
-					}
-
-	               	else if (cmd == CMD_NORTH) {
+	        if (cmd == CMD_NORTH) {
 						tempCell = (currentFloor.getCell(playerCoords))->getNeighbour(Direction::North);
 					}
 
-           	    	else if (cmd == CMD_SOUTH) {
+          else if (cmd == CMD_SOUTH) {
 						tempCell = (currentFloor.getCell(playerCoords))
                           	->getNeighbour(Direction::South);
              	    }
