@@ -460,9 +460,6 @@ newFloorStart:
 			}
 		}
 
-
-//FIXED UP TO HERE
-
 		// if we have unlinked dragons or dragon hoard cells
 		if (dragonStack.size() != 0 || dragonHoardCellStack.size() != 0) {
 				cerr << ERR_BAD_MAP << endl;
@@ -472,8 +469,10 @@ newFloorStart:
 	}
 
 	else {
-		defaultFloor = std::stringstream{DEFAULT_FLOOR};
 		defaultFloor >> currentFloor;
+
+		defaultFloor.clear();
+		defaultFloor.seekg(0, ios::beg);
 
 		floorDimensions = currentFloor.getFloorDimensions();
 
