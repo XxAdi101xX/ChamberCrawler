@@ -866,7 +866,7 @@ newFloorStart:
 				tempCharacter = tempCell->getOccupant();
 				tempNeighbourhood = tempCell->getNeighbours();
 
-				if (tempCharacter && !(tempCharacter->getPlayerState())) {
+				if (tempCharacter != nullptr && !(tempCharacter->getPlayerState())) {
 					try {
 						// dragon may attack player during startTurnRoutine
 						// if they are next to dragon hoard
@@ -890,7 +890,7 @@ newFloorStart:
 							tempDefender = neighbour->getOccupant();
 
 							// if player is beside NPC,// and NPC is hostile
-							if (tempDefender->getPlayerState()
+							if (tempDefender != nullptr && tempDefender->getPlayerState()
 								&& tempCharacter->getHostileState()) {
 
 								tempCharacter->attack(*tempDefender, rng);

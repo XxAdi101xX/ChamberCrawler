@@ -3,8 +3,8 @@
 // commands
 const std::string CMD_NORTH = "no";
 const std::string CMD_SOUTH = "so";
-const std::string CMD_WEST = "ea";
-const std::string CMD_EAST = "we";
+const std::string CMD_WEST = "we";
+const std::string CMD_EAST = "ea";
 const std::string CMD_NORTH_EAST = "ne";
 const std::string CMD_NORTH_WEST = "nw";
 const std::string CMD_SOUTH_EAST = "se";
