@@ -1,2 +1,3 @@
 Extra Credit Features
-We only used smart pointers for heap allocated memory in our implementation hence did not use new/delete at all. 
+We only used smart pointers for heap allocated memory in our implementation hence did not use new/delete at all.
+we implemented the optional ability to pass a seed into the command line arguement
