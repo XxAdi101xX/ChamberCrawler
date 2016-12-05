@@ -171,16 +171,15 @@ Info Cell::getInfo() const {
 	else if (getCellType() == CellType::FloorTile) {
 		cellInfo.displayChar = CHAR_FLOOR_TILE;
 	}
-	else if (getCellType() == CellType::Null) {
-		cellInfo.displayChar = CHAR_NULL;
-	}
 	else if (getCellType() == CellType::Stairs) {
 		cellInfo.displayChar = CHAR_STAIRS;
 	}
 	else if (getCellType() == CellType::Wall) {
 		// check what type of wall is occupied by cell
 		if ((((getNeighbour(Direction::East))->getCellType() != CellType::Null) &&
-				((getNeighbour(Direction::West))->getCellType() != CellType::Null)) &&
+				((getNeighbour(Direction::West))->getCellType() != CellType::Null) && 
+				((getNeighbour(Direction::East))->getCellType() != CellType::FloorTile) &&
+        ((getNeighbour(Direction::West))->getCellType() != CellType::FloorTile)) &&
 				(((getNeighbour(Direction::East))->getCellType() == CellType::Wall) ||
 				((getNeighbour(Direction::West))->getCellType() == CellType::Wall) ||
 				((getNeighbour(Direction::West))->getCellType() == CellType::Stairs) ||
@@ -192,6 +191,9 @@ Info Cell::getInfo() const {
 			cellInfo.displayChar = CHAR_VERTICAL_WALL;
 		}
 	}
+	else if (getCellType() == CellType::Null) {
+    cellInfo.displayChar = CHAR_NULL;
+  }
 
 	cellInfo.isCellInfo = true;
 
