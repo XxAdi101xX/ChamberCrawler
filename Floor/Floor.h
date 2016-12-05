@@ -18,7 +18,7 @@ private:
 
     std::vector<int> floorDimensions;
 
-    bool dfsSearch(std::map<std::string, bool> travelled, const std::vector<int> curr,
+    bool dfsSearch(std::map<std::string, bool> &travelled, const std::vector<int> curr,
         const std::vector<int> dest) const;
 
     std::string coordsToString(std::vector<int> coord) const;
