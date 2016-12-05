@@ -293,6 +293,8 @@ newFloorStart:
 			return 5;
 		}
 
+		theTextDisplay.setFloorNumber(floorCount);
+
 		// reinitialize the file to scan for objects on the floor
 		file.close();
 		file.open(filename);

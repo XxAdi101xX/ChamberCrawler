@@ -255,6 +255,7 @@ shared_ptr<Character> createCharacter(Race race) {
 // resets all necessary global variables for new game
 void reset() {
 	floorCount = 0;
+	theTextDisplay.setFloorNumber(0);
 	currentFloor.resetFloorNumber();
 
 	NPCMovementPaused = false;
