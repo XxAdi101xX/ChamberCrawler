@@ -335,8 +335,9 @@ void Character::attack(Character& defender, Generator& rng) {
 		* this->getTotalAttack());
 
 	bool firstRollForHit = this->dealDamageTo(defender, damage, rng);
+	bool secondRollForHit = defender.defend(*this, damage, rng);
 
-	if (firstRollForHit && defender.defend(*this, damage, rng)) {
+	if (firstRollForHit && secondRollForHit) {
 		// reports hit
 		this->addAction(makeMsg(this->name, WORD_DEAL_PAST_TENSE + " "
 			+ to_string(damage) + " " + WORD_DAMAGE_NOUN + " "
@@ -352,7 +353,7 @@ void Character::attack(Character& defender, Generator& rng) {
 		defender.getName()));
 	}
 
-	this->postAttackRoutine(defender, firstRollForHit, rng);
+	this->postAttackRoutine(defender, firstRollForHit && secondRollForHit, rng);
 
 	// checks for defender's death
 	if (defender.getHP() <= 0) {
