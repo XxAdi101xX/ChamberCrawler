@@ -1,8 +1,2 @@
-TODO
-
-- Change coordinates to use a different class or pair
-- Look at the code with comment //LOOK BACK
-
-- Add floor number to TextDisplay
-
-- Check if the make_shared works properly (does not cause crashes)
+ChamberCrawler is a "Rogue" type dungeon crawler game that allows the user to traverse through levels to find the ladders to move up the 
+levels until they have escaped the dungeon. They are faced with many different variables such as gold piles (used to buy items), unknown potions (postive or negative impact on the user) and various kinds of enemies with their own interactions and quirks that separate them from other. 
